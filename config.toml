@@ -1,0 +1,9 @@
+baseurl = "http://goserv.it"
+title = "A fast, easy and minimalistic framework for web applications in Go"
+canonifyurls = true
+publishdir = "public"
+
+[params]
+    author = "Marcel Gotsch"
+    description = "A fast, easy and minimalistic framework for web applications in Go"
+    githubuser = "gotschmarcel"
