@@ -1,0 +1,340 @@
+/*
+
+    Colors
+    ------
+        Dark Blue:      #387799
+        Medium Blue:    #3389AA
+        Light Blue:     #57AABB
+        Sand:           #CACCBB
+        Dark:           #333345
+        Med:            #9999A5
+        MedLight:       #F2F2FA
+        Light:          #FAFAF9
+
+
+    Fonts
+    -----
+        Default:        Droid Serif
+        Headings:       Droid Sans
+        Theme:          Lily Script One
+*/
+
+/* -----------------------
+    Elements & Classes
+----------------------- */
+html, body {
+    font-family: "Droid Sans", sans-serif;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    color: #333345;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+hr {
+    background-color: #57AABB;
+    color: #57AABB;
+    height: 2px;
+    border: none;
+    margin: 2rem 0rem;
+}
+
+hr.thin {
+    height: 1px;
+}
+
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.3rem; color: #387799; }
+h4 { font-size: 1.3rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.1rem; }
+
+a { color: #333345; text-decoration: none; }
+a:hover { color: #3389AA; }
+
+pre { font-family: "Inconsolata", monospace; }
+
+.flex { display: flex; }
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+.flex-grow { flex-grow: 1; }
+.flex-vcenter { align-items: center; }
+.flex-hcenter { justify-content: center; }
+
+.centered-content {
+    margin: auto;
+    width: auto;
+    max-width: 960px;
+}
+
+.centered-content-small {
+    margin: auto;
+    width: auto;
+    max-width: 768px;
+}
+
+.ratio {
+    position: relative;
+}
+
+.ratio11:before {
+    display: block;
+    content: "";
+    padding-top: 100%;
+}
+
+.highlight {
+    padding: 1rem;
+    border-radius: 0.2rem;
+}
+
+.fa.left-of { margin-right: 0.5rem; }
+.fa.right-of { margin-left: 0.5rem; }
+
+/* -----------------------
+    Header
+----------------------- */
+#gs-header {
+    height: 128;
+    padding: 0rem 2rem;
+    box-sizing: border-box;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+#gs-header .centered-content > .flex{
+    /*justify-content: space-between;*/
+    width: 33.333%;
+}
+
+#gs-header-name {
+    font-family: "Lily Script One";
+    font-size: 4rem;
+}
+
+#gs-header-logo-width {
+    width: 200px;
+}
+
+#gs-header-logo {
+    background-image: url("/images/logo-400.png");
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: center;
+    background-color: #F2F2FA;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid #9999A5;
+}
+
+#gs-header-nav {
+    text-align: center;
+}
+
+.gs-nav-entry {
+    display: inline-block;
+    position: relative;
+    margin-left: 1rem;
+    border-bottom: 2px solid white;
+    padding-bottom: 0.2rem;
+    font-size: 1.2rem;
+}
+
+.gs-nav-entry:first-child {
+    margin-left: 0rem;
+}
+
+.gs-nav-entry.active {
+    border-bottom: 2px solid #57AABB;
+}
+
+.gs-nav-entry:hover {
+    color: #3389AA;
+}
+
+.gs-sub-nav > .gs-sub-nav-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    font-size: 1rem;
+}
+
+.gs-sub-nav:hover {
+    border-bottom: 2px solid white;
+}
+
+.gs-sub-nav:hover > .gs-sub-nav-content {
+    display: block;
+}
+
+.gs-sub-nav-content {
+    border-radius: 0.2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-top: 0.25rem;
+}
+
+.gs-sub-nav-entry {
+    display: block;
+    background-color: #F2F2FA;
+    padding: 0.5rem 1rem;
+}
+
+.gs-sub-nav-entry:first-child {
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.gs-sub-nav-entry:last-child {
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.gs-sub-nav-entry:hover, .gs-sub-nav-entry.active {
+    background-color: #3389AA;
+    color: #FAFAF9;
+}
+
+/* -----------------------
+    Footer
+----------------------- */
+#gf-footer {
+    width: 100vw;
+    background-color: #333345;
+    padding: 2.5rem 4rem;
+    box-sizing: border-box;
+}
+
+#gf-footer a {
+    color: #FAFAF9;
+}
+
+#gf-footer a:hover {
+    color: #57AABB;
+}
+
+#gf-footer-logo {
+    background-image: url("/images/logo-200.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-color: #FAFAF9;
+    border-radius: 50%;
+    border: 8px solid #CACCBB;
+    width: 128px;
+    height: 128px;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.8);
+}
+
+.gf-footer-vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #FAFAF9;
+    margin-left: 4rem;
+}
+
+#gf-footer-name {
+    font-size: 3rem;
+    font-family: "Lily Script One";
+    margin-bottom: 1rem;
+}
+
+#gf-footer-desc {
+    color: #57AABB;
+    margin-bottom: 0.2rem;
+}
+
+#gf-footer-copy {
+    font-size: 0.8rem;
+    color: #3389AA;
+}
+
+.gf-footer-info-entry .fa {
+    font-size: 1.4rem;
+}
+
+.gf-footer-info-entry {
+    margin-bottom: 0.5rem;
+}
+/* -----------------------
+    Default Pages
+----------------------- */
+
+/* -----------------------
+    News
+----------------------- */
+
+.gf-news-article {
+    margin-bottom: 4rem;
+}
+
+.gf-news-article-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid #57AABB;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.gf-news-article-title {
+    font-size: 2.4rem;
+    font-weight: bold;
+}
+
+.gf-news-article-meta {
+
+}
+
+.gf-news-article-navigate {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gf-news-content {
+    font-family: "Droid Serif", serif;
+    line-height: 1.8rem;
+}
+.gf-news-content a {
+    color: #333345;
+    border-bottom: 2px solid #57AABB;
+}
+
+.gf-news-content a:hover { border-bottom-width: 4px; }
+
+#gf-news {
+    margin-bottom: 4rem;
+}
+
+.gf-news-summary {
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #F2F2FA;
+}
+
+.gf-news-summary-header {
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+.gf-news-summary-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.gf-news-summary-meta {
+    font-size: 0.8rem;
+    color: #9999A5;
+}
+
+.gf-news-summary-footer {
+    margin-top: 1rem;
+}
