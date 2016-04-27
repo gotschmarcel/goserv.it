@@ -20,7 +20,7 @@
 */
 
 /* -----------------------
-    Elements & Classes
+    Common
 ----------------------- */
 html, body {
     font-family: "Droid Sans", sans-serif;
@@ -97,6 +97,27 @@ pre { font-family: "Inconsolata", monospace; }
 
 .fa.left-of { margin-right: 0.5rem; }
 .fa.right-of { margin-left: 0.5rem; }
+
+#error-404 {
+    margin-bottom: 4rem;
+}
+
+#error-404 h1 {
+    font-size: 8rem;
+    text-shadow: 1px 1px 1px #57AABB, 2px 2px 1px #57AABB, 3px 3px 1px #57AABB, 4px 4px 1px #3389AA, 5px 5px 1px #3389AA, 6px 6px 1px #3389AA, 7px 7px 1px #387799, 8px 8px 1px #387799;
+    margin-bottom: 1rem;
+}
+
+#error-404 p {
+    font-size: 1.2rem;
+}
+
+#error-404 a {
+    color: #333345;
+    border-bottom: 2px solid #57AABB;
+}
+
+#error-404 a:hover { border-bottom-width: 4px; }
 
 /* -----------------------
     Header
@@ -308,6 +329,7 @@ pre { font-family: "Inconsolata", monospace; }
     font-family: "Droid Serif", serif;
     line-height: 1.8rem;
 }
+
 .gf-news-content a {
     color: #333345;
     border-bottom: 2px solid #57AABB;
