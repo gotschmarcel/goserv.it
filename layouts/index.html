@@ -1,4 +1,5 @@
 {{ partial "header.html" . }}
+<section id="gf-desc" class="text-center">{{ .Site.Params.Description }}</section>
 <section class="centered-content-small">
     {{ range first 1 (where .Data.Pages "Section" "index") }}
     {{ .Content }}

@@ -66,6 +66,8 @@ pre { font-family: "Inconsolata", monospace; }
 .flex-vcenter { align-items: center; }
 .flex-hcenter { justify-content: center; }
 
+.text-center { text-align: center; }
+
 .centered-content {
     margin: auto;
     width: auto;
@@ -263,8 +265,13 @@ pre { font-family: "Inconsolata", monospace; }
     margin-bottom: 0.5rem;
 }
 /* -----------------------
-    Default Pages
+    Top
 ----------------------- */
+#gf-desc {
+    margin-bottom: 4rem;
+    font-size: 1.2rem;
+    color: #387799;
+}
 
 /* -----------------------
     News
