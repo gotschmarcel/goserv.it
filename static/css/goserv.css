@@ -187,7 +187,6 @@ pre { font-family: "Inconsolata", monospace; }
 }
 
 .gs-sub-nav-entry:first-child {
-    border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
 }
 
