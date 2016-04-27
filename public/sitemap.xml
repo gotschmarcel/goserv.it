@@ -3,7 +3,27 @@
   
   <url>
     <loc>http://goserv.it/</loc>
+    <lastmod>2016-04-27T17:41:52+02:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/terms/</loc>
+    <lastmod>2016-04-27T17:41:52+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/index/</loc>
+    <lastmod>2016-04-27T17:03:02+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/documentation/path-syntax/</loc>
+    <lastmod>2016-04-27T11:28:03+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/getting-started/</loc>
   </url>
   
 </urlset>

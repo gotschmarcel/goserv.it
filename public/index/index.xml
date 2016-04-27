@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
-    <link>http://goserv.it/</link>
-    <description>Recent content on goserv - A fast, easy and minimalistic framework for web applications in Go</description>
+    <title>Indexes on goserv - A fast, easy and minimalistic framework for web applications in Go</title>
+    <link>http://goserv.it/index/</link>
+    <description>Recent content in Indexes on goserv - A fast, easy and minimalistic framework for web applications in Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 27 Apr 2016 17:41:52 +0200</lastBuildDate>
-    <atom:link href="http://goserv.it/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>Terms &amp; Conditions</title>
-      <link>http://goserv.it/terms/</link>
-      <pubDate>Wed, 27 Apr 2016 17:41:52 +0200</pubDate>
-      
-      <guid>http://goserv.it/terms/</guid>
-      <description>&lt;p&gt;Coming soon&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
+    <lastBuildDate>Wed, 27 Apr 2016 17:03:02 +0200</lastBuildDate>
+    <atom:link href="http://goserv.it/index/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>index</title>
@@ -53,26 +43,6 @@
 &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>path syntax</title>
-      <link>http://goserv.it/documentation/path-syntax/</link>
-      <pubDate>Wed, 27 Apr 2016 11:28:03 +0200</pubDate>
-      
-      <guid>http://goserv.it/documentation/path-syntax/</guid>
-      <description>&lt;p&gt;Coming Soon&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Getting Started</title>
-      <link>http://goserv.it/getting-started/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://goserv.it/getting-started/</guid>
-      <description>&lt;p&gt;Coming Soon&amp;hellip;&lt;/p&gt;
 </description>
     </item>
     
