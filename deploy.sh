@@ -10,8 +10,6 @@ if [ ! -f public/CNAME ]; then
     echo "goserv.it" > public/CNAME
 fi
 
-exit 0
-
 # Add changes to git.
 git add -A
 
