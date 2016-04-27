@@ -139,10 +139,6 @@ pre { font-family: "Inconsolata", monospace; }
     font-size: 4rem;
 }
 
-#gs-header-logo-width {
-    width: 200px;
-}
-
 #gs-header-logo {
     background-image: url("/images/logo-400.png");
     background-repeat: no-repeat;
