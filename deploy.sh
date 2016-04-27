@@ -5,6 +5,13 @@ echo -e "\033[0;32mDeploying updates to Github...\033[0m"
 # Build the project.
 hugo
 
+# Assure CNAME file
+if [ ! -f public/CNAME ]; then
+    echo "goserv.it" > public/CNAME
+fi
+
+exit 0
+
 # Add changes to git.
 git add -A
 
