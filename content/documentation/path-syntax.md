@@ -1,6 +1,6 @@
 +++
 date = "2016-04-27T11:28:03+02:00"
-title = "path syntax"
+title = "Path Syntax"
 
 [menu.main]
 parent = "documentation"
