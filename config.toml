@@ -1,9 +1,28 @@
 baseurl = "http://goserv.it"
-title = "A fast, easy and minimalistic framework for web applications in Go"
+title = "goserv - A fast, easy and minimalistic framework for web applications in Go"
 canonifyurls = true
+contentdir = "content"
+layoutdir = "layouts"
 publishdir = "public"
+languagecode = "en-us"
+pygmentsstyle = "tango"
 
 [params]
-    author = "Marcel Gotsch"
-    description = "A fast, easy and minimalistic framework for web applications in Go"
-    githubuser = "gotschmarcel"
+    Author = "Marcel Gotsch"
+    Name = "goserv"
+    Description = "A fast, easy and minimalistic framework for web applications in Go"
+    GithubUser = "gotschmarcel"
+    GithubLink = "//github.com/gotschmarcel/goserv"
+    Mail = "hello@goserv.it"
+
+# Menu Structure
+[[menu.main]]
+    name = "Documentation"
+    weight = -90
+    identifier = "documentation"
+
+[[menu.main]]
+    parent = "documentation"
+    name = "API Reference"
+    weight = -110
+    url = "https://godoc.org/github.com/gotschmarcel/goserv"

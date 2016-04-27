@@ -1,0 +1,29 @@
+<header id="gs-header">
+    <div class="flex centered-content">
+        <div class="flex flex-vcenter flex-hcenter">
+            <div id="gs-header-name"><a href="{{ .Site.BaseURL }}">{{ .Site.Params.Name }}</a></div>
+        </div>
+        <div class="flex flex-vcenter flex-hcenter flex-grow">
+            <div id="gs-header-logo"></div>
+        </div>
+        <div class="flex flex-vcenter flex-hcenter">
+            <nav id="gs-header-nav" class="hide-xs">
+                {{ $currentNode := . }}
+                {{ range .Site.Menus.main }}
+                    {{ if .HasChildren }}
+                    <span {{ if $currentNode.HasMenuCurrent "main" . }} class="gs-nav-entry gs-sub-nav active" {{ else }} class="gs-nav-entry gs-sub-nav" {{ end }}>
+                        <div class="gs-sub-nav-name">{{ .Name }}</div>
+                        <div class="gs-sub-nav-content">
+                            {{ range .Children }}
+                            <a href="{{ .URL }}" {{ if $currentNode.IsMenuCurrent "main" . }} class="gs-sub-nav-entry active" {{ else }} class="gs-sub-nav-entry" {{ end }}>{{ .Name }}</a>
+                            {{ end }}
+                        </div>
+                    </span>
+                    {{ else }}
+                    <a href="{{ .URL }}" {{ if $currentNode.IsMenuCurrent "main" . }} class="gs-nav-entry active" {{ else }} class="gs-nav-entry" {{ end }}>{{ .Name }}</a>
+                    {{ end }}
+                {{ end }}
+            </nav>
+        </div>
+    </div>
+</header>

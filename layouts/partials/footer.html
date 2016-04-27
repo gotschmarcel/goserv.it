@@ -1,0 +1,22 @@
+        <footer id="gf-footer">
+            <div class="centered-content flex flex-row">
+                <div id="gf-footer-logo"></div>
+                <div class="gf-footer-vertical">
+                    <div id="gf-footer-name">{{ .Site.Params.Name }}</div>
+                    <div id="gf-footer-desc">{{ .Site.Params.Description }}</div>
+                    <div id="gf-footer-copy">&copy; {{ .Site.LastChange.Year }} {{ if isset .Site.Params "Author" }}{{ .Site.Params.Author }}{{ else }}{{ .Site.Title }}{{ end }}</div>
+                </div>
+                <div class="flex-grow"></div>
+                <div id="gf-footer-info" class="gf-footer-vertical">
+                    {{ if isset .Site.Params "GithubLink" }}
+                    <div class="gf-footer-info-entry"><a href="{{ .Site.Params.GithubLink }}" target="_blank"><i class="fa fa-github left-of"></i>GitHub</a></div>
+                    {{ end }}
+                    {{ if isset .Site.Params "Mail" }}
+                    <div class="gf-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>{{ .Site.Params.Mail }}</span></div>
+                    {{ end }}
+                    <div class="gf-footer-info-entry"><a href="{{ .Site.BaseURL }}/terms"><i class="fa fa-file-text-o left-of"></i>Terms &amp; Conditions</a></div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
