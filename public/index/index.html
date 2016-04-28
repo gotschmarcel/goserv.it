@@ -17,20 +17,21 @@
 
         <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-        <link rel="stylesheet" href="http://goserv.it/css/goserv.css" />
+        <link rel="stylesheet" href="http://goserv.it/css/theme.css" />
     </head>
     <body>
     <header id="gs-header">
     <input type="checkbox" id="gs-mobile-nav-cb" />
     <div class="flex centered-content">
-        <div class="flex flex-vcenter flex-start">
+        <div class="flex flex-col flex-vcenter flex-hstart">
             <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
+            <div id="gs-header-desc" class="s-hide">A fast, easy and minimalistic framework for web applications in Go</div>
         </div>
-        <div class="flex flex-vcenter flex-hcenter flex-grow">
+        <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
             <div id="gs-header-logo"></div>
         </div>
-        <div class="flex flex-vcenter flex-end">
-            <nav id="gs-header-nav" class="m-hide">
+        <div class="flex flex-row flex-vcenter flex-hend">
+            <nav id="gs-header-nav" class="l-hide">
                 
                 
                     
@@ -51,10 +52,11 @@
                     
                 
             </nav>
-            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars m-show" onclick></label>
+            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
         </div>
     </div>
-    <div id="gs-mobile-nav" class="m-show">
+    <div class="s-show" id="gs-header-mobile-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+    <div id="gs-mobile-nav" class="l-show">
         
         
             
@@ -62,17 +64,17 @@
             
         
             
-            <span class="gs-mobile-nav-entry gs-mobile-sub-nav">
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
                 <label for="gs-mobile-sub-nav-cb-documentation">Documentation</label>
                 <input type="checkbox" id="gs-mobile-sub-nav-cb-documentation" />
-                <span class="gs-mobile-sub-nav-content">
+                <div class="gs-mobile-sub-nav-content">
                     
                     <a href="https://godoc.org/github.com/gotschmarcel/goserv" class="gs-mobile-sub-nav-entry">API Reference</a>
                     
                     <a href="http://goserv.it/documentation/path-syntax/" class="gs-mobile-sub-nav-entry">Path Syntax</a>
                     
-                </span>
-            </span>
+                </div>
+            </div>
             
         
     </div>
@@ -121,7 +123,6 @@
                 <div id="gs-footer-info-left">
                     <div id="gs-footer-name">goserv</div>
                     <div id="gs-footer-desc">A fast, easy and minimalistic framework for web applications in Go</div>
-                    <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
                 </div>
                 <div class="flex-grow"></div>
                 <div id="gs-footer-info-right">
@@ -134,6 +135,7 @@
                     <div class="gs-footer-info-entry"><a href="http://goserv.it/terms"><i class="fa fa-file-text-o left-of"></i>Terms &amp; Conditions</a></div>
                 </div>
             </div>
+            <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
         </footer>
     </body>
 </html>
