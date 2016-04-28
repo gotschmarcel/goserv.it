@@ -21,15 +21,16 @@
     </head>
     <body>
     <header id="gs-header">
+    <input type="checkbox" id="gs-mobile-nav-cb" />
     <div class="flex centered-content">
-        <div class="flex flex-vcenter flex-hcenter">
+        <div class="flex flex-vcenter flex-start">
             <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
         </div>
         <div class="flex flex-vcenter flex-hcenter flex-grow">
             <div id="gs-header-logo"></div>
         </div>
-        <div class="flex flex-vcenter flex-hcenter">
-            <nav id="gs-header-nav" class="hide-xs">
+        <div class="flex flex-vcenter flex-end">
+            <nav id="gs-header-nav" class="m-hide">
                 
                 
                     
@@ -50,37 +51,57 @@
                     
                 
             </nav>
+            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars m-show" onclick></label>
         </div>
+    </div>
+    <div id="gs-mobile-nav" class="m-show">
+        
+        
+            
+            <a href="http://goserv.it/getting-started/" class="gs-mobile-nav-entry">Getting Started</a>
+            
+        
+            
+            <span class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                Documentation
+                
+                <a href="https://godoc.org/github.com/gotschmarcel/goserv" class="gs-mobile-sub-nav-entry">API Reference</a>
+                
+                <a href="http://goserv.it/documentation/path-syntax/" class="gs-mobile-sub-nav-entry">Path Syntax</a>
+                
+            </span>
+            
+        
     </div>
 </header>
 
 
 
 <article class="centered-content-small">
-    <h1 class="gf-default-title">Getting Started</h1>
-    <div class="gf-default-content">
+    <h1 class="gs-default-title">Getting Started</h1>
+    <div class="gs-default-content">
     <p>Coming Soon&hellip;</p>
 
     </div>
 </article>
 
-        <footer id="gf-footer">
-            <div class="centered-content flex flex-row">
-                <div id="gf-footer-logo"></div>
-                <div class="gf-footer-vertical">
-                    <div id="gf-footer-name">goserv</div>
-                    <div id="gf-footer-desc">A fast, easy and minimalistic framework for web applications in Go</div>
-                    <div id="gf-footer-copy">&copy; 2016 Marcel Gotsch</div>
+        <footer id="gs-footer">
+            <div id="gs-footer-content" class="centered-content">
+                <div id="gs-footer-logo" class="m-hide"></div>
+                <div id="gs-footer-info-left">
+                    <div id="gs-footer-name">goserv</div>
+                    <div id="gs-footer-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+                    <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
                 </div>
                 <div class="flex-grow"></div>
-                <div id="gf-footer-info" class="gf-footer-vertical">
+                <div id="gs-footer-info-right">
                     
-                    <div class="gf-footer-info-entry"><a href="//github.com/gotschmarcel/goserv" target="_blank"><i class="fa fa-github left-of"></i>GitHub</a></div>
+                    <div class="gs-footer-info-entry"><a href="//github.com/gotschmarcel/goserv" target="_blank"><i class="fa fa-github left-of"></i>GitHub</a></div>
                     
                     
-                    <div class="gf-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>hello@goserv.it</span></div>
+                    <div class="gs-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>hello@goserv.it</span></div>
                     
-                    <div class="gf-footer-info-entry"><a href="http://goserv.it/terms"><i class="fa fa-file-text-o left-of"></i>Terms &amp; Conditions</a></div>
+                    <div class="gs-footer-info-entry"><a href="http://goserv.it/terms"><i class="fa fa-file-text-o left-of"></i>Terms &amp; Conditions</a></div>
                 </div>
             </div>
         </footer>
