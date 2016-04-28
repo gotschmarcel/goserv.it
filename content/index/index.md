@@ -3,13 +3,15 @@ date = "2016-04-27T17:03:02+02:00"
 title = "index"
 +++
 
-## Installation
+## Get Right Into It
+
+### Installation
 
 {{< highlight bash >}}
 $ go get github.com/gotschmarcel/goserv
 {{< /highlight >}}
 
-## Getting Started
+### Simple Server
 
 {{< highlight go >}}
 package main
