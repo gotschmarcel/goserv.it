@@ -256,8 +256,8 @@ pre {
 #gs-mobile-nav {
     text-align: center;
     max-height: 0;
-    transition: max-height 0.6s, padding 0.6s;
-    overflow: hidden;
+    transition: max-height 0.6s;
+    overflow: auto;
     box-sizing: border-box;
     max-width: 50%;
     width: auto;
@@ -273,6 +273,7 @@ pre {
 }
 
 .gs-mobile-nav-entry {
+    display: block;
     border-bottom: 1px solid #E4E4F2;
     background-color: #F2F2FA;
 }
@@ -295,12 +296,19 @@ pre {
     display: none;
 }
 
-.gs-mobile-sub-nav > .gs-mobile-sub-nav-content {
-    display: none;
+.gs-mobile-sub-nav > label {
+    display: block;
+    width: 100%; /* Use the whole area as clickable button */
 }
 
-.gs-mobile-sub-nav input[type="checkbox"]:checked ~ .gs-mobile-sub-nav-content {
-    display: block;
+.gs-mobile-sub-nav-content {
+    max-height: 0;
+    transition: max-height .4s;
+    overflow: auto;
+}
+
+.gs-mobile-sub-nav input[type="checkbox"]:checked + .gs-mobile-sub-nav-content {
+    max-height: 200px;
 }
 
 .gs-mobile-nav-entry,

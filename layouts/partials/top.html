@@ -32,15 +32,15 @@
         {{ $currentNode := . }}
         {{ range .Site.Menus.main }}
             {{ if .HasChildren }}
-            <span class="gs-mobile-nav-entry gs-mobile-sub-nav">
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
                 <label for="gs-mobile-sub-nav-cb-{{ .Identifier }}">{{ .Name }}</label>
                 <input type="checkbox" id="gs-mobile-sub-nav-cb-{{ .Identifier }}" />
-                <span class="gs-mobile-sub-nav-content">
+                <div class="gs-mobile-sub-nav-content">
                     {{ range .Children }}
                     <a href="{{ .URL }}" class="gs-mobile-sub-nav-entry">{{ .Name }}</a>
                     {{ end }}
-                </span>
-            </span>
+                </div>
+            </div>
             {{ else }}
             <a href="{{ .URL }}" class="gs-mobile-nav-entry">{{ .Name }}</a>
             {{ end }}
