@@ -141,6 +141,10 @@ pre {
 
 #error-404 a:hover { border-bottom-width: 4px; }
 
+@media screen and (max-width: 768px) {
+    #error-404 h1 { font-size: 4rem; }
+}
+
 /* -----------------------
     Header
 ----------------------- */
@@ -294,6 +298,7 @@ pre {
 }
 
 @media screen and (max-width: 768px) {
+    #gs-header { margin-bottom: 2rem; }
     #gs-header-name, #gs-mobile-nav-toggle { font-size: 1.6rem; }
 
     #gs-header-logo {
