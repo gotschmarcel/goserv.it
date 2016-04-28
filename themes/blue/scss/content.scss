@@ -68,6 +68,78 @@
         border-bottom: 2px solid $light-blue;
         &:hover { border-bottom-width: 4px; }
     }
+
+    blockquote {
+        margin-left: 1.4rem;
+        border-left: 4px solid lighten($dark, 30%);
+        padding-left: 1rem;
+        color: lighten($dark, 30%);
+    }
+
+    img { @extend .flex; margin: 0 auto; max-width: 50%; }
+
+    dl {
+        dt { font-weight: bold; font-family: $default-font; }
+    }
+
+    /*ol {
+        list-style-type: none;
+        counter-reset: item;
+        padding: 0;
+        margin: 0;
+
+        ol {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            display: table;
+            counter-increment: item;
+
+            &:before {
+                content: counters(item, ".") ". ";
+                padding-right: 0.4rem;
+            }
+
+            li:before { content: counters(item, ".") " "; }
+        }
+    }*/
+
+    table {
+        margin: 0 auto;
+        border-collapse: collapse;
+
+        tr { border-bottom: 1px solid $sand; }
+        td, th { padding: 0.5rem 1rem; }
+
+        thead {
+
+        }
+
+        tbody {
+            tr:last-child { border-bottom: 0; }
+
+        }
+    }
+
+    pre {
+        margin: 0 auto;
+        max-width: 85%;
+        overflow: auto;
+        background-color: $medium-light;
+        border-radius: 0.2rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid darken($medium-light, 5%);
+
+        @include breakpoint("small") { max-width: 90%; }
+        @include breakpoint("tiny") { max-width: 100%; }
+
+        code { font-family: $monospace-font; }
+    }
+
+    .footnotes {
+        ol { counter-reset: initial; }
+    }
 }
 
 .gs-news-summary {
