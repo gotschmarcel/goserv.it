@@ -414,7 +414,7 @@ pre {
 #gs-footer-name {
     font-size: 3rem;
     font-family: "Lily Script One";
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 #gs-footer-desc {
@@ -423,8 +423,10 @@ pre {
 }
 
 #gs-footer-copy {
+    margin-top: 2rem;
     font-size: 0.8rem;
     color: #3389AA;
+    text-align: center;
 }
 
 .gs-footer-info-entry .fa {
@@ -447,7 +449,7 @@ pre {
     #gs-footer-content { flex-direction: column; }
     #gs-footer-info-left { margin-bottom: 1rem; }
     #gs-footer-name { font-size: 1.6rem; }
-    #gs-footer-copy { font-size: 0.8rem; }
+    #gs-footer-copy { font-size: 0.8rem; margin-top: 1rem; }
     .gs-footer-info-entry .fa { font-size: 1.2rem; }
     .gs-footer-info-entry { font-size: 1rem; }
 }
