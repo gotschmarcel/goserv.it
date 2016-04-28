@@ -1,0 +1,96 @@
+/* -----------------------
+    Error Pages
+----------------------- */
+#error-404 {
+    margin-bottom: 4rem;
+
+    h1 {
+        font-size: 8rem;
+        text-shadow: 1px 1px 1px $light-blue, 2px 2px 1px $light-blue, 3px 3px 1px $light-blue, 4px 4px 1px $med-blue, 5px 5px 1px $med-blue, 6px 6px 1px $med-blue, 7px 7px 1px $dark-blue, 8px 8px 1px $dark-blue;
+        margin-bottom: 1rem;
+
+        @include breakpoint("small") {
+            font-size: 4rem;
+        }
+    }
+
+    p { font-size: map-get($font-size, "nl1"); }
+
+    a {
+        color: $dark;
+        border-bottom: 2px solid $light-blue;
+        &:hover { border-bottom-width: 4px; }
+    }
+}
+
+/* -----------------------
+    News
+----------------------- */
+#gs-news {
+    margin-bottom: 4rem;
+}
+
+.gs-news-article {
+    margin-bottom: 4rem;
+
+    .header {
+        @extend .flex;
+        @extend .flex-row;
+        @extend .flex-vend;
+        justify-content: space-between;
+
+        border-bottom: 2px solid $light-blue;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+
+        .title {
+            font-size: map-get($font-size, "nl6");
+            font-weight: bold;
+        }
+
+        .meta {}
+    }
+
+    .navigate {
+        @extend .flex;
+        justify-content: space-between;
+    }
+}
+
+.gs-news-article .content,
+.gs-news-summary .content {
+    font-family: $content-font;
+    line-height: map-get($font-size, "nl4");
+
+    a {
+        color: $dark;
+        border-bottom: 2px solid $light-blue;
+        &:hover { border-bottom-width: 4px; }
+    }
+}
+
+.gs-news-summary {
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid $medium-light;
+
+    .header {
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 1rem;
+
+        .title {
+            font-size: map-get($font-size, "nl2");
+            font-weight: bold;
+        }
+
+        .meta {
+            font-size: map-get($font-size, "ns1");
+            color: $medium;
+        }
+    }
+
+    .footer {
+        margin-top: 1rem;
+    }
+}

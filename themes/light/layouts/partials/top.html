@@ -1,14 +1,15 @@
 <header id="gs-header">
     <input type="checkbox" id="gs-mobile-nav-cb" />
     <div class="flex centered-content">
-        <div class="flex flex-vcenter flex-start">
+        <div class="flex flex-col flex-vcenter flex-hstart">
             <div id="gs-header-name"><a href="{{ .Site.BaseURL }}">{{ .Site.Params.Name }}</a></div>
+            <div id="gs-header-desc" class="s-hide">{{ .Site.Params.Description }}</div>
         </div>
-        <div class="flex flex-vcenter flex-hcenter flex-grow">
+        <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
             <div id="gs-header-logo"></div>
         </div>
-        <div class="flex flex-vcenter flex-end">
-            <nav id="gs-header-nav" class="m-hide">
+        <div class="flex flex-row flex-vcenter flex-hend">
+            <nav id="gs-header-nav" class="l-hide">
                 {{ $currentNode := . }}
                 {{ range .Site.Menus.main }}
                     {{ if .HasChildren }}
@@ -25,10 +26,11 @@
                     {{ end }}
                 {{ end }}
             </nav>
-            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars m-show" onclick></label>
+            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
         </div>
     </div>
-    <div id="gs-mobile-nav" class="m-show">
+    <div class="s-show" id="gs-header-mobile-desc">{{ .Site.Params.Description }}</div>
+    <div id="gs-mobile-nav" class="l-show">
         {{ $currentNode := . }}
         {{ range .Site.Menus.main }}
             {{ if .HasChildren }}

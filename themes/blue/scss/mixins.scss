@@ -1,0 +1,61 @@
+//
+// This file contains useful mixins
+//
+
+// @include vendor((transition: all .1s), ms o);
+// or
+// @include vendor((
+//  transform: translate(-50%, 50%),
+//  transition: all .1s
+// ), ms o);
+@mixin vendor($map, $vendors: webkit moz ms o) {
+    @each $prop, $value in $map {
+        @if $vendors {
+          @each $vendor in $vendors {
+            #{"-" + $vendor + "-" + $prop}: #{$value};
+          }
+        }
+        // Dump regular property anyway
+        #{$prop}: #{$value};
+    }
+}
+
+// @include size(100%)
+// or
+// @include size(100%, 50%)
+@mixin size($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+$mediaSizes: (
+    "tiny":   480px,
+    "small":  768px,
+    "medium": 992px,
+    "large":  1200px ,
+);
+
+$breakpoints: (
+  "tiny":   (max-width: map-get($mediaSizes, "tiny")),
+  "small":  (max-width: map-get($mediaSizes, "small")),
+  "medium": (max-width: map-get($mediaSizes, "medium")),
+  "large":  (max-width: map-get($mediaSizes, "large")),
+);
+
+// .element {
+//      color: red;
+//
+//      @include breakpoint(medium) {
+//          color: blue;
+//      }
+// }
+@mixin breakpoint($name) {
+    @if map-has-key($breakpoints, $name) {
+        @media #{inspect(map-get($breakpoints, $name))} {
+            @content;
+        }
+    }
+    @else {
+        @warn "Couldn't find a breakpoint named `#{$name}`.";
+    }
+}

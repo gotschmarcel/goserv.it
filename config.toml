@@ -6,6 +6,7 @@ layoutdir = "layouts"
 publishdir = "public"
 languagecode = "en-us"
 pygmentsstyle = "tango"
+theme = "light"
 
 [params]
     Author = "Marcel Gotsch"

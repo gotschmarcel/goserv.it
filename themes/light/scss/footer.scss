@@ -1,0 +1,88 @@
+/* -----------------------
+    Footer
+----------------------- */
+#gs-footer {
+    width: 100vw;
+    background-color: $dark;
+    padding: 2.5rem 4rem;
+    box-sizing: border-box;
+
+    a {
+        color: $light;
+        &:hover { color: $light-blue; }
+    }
+
+    .gs-footer-info-entry {
+        margin-bottom: 0.5rem;
+
+        .fa { font-size: map-get($font-size, "nl2"); }
+    }
+}
+
+#gs-footer-content { @extend .flex;}
+
+#gs-footer-logo {
+    background-image: url("/images/logo-200.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-color: $light;
+    border-radius: 50%;
+    border: 8px solid $sand;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.8);
+
+    @include size(128px);
+}
+
+#gs-footer-info-left,
+#gs-footer-info-right {
+    @extend .flex;
+    @extend .flex-col;
+    @extend .flex-vcenter;
+
+    color: $light;
+    margin-left: 4rem;
+}
+
+#gs-footer-name {
+    font-size: map-get($font-size, "nl8");
+    font-family: $theme-font;
+    margin-bottom: 0.5rem;
+}
+
+#gs-footer-desc {
+    color: $light-blue;
+    margin-bottom: 0.2rem;
+}
+
+#gs-footer-copy {
+    margin-top: 2rem;
+    font-size: map-get($font-size, "ns1");
+    color: $med-blue;
+    text-align: center;
+}
+
+@include breakpoint("medium") {
+    #gs-footer-info-left,
+    #gs-footer-info-right {
+        margin-left: 0;
+    }
+}
+
+@include breakpoint("small") {
+    #gs-footer { padding: 1rem; text-align: center; }
+    #gs-footer-content { flex-direction: column; }
+    #gs-footer-info-left { margin-bottom: 1rem; }
+    #gs-footer-name { font-size: 1.6rem; }
+    #gs-footer-copy { font-size: 0.8rem; margin-top: 1rem; }
+    .gs-footer-info-entry .fa { font-size: 1.2rem; }
+    .gs-footer-info-entry { font-size: 1rem; }
+}
+
+@include breakpoint("tiny") {
+    #gs-footer-name { font-size: 1.4rem; }
+    #gs-footer-desc { font-size: 0.8rem; }
+    #gs-footer-copy { font-size: 0.6rem; }
+    .gs-footer-info-entry .fa { font-size: 1rem; }
+    .gs-footer-info-entry { font-size: 0.8rem; }
+}

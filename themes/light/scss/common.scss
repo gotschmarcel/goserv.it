@@ -1,0 +1,204 @@
+//
+// This file contains the basic element definitions and useful css classes
+//
+@import "vars";
+
+html, body {
+    font-family: $default-font;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    color: $dark;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+hr {
+    background-color: $light-blue;
+    color: $light-blue;
+    height: 2px;
+    border: none;
+    margin: 2rem 0rem;
+
+    &.thin {
+        height: 1px;
+    }
+}
+
+h1 {
+    font-size: 2.4rem;
+
+    @include breakpoint("tiny") {
+        font-size: 2rem;
+    }
+}
+h2 {
+    font-size: 1.8rem;
+
+    @include breakpoint("tiny") {
+        font-size: 1.5rem;
+    }
+}
+h3 { font-size: 1.3rem; color: $dark-blue; }
+h4 { font-size: 1.3rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.1rem; }
+
+a {
+    color: $dark;
+    text-decoration: none;
+
+    &:hover { color: $light-blue; }
+}
+
+pre {
+    font-family: $monospace-font;
+    overflow: auto;
+}
+
+.flex { display: flex; }
+.flex-row {
+    flex-direction: row;
+
+    &.flex-vcenter { align-items: center; }
+    &.flex-vstart  { align-items: flex-start; }
+    &.flex-vend    { align-items: flex-end; }
+
+    &.flex-hcenter { justify-content: center; }
+    &.flex-hstart  { justify-content: flex-start; }
+    &.flex-hend    { justify-content: flex-end; }
+}
+.flex-col {
+    flex-direction: column;
+
+    &.flex-hcenter { align-items: center; }
+    &.flex-hstart  { align-items: flex-start; }
+    &.flex-hend    { align-items: flex-end; }
+
+    &.flex-vcenter { justify-content: center; }
+    &.flex-vstart  { justify-content: flex-start; }
+    &.flex-vend    { justify-content: flex-end; }
+}
+.flex-grow { flex-grow: 1; }
+
+.text-center { text-align: center; }
+
+.centered-content {
+    margin: auto;
+    width: auto;
+    max-width: map-get($mediaSizes, "medium");
+}
+
+.centered-content-small {
+    margin: auto;
+    width: auto;
+    max-width: map-get($mediaSizes, "small");
+
+    @include breakpoint("small") { padding: 0rem 2rem; }
+    @include breakpoint("tiny") { padding: 0rem 0.5rem; }
+}
+
+.ratio {
+    position: relative;
+
+    &:before {
+        display: block;
+        content: "";
+    }
+
+    &.ratio11:before {
+        padding-top: 100%;
+    }
+}
+
+.highlight {
+    padding: 1rem;
+    border-radius: 0.2rem;
+}
+
+.fa.left-of { margin-right: 0.5rem; }
+.fa.right-of { margin-left: 0.5rem; }
+
+.l-show {
+    display: none;
+
+    @include breakpoint("large") {
+        display: block;
+    }
+}
+
+.l-hide {
+    display: block;
+
+    @include breakpoint("large") {
+        display: none;
+    }
+}
+
+.m-show {
+    display: none;
+
+    @include breakpoint("medium") {
+        display: block;
+    }
+}
+
+.m-hide {
+    display: block;
+
+    @include breakpoint("medium") {
+        display: none;
+    }
+}
+
+.s-show {
+    display: none;
+
+    @include breakpoint("small") {
+        display: block;
+    }
+}
+
+.s-hide {
+    display: block;
+
+    @include breakpoint("small") {
+        display: none;
+    }
+}
+
+.t-show {
+    display: none;
+
+    @include breakpoint("tiny") {
+        display: block;
+    }
+}
+
+.t-hide {
+    display: block;
+
+    @include breakpoint("tiny") {
+        display: none;
+    }
+}
+
+.collapsable {
+    max-height: 0;
+    overflow: auto;
+    @include vendor((transition: max-height .4s));
+}
+
+.first-last-rounded {
+    &:first-child {
+        border-top-left-radius: 0.2rem;
+        border-top-right-radius: 0.2rem;
+    }
+    &:last-child {
+        border-bottom-left-radius: 0.2rem;
+        border-bottom-right-radius: 0.2rem;
+    }
+}

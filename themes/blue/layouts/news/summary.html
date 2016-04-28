@@ -1,0 +1,14 @@
+<article class="gs-news-summary">
+    <header class="header flex">
+        <a href="{{ .Permalink }}" class="title">{{ .Title }}</a>
+        <span class="meta">{{ .Date.Format "Mon, Jan 2, 2006" }}</span>
+    </header>
+    <div class="content">
+        {{ .Summary }}
+    </div>
+    {{ if .Truncated }}
+    <footer class="footer">
+        <a href="{{ .Permalink }}">Read more <i class="fa fa-long-arrow-right right-of"></i></a>
+    </footer>
+    {{ end }}
+</article>

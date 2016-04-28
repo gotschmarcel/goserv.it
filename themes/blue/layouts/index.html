@@ -1,5 +1,4 @@
 {{ partial "header.html" . }}
-<section id="gs-desc" class="text-center centered-content-small">{{ .Site.Params.Description }}</section>
 <section class="centered-content-small">
     {{ range first 1 (where .Data.Pages "Section" "index") }}
     {{ .Content }}
@@ -12,9 +11,9 @@
     {{ .Render "summary" }}
     {{ else }}
     <article class="gs-news-summary">
-        <header class="gs-news-summary-header flex">
-            <span class="gs-news-summary-title">No News Available</a>
-        </header>
+        <div class="content">
+            <span class="title">No News Available</a>
+        </div>
     </article>
     {{ end }}
 </section>
