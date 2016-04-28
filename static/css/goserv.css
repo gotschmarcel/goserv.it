@@ -241,15 +241,15 @@ pre {
     color: #FAFAF9;
 }
 
-#gf-mobile-nav-toggle {
+#gs-mobile-nav-toggle {
     font-size: 2rem;
 }
 
-#gf-mobile-nav-cb {
+#gs-mobile-nav-cb {
     display: none;
 }
 
-#gf-mobile-nav {
+#gs-mobile-nav {
     text-align: center;
     max-height: 0;
     transition: max-height 0.6s, padding 0.6s;
@@ -263,26 +263,26 @@ pre {
     border-radius: 0.2rem;
 }
 
-#gf-mobile-nav-cb:checked ~ #gf-mobile-nav {
+#gs-mobile-nav-cb:checked ~ #gs-mobile-nav {
     max-height: 400px;
     padding: 0.5rem;
 }
 
-#gf-mobile-nav-cb:checked ~ .centered-content #gf-mobile-nav-toggle {
+#gs-mobile-nav-cb:checked ~ .centered-content #gs-mobile-nav-toggle {
     color: #57AABB;
 }
 
-.gf-mobile-nav-entry,
-.gf-mobile-sub-nav-entry {
+.gs-mobile-nav-entry,
+.gs-mobile-sub-nav-entry {
     display: block;
     margin-bottom: 0.4rem;
 }
 
-.gf-mobile-sub-nav .gf-mobile-sub-nav-entry:first-child {
+.gs-mobile-sub-nav .gs-mobile-sub-nav-entry:first-child {
     margin-top: 0.2rem;
 }
 
-.gf-mobile-sub-nav-entry {
+.gs-mobile-sub-nav-entry {
     font-size: 0.8rem;
 }
 
@@ -294,7 +294,7 @@ pre {
 }
 
 @media screen and (max-width: 768px) {
-    #gs-header-name, #gf-mobile-nav-toggle { font-size: 1.6rem; }
+    #gs-header-name, #gs-mobile-nav-toggle { font-size: 1.6rem; }
 
     #gs-header-logo {
         width: 120px;
@@ -307,7 +307,7 @@ pre {
 }
 
 @media screen and (max-width: 480px) {
-    #gs-header-name, #gf-mobile-nav-toggle { font-size: 1.4rem; }
+    #gs-header-name, #gs-mobile-nav-toggle { font-size: 1.4rem; }
 
     #gs-header-logo {
         width: 80px;
@@ -322,26 +322,26 @@ pre {
 /* -----------------------
     Footer
 ----------------------- */
-#gf-footer {
+#gs-footer {
     width: 100vw;
     background-color: #333345;
     padding: 2.5rem 4rem;
     box-sizing: border-box;
 }
 
-#gf-footer a {
+#gs-footer a {
     color: #FAFAF9;
 }
 
-#gf-footer a:hover {
+#gs-footer a:hover {
     color: #57AABB;
 }
 
-#gf-footer-content {
+#gs-footer-content {
     display: flex;
 }
 
-#gf-footer-logo {
+#gs-footer-logo {
     background-image: url("/images/logo-200.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -354,8 +354,8 @@ pre {
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.8);
 }
 
-#gf-footer-info-left,
-#gf-footer-info-right {
+#gs-footer-info-left,
+#gs-footer-info-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -363,59 +363,59 @@ pre {
     margin-left: 4rem;
 }
 
-#gf-footer-name {
+#gs-footer-name {
     font-size: 3rem;
     font-family: "Lily Script One";
     margin-bottom: 1rem;
 }
 
-#gf-footer-desc {
+#gs-footer-desc {
     color: #57AABB;
     margin-bottom: 0.2rem;
 }
 
-#gf-footer-copy {
+#gs-footer-copy {
     font-size: 0.8rem;
     color: #3389AA;
 }
 
-.gf-footer-info-entry .fa {
+.gs-footer-info-entry .fa {
     font-size: 1.4rem;
 }
 
-.gf-footer-info-entry {
+.gs-footer-info-entry {
     margin-bottom: 0.5rem;
 }
 
 @media screen and (max-width: 1024px) {
-    #gf-footer-info-left,
-    #gf-footer-info-right {
+    #gs-footer-info-left,
+    #gs-footer-info-right {
         margin-left: 0;
     }
 }
 
 @media screen and (max-width: 768px) {
-    #gf-footer { padding: 1rem; text-align: center; }
-    #gf-footer-content { flex-direction: column; }
-    #gf-footer-info-left { margin-bottom: 1rem; }
-    #gf-footer-name { font-size: 1.6rem; }
-    #gf-footer-copy { font-size: 0.8rem; }
-    .gf-footer-info-entry .fa { font-size: 1.2rem; }
-    .gf-footer-info-entry { font-size: 1rem; }
+    #gs-footer { padding: 1rem; text-align: center; }
+    #gs-footer-content { flex-direction: column; }
+    #gs-footer-info-left { margin-bottom: 1rem; }
+    #gs-footer-name { font-size: 1.6rem; }
+    #gs-footer-copy { font-size: 0.8rem; }
+    .gs-footer-info-entry .fa { font-size: 1.2rem; }
+    .gs-footer-info-entry { font-size: 1rem; }
 }
 
 @media screen and (max-width: 480px) {
-    #gf-footer-name { font-size: 1.4rem; }
-    #gf-footer-desc { font-size: 0.8rem; }
-    #gf-footer-copy { font-size: 0.6rem; }
-    .gf-footer-info-entry .fa { font-size: 1rem; }
-    .gf-footer-info-entry { font-size: 0.8rem; }
+    #gs-footer-name { font-size: 1.4rem; }
+    #gs-footer-desc { font-size: 0.8rem; }
+    #gs-footer-copy { font-size: 0.6rem; }
+    .gs-footer-info-entry .fa { font-size: 1rem; }
+    .gs-footer-info-entry { font-size: 0.8rem; }
 }
 
 /* -----------------------
     Top
 ----------------------- */
-#gf-desc {
+#gs-desc {
     margin-bottom: 4rem;
     font-size: 1.2rem;
     color: #387799;
@@ -425,11 +425,11 @@ pre {
     News
 ----------------------- */
 
-.gf-news-article {
+.gs-news-article {
     margin-bottom: 4rem;
 }
 
-.gf-news-article-header {
+.gs-news-article-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -438,57 +438,57 @@ pre {
     margin-bottom: 2rem;
 }
 
-.gf-news-article-title {
+.gs-news-article-title {
     font-size: 2.4rem;
     font-weight: bold;
 }
 
-.gf-news-article-meta {
+.gs-news-article-meta {
 
 }
 
-.gf-news-article-navigate {
+.gs-news-article-navigate {
     display: flex;
     justify-content: space-between;
 }
 
-.gf-news-content {
+.gs-news-content {
     font-family: "Droid Serif", serif;
     line-height: 1.8rem;
 }
 
-.gf-news-content a {
+.gs-news-content a {
     color: #333345;
     border-bottom: 2px solid #57AABB;
 }
 
-.gf-news-content a:hover { border-bottom-width: 4px; }
+.gs-news-content a:hover { border-bottom-width: 4px; }
 
-#gf-news {
+#gs-news {
     margin-bottom: 4rem;
 }
 
-.gf-news-summary {
+.gs-news-summary {
     padding-bottom: 1rem;
     margin-bottom: 2rem;
     border-bottom: 1px solid #F2F2FA;
 }
 
-.gf-news-summary-header {
+.gs-news-summary-header {
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 1rem;
 }
-.gf-news-summary-title {
+.gs-news-summary-title {
     font-size: 1.4rem;
     font-weight: bold;
 }
 
-.gf-news-summary-meta {
+.gs-news-summary-meta {
     font-size: 0.8rem;
     color: #9999A5;
 }
 
-.gf-news-summary-footer {
+.gs-news-summary-footer {
     margin-top: 1rem;
 }

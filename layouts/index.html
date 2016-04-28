@@ -1,19 +1,19 @@
 {{ partial "header.html" . }}
-<section id="gf-desc" class="text-center centered-content-small">{{ .Site.Params.Description }}</section>
+<section id="gs-desc" class="text-center centered-content-small">{{ .Site.Params.Description }}</section>
 <section class="centered-content-small">
     {{ range first 1 (where .Data.Pages "Section" "index") }}
     {{ .Content }}
     {{ end }}
     <hr />
 </section>
-<section id="gf-news" class="centered-content-small">
+<section id="gs-news" class="centered-content-small">
     <h2>News</h2>
     {{ range first 5 (where .Data.Pages.ByDate.Reverse "Section" "news") }}
     {{ .Render "summary" }}
     {{ else }}
-    <article class="gf-news-summary">
-        <header class="gf-news-summary-header flex">
-            <span class="gf-news-summary-title">No News Available</a>
+    <article class="gs-news-summary">
+        <header class="gs-news-summary-header flex">
+            <span class="gs-news-summary-title">No News Available</a>
         </header>
     </article>
     {{ end }}
