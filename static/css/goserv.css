@@ -57,7 +57,10 @@ h6 { font-size: 1.1rem; }
 a { color: #333345; text-decoration: none; }
 a:hover { color: #3389AA; }
 
-pre { font-family: "Inconsolata", monospace; }
+pre {
+    font-family: "Inconsolata", monospace;
+    overflow: auto;
+}
 
 .flex { display: flex; }
 .flex-row { flex-direction: row; }
@@ -65,6 +68,8 @@ pre { font-family: "Inconsolata", monospace; }
 .flex-grow { flex-grow: 1; }
 .flex-vcenter { align-items: center; }
 .flex-hcenter { justify-content: center; }
+.flex-end { justify-content: flex-end; }
+.flex-start { justify-content: flex-start; }
 
 .text-center { text-align: center; }
 
@@ -97,6 +102,23 @@ pre { font-family: "Inconsolata", monospace; }
 
 .fa.left-of { margin-right: 0.5rem; }
 .fa.right-of { margin-left: 0.5rem; }
+
+.m-show { display: none; }
+.m-hide { display: block; }
+
+@media screen and (max-width: 1024px) {
+    .m-show { display: block; }
+    .m-hide { display: none; }
+}
+
+@media screen and (max-width: 480px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+}
+
+/* -----------------------
+    Error Pages
+----------------------- */
 
 #error-404 {
     margin-bottom: 4rem;
@@ -219,6 +241,84 @@ pre { font-family: "Inconsolata", monospace; }
     color: #FAFAF9;
 }
 
+#gf-mobile-nav-toggle {
+    font-size: 2rem;
+}
+
+#gf-mobile-nav-cb {
+    display: none;
+}
+
+#gf-mobile-nav {
+    text-align: center;
+    max-height: 0;
+    transition: max-height 0.6s, padding 0.6s;
+    overflow: hidden;
+    box-sizing: border-box;
+    max-width: 50%;
+    width: auto;
+    margin: 1rem auto 0 auto;
+    background-color: #F2F2FA;
+    padding: 0rem;
+    border-radius: 0.2rem;
+}
+
+#gf-mobile-nav-cb:checked ~ #gf-mobile-nav {
+    max-height: 400px;
+    padding: 0.5rem;
+}
+
+#gf-mobile-nav-cb:checked ~ .centered-content #gf-mobile-nav-toggle {
+    color: #57AABB;
+}
+
+.gf-mobile-nav-entry,
+.gf-mobile-sub-nav-entry {
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.gf-mobile-sub-nav .gf-mobile-sub-nav-entry:first-child {
+    margin-top: 0.2rem;
+}
+
+.gf-mobile-sub-nav-entry {
+    font-size: 0.8rem;
+}
+
+@media screen and (max-width: 1024px) {
+    #gs-header-logo {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #gs-header-name, #gf-mobile-nav-toggle { font-size: 1.6rem; }
+
+    #gs-header-logo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .centered-content-small {
+        padding: 0rem 2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #gs-header-name, #gf-mobile-nav-toggle { font-size: 1.4rem; }
+
+    #gs-header-logo {
+        width: 80px;
+        height: 80px;
+    }
+
+    .centered-content-small {
+        padding: 0rem 0.5rem;
+    }
+}
+
 /* -----------------------
     Footer
 ----------------------- */
@@ -237,6 +337,10 @@ pre { font-family: "Inconsolata", monospace; }
     color: #57AABB;
 }
 
+#gf-footer-content {
+    display: flex;
+}
+
 #gf-footer-logo {
     background-image: url("/images/logo-200.png");
     background-position: center;
@@ -250,7 +354,8 @@ pre { font-family: "Inconsolata", monospace; }
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.8);
 }
 
-.gf-footer-vertical {
+#gf-footer-info-left,
+#gf-footer-info-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -281,6 +386,32 @@ pre { font-family: "Inconsolata", monospace; }
 .gf-footer-info-entry {
     margin-bottom: 0.5rem;
 }
+
+@media screen and (max-width: 1024px) {
+    #gf-footer-info-left,
+    #gf-footer-info-right {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #gf-footer { padding: 1rem; text-align: center; }
+    #gf-footer-content { flex-direction: column; }
+    #gf-footer-info-left { margin-bottom: 1rem; }
+    #gf-footer-name { font-size: 1.6rem; }
+    #gf-footer-copy { font-size: 0.8rem; }
+    .gf-footer-info-entry .fa { font-size: 1.2rem; }
+    .gf-footer-info-entry { font-size: 1rem; }
+}
+
+@media screen and (max-width: 480px) {
+    #gf-footer-name { font-size: 1.4rem; }
+    #gf-footer-desc { font-size: 0.8rem; }
+    #gf-footer-copy { font-size: 0.6rem; }
+    .gf-footer-info-entry .fa { font-size: 1rem; }
+    .gf-footer-info-entry { font-size: 0.8rem; }
+}
+
 /* -----------------------
     Top
 ----------------------- */
