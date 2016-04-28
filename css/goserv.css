@@ -262,24 +262,51 @@ pre {
     max-width: 50%;
     width: auto;
     margin: 1rem auto 0 auto;
-    background-color: #F2F2FA;
-    padding: 0rem;
-    border-radius: 0.2rem;
 }
 
 #gs-mobile-nav-cb:checked ~ #gs-mobile-nav {
     max-height: 400px;
-    padding: 0.5rem;
 }
 
 #gs-mobile-nav-cb:checked ~ .centered-content #gs-mobile-nav-toggle {
     color: #57AABB;
 }
 
+.gs-mobile-nav-entry {
+    border-bottom: 1px solid #E4E4F2;
+    background-color: #F2F2FA;
+}
+
+.gs-mobile-nav-entry:hover {
+    color: #57AABB;
+}
+
+.gs-mobile-nav-entry:first-child {
+    border-top-left-radius: 0.2rem;
+    border-top-right-radius: 0.2rem;
+}
+
+.gs-mobile-nav-entry:last-child {
+    border-bottom-left-radius: 0.2rem;
+    border-bottom-right-radius: 0.2rem;
+}
+
+.gs-mobile-sub-nav input[type="checkbox"] {
+    display: none;
+}
+
+.gs-mobile-sub-nav > .gs-mobile-sub-nav-content {
+    display: none;
+}
+
+.gs-mobile-sub-nav input[type="checkbox"]:checked ~ .gs-mobile-sub-nav-content {
+    display: block;
+}
+
 .gs-mobile-nav-entry,
 .gs-mobile-sub-nav-entry {
     display: block;
-    margin-bottom: 0.4rem;
+    padding: 0.4rem 0rem;
 }
 
 .gs-mobile-sub-nav .gs-mobile-sub-nav-entry:first-child {
@@ -287,7 +314,13 @@ pre {
 }
 
 .gs-mobile-sub-nav-entry {
-    font-size: 0.8rem;
+    background-color: #57AABB;
+    color: #FAFAF9;
+    border-bottom: 1px solid #48A1B2;
+}
+
+.gs-mobile-sub-nav-entry:hover {
+    color: #333345;
 }
 
 @media screen and (max-width: 1024px) {
@@ -309,6 +342,8 @@ pre {
     .centered-content-small {
         padding: 0rem 2rem;
     }
+
+    #gs-mobile-nav { max-width: 100%; }
 }
 
 @media screen and (max-width: 480px) {
