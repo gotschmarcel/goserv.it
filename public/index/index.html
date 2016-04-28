@@ -7,8 +7,6 @@
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <base href="http://goserv.it" />
-
         <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
 
         <link rel="canonical" href="http://goserv.it/index/" />
@@ -35,7 +33,14 @@
                 
                 
                     
-                    <a href="http://goserv.it/getting-started/"  class="gs-nav-entry" >Getting Started</a>
+                    <span  class="gs-nav-entry gs-sub-nav" >
+                        <div class="gs-sub-nav-name">Getting Started</div>
+                        <div class="gs-sub-nav-content">
+                            
+                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST API Server</a>
+                            
+                        </div>
+                    </span>
                     
                 
                     
@@ -60,7 +65,15 @@
         
         
             
-            <a href="http://goserv.it/getting-started/" class="gs-mobile-nav-entry">Getting Started</a>
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                <label for="gs-mobile-sub-nav-cb-getting_started">Getting Started</label>
+                <input type="checkbox" id="gs-mobile-sub-nav-cb-getting_started" />
+                <div class="gs-mobile-sub-nav-content">
+                    
+                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST API Server</a>
+                    
+                </div>
+            </div>
             
         
             
@@ -82,18 +95,20 @@
 
 
 
-<article class="centered-content-small">
-    <h1 class="gs-default-title">index</h1>
-    <div class="gs-default-content">
+<article class="centered-content-small gs-article">
+    <h1 class="title">index</h1>
+    <div class="content">
     
 
-<h2 id="installation:d680e8a854a7cbad6d490c445cba2eba">Installation</h2>
+<h2 id="get-right-into-it:d680e8a854a7cbad6d490c445cba2eba">Get Right Into It</h2>
+
+<h3 id="installation:d680e8a854a7cbad6d490c445cba2eba">Installation</h3>
 
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ go get github.com/gotschmarcel/goserv
 </pre></div>
 
 
-<h2 id="getting-started:d680e8a854a7cbad6d490c445cba2eba">Getting Started</h2>
+<h3 id="simple-server:d680e8a854a7cbad6d490c445cba2eba">Simple Server</h3>
 
 <p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
 

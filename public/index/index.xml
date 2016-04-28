@@ -17,13 +17,15 @@
       <guid>http://goserv.it/index/</guid>
       <description>
 
-&lt;h2 id=&#34;installation:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Installation&lt;/h2&gt;
+&lt;h2 id=&#34;get-right-into-it:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Get Right Into It&lt;/h2&gt;
+
+&lt;h3 id=&#34;installation:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Installation&lt;/h3&gt;
 
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ go get github.com/gotschmarcel/goserv
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id=&#34;getting-started:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Getting Started&lt;/h2&gt;
+&lt;h3 id=&#34;simple-server:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Simple Server&lt;/h3&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
 

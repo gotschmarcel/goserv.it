@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Examples on goserv - A fast, easy and minimalistic framework for web applications in Go</title>
+    <link>http://goserv.it/example/</link>
+    <description>Recent content in Examples on goserv - A fast, easy and minimalistic framework for web applications in Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Apr 2016 18:51:39 +0200</lastBuildDate>
+    <atom:link href="http://goserv.it/example/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>REST API Server</title>
+      <link>http://goserv.it/example/rest/</link>
+      <pubDate>Thu, 28 Apr 2016 18:51:39 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/rest/</guid>
+      <description>&lt;p&gt;This example shows how a simple REST API server can be created using &lt;em&gt;goserv&lt;/em&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
