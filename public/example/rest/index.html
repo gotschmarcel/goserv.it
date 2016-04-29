@@ -7,7 +7,7 @@
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta content="goserv, go, golang, framework" name="keywords">
+        <meta content="goserv, go, golang, framework, rest, api" name="keywords">
 
         <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
 
@@ -40,7 +40,7 @@
                         <div class="triangle-fill"><div class="triangle-up"></div></div>
                         <div class="gs-sub-nav-content">
                             
-                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry active" >REST API Server</a>
+                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry active" >REST &amp; MongoDB</a>
                             
                         </div>
                     </span>
@@ -74,7 +74,7 @@
                 <input type="checkbox" id="gs-mobile-sub-nav-cb-getting_started" />
                 <div class="gs-mobile-sub-nav-content">
                     
-                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST API Server</a>
+                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST &amp; MongoDB</a>
                     
                 </div>
             </div>
@@ -100,9 +100,385 @@
 
 
 <article id="gs-article" class="centered-content-small">
-    <h1 class="title">REST API Server</h1>
+    <h1 class="title">REST Server with MongoDB</h1>
     <div class="content">
-    <p>This example shows how a simple REST API server can be created using <em>goserv</em>.</p>
+    
+
+<p>This example shows how a simple REST API server is build using <em>goserv</em> and <a href="https://labix.org/mgo"><em>mgo v2</em></a> (MongoDB).
+The goal is to create a server to retrieve, create or delete todos by providing a REST API and using
+MongoDB as storage backend.</p>
+
+<blockquote>
+<p>To keep it simple all code is included in the <strong>main.go</strong> file</p>
+</blockquote>
+
+<p>Let&rsquo;s start in the <code>main</code> function of our <strong>main.go</strong> and add the basic code to start a server:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
+
+<span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;fmt&quot;</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;gopkg.in/mgo.v2&quot;</span>
+    <span style="color: #4e9a06">&quot;gopkg.in/mgo.v2/bson&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #8f5902; font-style: italic">// ...</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<p>Now we can start our server from the console with <code>$ go run main.go</code>. Next we need to define our
+<code>Todo</code> type:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Todo</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">ID</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectId</span> <span style="color: #4e9a06">`json:&quot;id&quot; bson:&quot;_id,omitempty&quot;`</span>
+    <span style="color: #000000">Title</span> <span style="color: #204a87; font-weight: bold">string</span> <span style="color: #4e9a06">`json:&quot;title&quot;`</span>
+    <span style="color: #000000">Completed</span> <span style="color: #204a87; font-weight: bold">bool</span> <span style="color: #4e9a06">`json:&quot;completed&quot;`</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<blockquote>
+<p>For more information about the json annotations take a look <a href="https://golang.org/pkg/encoding/json/">here</a></p>
+</blockquote>
+
+<p>The next thing we need is a controller providing handler functions for the API as well as a
+connection to MongoDB.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Controller</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Session</span>    <span style="color: #8f5902; font-style: italic">// Connection to MongoDB</span>
+    <span style="color: #000000">todos</span>     <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span> <span style="color: #8f5902; font-style: italic">// ToDos collection</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>The <code>Controller</code> stores the <a href="https://godoc.org/gopkg.in/mgo.v2#Session"><code>mgo.Session</code></a> and the
+MongoDB collection containing our ToDos. Since <code>mgo.Session</code> needs to be closed at the end we
+provide a <code>Cleanup</code> method on our controller which will be used in <code>main</code> to cleanup our
+session.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>Before we start the server we want to connect to MongoDB. For that we provide a function called
+<code>ConnectDB</code>:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">db</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #204a87; font-weight: bold">error</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #000000">err</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span>
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">db</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #204a87; font-weight: bold">nil</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>Now let&rsquo;s add the controller to the <code>main</code>:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{}</span>
+
+<span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the mgo.Session</span>
+<span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span>
+</pre></div>
+</p>
+
+<p>Since we&rsquo;re now ready to interact with MongoDB it&rsquo;s time to write some route handlers for our
+API. Let&rsquo;s start with the simplest one - requesting all todos from our database:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">todos</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #204a87">make</span><span style="color: #000000; font-weight: bold">([]</span><span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">0</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Find</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #204a87; font-weight: bold">nil</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">All</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>Here makes it <em>goserv</em> easy for us by providing <code>WriteJSON</code> which automatically encodes the passed
+values into JSON and sets the <em>Content-Type</em> to <code>application/json</code>. To retrieve only a single todo
+by its ID we make use of URL parameters <code>/todos/:todo_id</code>. The parameter is extracted by goserv
+and can be retrieved from the request <code>r.Params.Get(&quot;todo_id&quot;)</code>:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">GetTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">hexID</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Params</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">oid</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">todo</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">{}</span>
+
+    <span style="color: #8f5902; font-style: italic">// Query the todo from MongoDB</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">FindId</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">oid</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">One</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+
+        <span style="color: #8f5902; font-style: italic">// Todo not found</span>
+        <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrNotFound</span> <span style="color: #000000; font-weight: bold">{</span>
+            <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;no such todo: %s&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">))</span>
+            <span style="color: #204a87; font-weight: bold">return</span>
+        <span style="color: #000000; font-weight: bold">}</span>
+
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #8f5902; font-style: italic">// Pass todo to next handler</span>
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>To make sure that we always get a valid ObjectID in our handlers we make use of goserv&rsquo;s parameter handlers.
+The parameter handler gets invoked once before the handlers are processed.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">TodoID</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #8f5902; font-style: italic">// Validate that the URL parameter is a valid Object ID representation</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">IsObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">id</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;invalid id: %s&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>Now we&rsquo;re able to query all of our todos or only a single todo. To create todos we must create
+a <code>POST</code> handler. The todo to create is stored in the request body.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">CreateTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">todo</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">{}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ReadJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo not well-formed&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Insert</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">StatusCreated</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>The last handler allows us to delete existing todos:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">DeleteTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">hexID</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Params</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">oid</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">RemoveId</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">oid</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">StatusNoContent</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>With our controller ready the only part left is to assign each handler function to a specific
+route:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">CreateTodo</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos/:todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">GetTodo</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Delete</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos/:todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DeleteTodo</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Param</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">TodoID</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<p>Basically that&rsquo;s it for our REST server. Of course there&rsquo;s still room for improvement, so let&rsquo;s take
+a look at some custom error handling to send every occurring error as JSON response. First we need
+an error handler:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ErrorHandler</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #204a87; font-weight: bold">error</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #204a87; font-weight: bold">struct</span><span style="color: #000000; font-weight: bold">{</span> <span style="color: #000000">Error</span> <span style="color: #204a87; font-weight: bold">string</span> <span style="color: #4e9a06">`json:&quot;error&quot;`</span> <span style="color: #000000; font-weight: bold">}{</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Error</span><span style="color: #000000; font-weight: bold">()})</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>We can use a simple anonymous struct containing the error message to write the <code>err</code> as simple
+JSON error response. The last step is to set the custom error handler on the server:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span>
+</pre></div>
+</p>
+
+<h3 id="the-complete-code:5ae4892d79e0ec649dc93960f2eacb5c">The complete code</h3>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
+
+<span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;fmt&quot;</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;gopkg.in/mgo.v2&quot;</span>
+    <span style="color: #4e9a06">&quot;gopkg.in/mgo.v2/bson&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Todo</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">ID</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectId</span> <span style="color: #4e9a06">`json:&quot;id&quot; bson:&quot;_id,omitempty&quot;`</span>
+    <span style="color: #000000">Title</span> <span style="color: #204a87; font-weight: bold">string</span> <span style="color: #4e9a06">`json:&quot;title&quot;`</span>
+    <span style="color: #000000">Completed</span> <span style="color: #204a87; font-weight: bold">bool</span> <span style="color: #4e9a06">`json:&quot;completed&quot;`</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Controller</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Session</span>    <span style="color: #8f5902; font-style: italic">// Connection to MongoDB</span>
+    <span style="color: #000000">todos</span>     <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span> <span style="color: #8f5902; font-style: italic">// ToDos collection</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">db</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #204a87; font-weight: bold">error</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #000000">err</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span>
+    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">db</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #204a87; font-weight: bold">nil</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">todos</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #204a87">make</span><span style="color: #000000; font-weight: bold">([]</span><span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">0</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Find</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #204a87; font-weight: bold">nil</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">All</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">GetTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">hexID</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Params</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">oid</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">todo</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">{}</span>
+
+    <span style="color: #8f5902; font-style: italic">// Query the todo from MongoDB</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">FindId</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">oid</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">One</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+
+        <span style="color: #8f5902; font-style: italic">// Todo not found</span>
+        <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrNotFound</span> <span style="color: #000000; font-weight: bold">{</span>
+            <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;no such todo: %s&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">))</span>
+            <span style="color: #204a87; font-weight: bold">return</span>
+        <span style="color: #000000; font-weight: bold">}</span>
+
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #8f5902; font-style: italic">// Pass todo to next handler</span>
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">TodoID</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #8f5902; font-style: italic">// Validate that the URL parameter is a valid Object ID representation</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">IsObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">id</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;invalid id: %s&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">CreateTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">todo</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">{}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ReadJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">fmt</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Errorf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo not well-formed&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Insert</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">todo</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">StatusCreated</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">DeleteTodo</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">hexID</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Params</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">oid</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">bson</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ObjectIdHex</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">hexID</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">RemoveId</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">oid</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SetError</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">StatusNoContent</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ErrorHandler</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #204a87; font-weight: bold">error</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #204a87; font-weight: bold">struct</span><span style="color: #000000; font-weight: bold">{</span> <span style="color: #000000">Error</span> <span style="color: #204a87; font-weight: bold">string</span> <span style="color: #4e9a06">`json:&quot;error&quot;`</span> <span style="color: #000000; font-weight: bold">}{</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Error</span><span style="color: #000000; font-weight: bold">()})</span>
+<span style="color: #000000; font-weight: bold">}</span>
+
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+    <span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the mgo.Session</span>
+    <span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">CreateTodo</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos/:todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">GetTodo</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Delete</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos/:todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DeleteTodo</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Param</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todo_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">TodoID</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
 
     </div>
 </article>
