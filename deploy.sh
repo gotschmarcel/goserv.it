@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ ! command -v sass > /dev/null 2>&1 ]; then
     echo "Error: sass not found"
     exit 1
@@ -9,7 +11,6 @@ echo -e "\033[0;32mDeploying updates to Github...\033[0m"
 
 # Build themes.
 sass --scss --style compressed --sourcemap=none --no-cache themes/light/scss/main.scss themes/light/static/css/theme.css
-sass --scss --style compressed --sourcemap=none --no-cache themes/blue/scss/main.scss themes/blue/static/css/theme.css
 
 # Build the project.
 hugo
