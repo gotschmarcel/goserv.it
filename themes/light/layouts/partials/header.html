@@ -7,6 +7,8 @@
         <meta name="author" content="{{ .Site.Params.Author }}" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+        <meta content="{{ delimit .Site.Params.Keywords ", " }}{{ if .Keywords }}, {{ delimit .Keywords ", "}}{{ end }}" name="keywords">
+
         <title>{{ .Site.Title }}</title>
 
         <link rel="canonical" href="{{ .Permalink }}" />
