@@ -26,7 +26,7 @@
 /* -----------------------
     News
 ----------------------- */
-#gs-news {
+#gs-news, #gs-article {
     margin-bottom: 4rem;
 }
 
@@ -57,7 +57,7 @@
     }
 }
 
-.gs-article .content,
+#gs-article .content,
 .gs-news-article .content,
 .gs-news-summary .content {
     font-family: $content-font;

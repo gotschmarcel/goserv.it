@@ -8,7 +8,7 @@
 
     // All header parts must occupy the same space to correctly center
     // the header logo.
-    .centered-content > .flex{
+    & > .centered-content > .flex{
         width: 33.333%;
     }
 
@@ -89,7 +89,6 @@
     margin-left: 1rem;
     border-bottom: 2px solid white;
     padding-bottom: 0.2rem;
-    font-size: map-get($font-size, "nl2");
     cursor: pointer;
 
     &:first-child { margin-left: 0rem; }
@@ -100,8 +99,7 @@
 .gs-sub-nav {
     &:hover {
         border-bottom: 0;
-
-        & > .gs-sub-nav-content { display: block; }
+        & > .gs-sub-nav-content, & > .triangle-fill { display: block; }
     }
 
     & > .gs-sub-nav-content {
@@ -110,26 +108,44 @@
 
         display: none;
         position: absolute;
-        min-width: 160px;
-        font-size: map-get($font-size, "n");
         border-radius: 0.2rem;
         text-align: left;
-        padding-top: 0.25rem;
+        left: -2rem;
+        right: -2rem;
+
+        // Moved down by a bit less than the triangle's height to assure that no
+        // rounding errors are visible.
+        transform: translateY(0.5rem);
+    }
+
+    // Occupies space since the inner triangle doesn't. Without this
+    // the drop down menu closes when moving from the entry to the content.
+    .triangle-fill {
+        display: none;
+        position: absolute;
+        left: 0; right: 0;
+        height: 0.6rem;
+    }
+
+    .triangle-up {
+        border-left: 0.6rem solid transparent;
+        border-right: 0.6rem solid transparent;
+        border-bottom: 0.6rem solid $medium-light;
+        width: 0;
+        height: 0;
+        position: absolute;
+        left: 50%;
+        @include vendor((transform: translateX(-50%)));
     }
 
     .gs-sub-nav-entry {
-        display: block;
-        background-color: $dark;
-        padding: 0.5rem 1rem;
-        border-bottom: 1px solid lighten($dark, 10%);
-        text-shadow: none;
-        color: $light;
+        @extend .first-last-rounded;
 
-        &:first-child { border-top-right-radius: 0.25rem; }
-        &:last-child {
-            border-bottom-left-radius: 0.25rem;
-            border-bottom-right-radius: 0.25rem;
-        }
+        display: block;
+        background-color: $medium-light;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid darken($medium-light, 10%);
+        &:last-child { border-bottom: 0; }
 
         &:hover, &.active {
             color: $light-blue;
@@ -162,12 +178,14 @@
 }
 
 .gs-mobile-nav-entry {
+    @extend .first-last-rounded;
+
     display: block;
-    border-bottom: 1px solid darken($medium-light, 4%);
     background-color: $medium-light;
     cursor: pointer;
 
-    @extend .first-last-rounded;
+    border-bottom: 1px solid darken($medium-light, 4%);
+    &:last-child { border-bottom: 0; }
 
     &:hover { color: $light-blue; }
     &.gs-mobile-sub-nav { @extend .flex; }
@@ -204,9 +222,11 @@
 .gs-mobile-sub-nav-entry {
     @extend .first-last-rounded;
 
-    background-color: $dark;
     color: $light;
-    border-bottom: 1px solid lighten($dark, 10%);
+    background-color: $light-blue;
+    border-bottom: 1px solid lighten($light-blue, 10%);
+
+    &:hover { color: $light; background-color: $med-blue; }
 }
 
 @include breakpoint("small") {
