@@ -118,6 +118,33 @@ pre, code { font-family: $monospace-font; }
     border: 1px solid darken($medium-light, 5%);
 }
 
+.collapsable-codeblock {
+    & > label {
+        cursor: pointer;
+        border-bottom: 1px solid $light-blue;
+        padding-bottom: 0.2rem;
+        &:hover { color: $light-blue; }
+        &:before {
+            content: "\f0da";
+            font-family: "FontAwesome";
+            font-weight: normal;
+            font-style: normal;
+            display: inline-block;
+            text-decoration: inherit;
+            margin-right: 0.5rem;
+        }
+    }
+    & > .highlight { display: none; }
+    & > input[type="checkbox"] {
+        display: none;
+        &:checked {
+            & ~ .highlight { display: block; }
+            & + label:before { content: "\f0d7"; }
+        }
+    }
+    // & > input[type="checkbox"]:checked ~ .highlight { display: block; }
+}
+
 // Pygments code highlighting container
 .highlight {
     @extend .code;
