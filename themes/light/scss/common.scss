@@ -96,7 +96,8 @@ pre {
     width: auto;
     max-width: map-get($mediaSizes, "small");
 
-    @include breakpoint("small") { padding: 0rem 2rem; }
+    @include breakpoint("medium") { padding: 0rem 2rem; }
+    @include breakpoint("small") { padding: 0rem 1rem; }
     @include breakpoint("tiny") { padding: 0rem 0.5rem; }
 }
 
