@@ -15,6 +15,7 @@ theme = "light"
     GithubUser = "gotschmarcel"
     GithubLink = "//github.com/gotschmarcel/goserv"
     Mail = "hello@goserv.it"
+    Keywords = ["goserv", "go", "golang", "framework"]
 
 # Menu Structure
 [[menu.main]]
