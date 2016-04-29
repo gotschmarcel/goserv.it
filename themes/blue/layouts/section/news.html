@@ -1,7 +1,0 @@
-{{ partial "header.html" . }}
-<section id="gs-news">
-    {{ range where .Data.Pages.ByDate.Reverse "Section" "news" }}
-        {{ .Render "summary" }}
-    {{ end }}
-</section>
-{{ partial "footer.html" . }}
