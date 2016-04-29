@@ -122,16 +122,17 @@
         }
     }
 
+    // Inline code examples
+    & > p > code {
+        @extend .code;
+        padding: 0.2rem 0.5rem;
+    }
+
     // Apply only to direct descendants otherwise it would cause problems
     // with code highlighted by pygments using Hugo's highlight macro.
     & > pre {
-        overflow: auto;
-        background-color: $medium-light;
-        border-radius: 0.2rem;
+        @extend .code;
         padding: 0.5rem 1rem;
-        border: 1px solid darken($medium-light, 5%);
-
-        code { font-family: $monospace-font; }
     }
 
     .footnotes {

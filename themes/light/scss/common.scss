@@ -53,10 +53,8 @@ a {
     &:hover { color: $light-blue; }
 }
 
-pre {
-    font-family: $monospace-font;
-    overflow: auto;
-}
+pre { overflow: auto; }
+pre, code { font-family: $monospace-font; }
 
 .flex { @include display-flex(); }
 .flex-row {
@@ -114,11 +112,15 @@ pre {
     }
 }
 
-// Pygments code highlighting container
-.highlight {
+.code {
     border-radius: 0.2rem;
     background-color: $medium-light !important; // Overwrite pygments background color
     border: 1px solid darken($medium-light, 5%);
+}
+
+// Pygments code highlighting container
+.highlight {
+    @extend .code;
 
     // Remove pygments default margin.
     pre { margin: 0; padding: 1rem; }
