@@ -6,7 +6,7 @@
             <div id="gs-header-desc" class="s-hide">{{ .Site.Params.Description }}</div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
-            <div id="gs-header-logo"></div>
+            <div {{ if .IsHome }}id="gs-header-logo-big"{{ else }}id="gs-header-logo"{{ end }}></div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hend">
             <nav id="gs-header-nav" class="l-hide">
