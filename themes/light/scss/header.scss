@@ -29,6 +29,11 @@
     a { color: $dark; }
 }
 
+#gs-header-name,
+#gs-header-desc {
+    width: 100%; // Fixes a word-wrap issue in IE11
+}
+
 #gs-header-logo-big,
 #gs-header-logo {
     background-image: url("/images/logo-300.png");

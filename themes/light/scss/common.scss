@@ -58,30 +58,30 @@ pre {
     overflow: auto;
 }
 
-.flex { display: flex; }
+.flex { @include display-flex(); }
 .flex-row {
-    flex-direction: row;
+    @include flex-direction(row);
 
-    &.flex-vcenter { align-items: center; }
-    &.flex-vstart  { align-items: flex-start; }
-    &.flex-vend    { align-items: flex-end; }
+    &.flex-vcenter { @include flex-align-items(center); }
+    &.flex-vstart  { @include flex-align-items(flex-start); }
+    &.flex-vend    { @include flex-align-items(flex-end); }
 
-    &.flex-hcenter { justify-content: center; }
-    &.flex-hstart  { justify-content: flex-start; }
-    &.flex-hend    { justify-content: flex-end; }
+    &.flex-hcenter { @include flex-justify-content(center); }
+    &.flex-hstart  { @include flex-justify-content(flex-start); }
+    &.flex-hend    { @include flex-justify-content(flex-end); }
 }
 .flex-col {
-    flex-direction: column;
+    @include flex-direction(column);
 
-    &.flex-hcenter { align-items: center; }
-    &.flex-hstart  { align-items: flex-start; }
-    &.flex-hend    { align-items: flex-end; }
+    &.flex-hcenter { @include flex-align-items(center); }
+    &.flex-hstart  { @include flex-align-items(flex-start); }
+    &.flex-hend    { @include flex-align-items(flex-end); }
 
-    &.flex-vcenter { justify-content: center; }
-    &.flex-vstart  { justify-content: flex-start; }
-    &.flex-vend    { justify-content: flex-end; }
+    &.flex-vcenter { @include flex-justify-content(center); }
+    &.flex-vstart  { @include flex-justify-content(flex-start); }
+    &.flex-vend    { @include flex-justify-content(flex-end); }
 }
-.flex-grow { flex-grow: 1; }
+.flex-grow { @include flex-grow(1); }
 
 .text-center { text-align: center; }
 

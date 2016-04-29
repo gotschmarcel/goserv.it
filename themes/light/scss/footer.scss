@@ -62,6 +62,13 @@
     text-align: center;
 }
 
+@include breakpoint("large") {
+    #gs-footer-info-left,
+    #gs-footer-info-right {
+        margin-left: 2rem;
+    }
+}
+
 @include breakpoint("medium") {
     #gs-footer-info-left,
     #gs-footer-info-right {
