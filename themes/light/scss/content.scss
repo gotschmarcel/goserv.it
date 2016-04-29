@@ -122,17 +122,14 @@
         }
     }
 
-    pre {
-        margin: 0 auto;
-        max-width: 85%;
+    // Apply only to direct descendants otherwise it would cause problems
+    // with code highlighted by pygments using Hugo's highlight macro.
+    & > pre {
         overflow: auto;
         background-color: $medium-light;
         border-radius: 0.2rem;
         padding: 0.5rem 1rem;
         border: 1px solid darken($medium-light, 5%);
-
-        @include breakpoint("small") { max-width: 90%; }
-        @include breakpoint("tiny") { max-width: 100%; }
 
         code { font-family: $monospace-font; }
     }

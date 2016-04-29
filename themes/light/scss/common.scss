@@ -113,9 +113,14 @@ pre {
     }
 }
 
+// Pygments code highlighting container
 .highlight {
-    padding: 1rem;
     border-radius: 0.2rem;
+    background-color: $medium-light !important; // Overwrite pygments background color
+    border: 1px solid darken($medium-light, 5%);
+
+    // Remove pygments default margin.
+    pre { margin: 0; padding: 1rem; }
 }
 
 .fa.left-of { margin-right: 0.5rem; }
