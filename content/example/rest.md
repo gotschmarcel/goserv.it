@@ -50,63 +50,29 @@ type Todo struct {
 
 > For more information about the json annotations take a look [here](https://golang.org/pkg/encoding/json/)
 
-The next thing we need is a controller providing handler functions for the API as well as a
-connection to MongoDB.
+The next thing we need is a controller providing handler functions for the API. Additionally the
+controller needs a `mgo.Collection` which let's us interact with MongoDB.
 
 {{< highlight go >}}
 type Controller struct {
-    dbSession *mgo.Session    // Connection to MongoDB
-    todos     *mgo.Collection // ToDos collection
+    todos *mgo.Collection
 }
 {{< /highlight >}}
 
-The `Controller` stores the [`mgo.Session`](https://godoc.org/gopkg.in/mgo.v2#Session) and the
-MongoDB collection containing our ToDos. Since `mgo.Session` needs to be closed at the end we
-provide a `Cleanup` method on our controller which will be used in `main` to cleanup our
-session.
+To get the collection we need to open a new `mgo.Session`. Using the session we can access the database
+and its collection by name. Finally we create a controller and pass the collection to it:
 
 {{< highlight go >}}
-func (c *Controller) Cleanup() {
-    if c.dbSession == nil {
-        return
-    }
-
-    c.dbSession.Close()
-}
-{{< /highlight >}}
-
-Before we start the server we want to connect to MongoDB. For that we provide a function called
-`ConnectDB`:
-
-{{< highlight go >}}
-func (c *Controller) ConnectDB(url, db string) error {
-    if c.dbSession != nil {
-        c.dbSession.Close()
-    }
-
-    session, err := mgo.Dial(url)
-    if err != nil {
-        return err
-    }
-
-    c.dbSession = session
-    c.todos = session.DB(db).C("todos")
-
-    return nil
-}
-{{< /highlight >}}
-
-Now let's add the controller to the `main`:
-
-{{< highlight go >}}
-controller := &Controller{}
-
-if err := controller.ConnectDB("mongodb://localhost:27017", "goserv_rest"); err != nil {
+mongo, err := mgo.Dial("mongodb://localhost:27017")
+if err != nil {
     log.Fatalln(err)
 }
 
-// Don't forget to cleanup the mgo.Session
-defer controller.Cleanup()
+// Don't forget to cleanup the session
+defer mongo.Close()
+
+// Create a new Controller with the "todos" collection
+controller := &Controller{mongo.DB("goserv_rest").C("todos")}
 {{< /highlight >}}
 
 Since we're now ready to interact with MongoDB it's time to write some route handlers for our
@@ -255,33 +221,9 @@ type Todo struct {
 }
 
 type Controller struct {
-    dbSession *mgo.Session    // Connection to MongoDB
-    todos     *mgo.Collection // ToDos collection
+    todos *mgo.Collection
 }
 
-func (c *Controller) Cleanup() {
-    if c.dbSession == nil {
-        return
-    }
-
-    c.dbSession.Close()
-}
-
-func (c *Controller) ConnectDB(url, db string) error {
-    if c.dbSession != nil {
-        c.dbSession.Close()
-    }
-
-    session, err := mgo.Dial(url)
-    if err != nil {
-        return err
-    }
-
-    c.dbSession = session
-    c.todos = session.DB(db).C("todos")
-
-    return nil
-}
 
 func (c *Controller) GetTodos(w goserv.ResponseWriter, r *goserv.Request) {
     todos := make([]*Todo, 0)
@@ -360,14 +302,17 @@ func (c *Controller) ErrorHandler(w goserv.ResponseWriter, r *goserv.Request, er
 
 func main() {
     server := goserv.NewServer()
-    controller := &Controller{}
 
-    if err := controller.ConnectDB("mongodb://localhost:27017", "goserv_rest"); err != nil {
+    mongo, err := mgo.Dial("mongodb://localhost:27017")
+    if err != nil {
         log.Fatalln(err)
     }
 
-    // Don't forget to cleanup the mgo.Session
-    defer controller.Cleanup()
+    // Don't forget to cleanup the session
+    defer mongo.Close()
+
+    // Create a new Controller with the "todos" collection
+    controller := &Controller{mongo.DB("goserv_rest").C("todos")}
 
     server.Get("/todos", controller.GetTodos)
     server.Post("/todos", controller.CreateTodo)
