@@ -15,9 +15,7 @@
       <pubDate>Thu, 28 Apr 2016 18:51:39 +0200</pubDate>
       
       <guid>http://goserv.it/example/rest/</guid>
-      <description>
-
-&lt;p&gt;This example shows how a simple REST API server is build using &lt;em&gt;goserv&lt;/em&gt; and &lt;a href=&#34;https://labix.org/mgo&#34;&gt;&lt;em&gt;mgo v2&lt;/em&gt;&lt;/a&gt; (MongoDB).
+      <description>&lt;p&gt;This example shows how a simple REST API server is build using &lt;em&gt;goserv&lt;/em&gt; and &lt;a href=&#34;https://labix.org/mgo&#34;&gt;&lt;em&gt;mgo v2&lt;/em&gt;&lt;/a&gt; (MongoDB).
 The goal is to create a server to retrieve, create or delete todos by providing a REST API and using
 MongoDB as storage backend.&lt;/p&gt;
 
@@ -246,9 +244,10 @@ JSON error response. The last step is to set the custom error handler on the ser
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
-&lt;h3 id=&#34;the-complete-code:5ae4892d79e0ec649dc93960f2eacb5c&#34;&gt;The complete code&lt;/h3&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
+&lt;div class=&#34;collapsable-codeblock&#34;&gt;
+&lt;input type=&#34;checkbox&#34; id=&#34;codeblock&#34; /&gt;
+&lt;label for=&#34;codeblock&#34;&gt;Full Example&lt;/label&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
 
 &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
     &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;fmt&amp;quot;&lt;/span&gt;
@@ -391,7 +390,8 @@ JSON error response. The last step is to set the custom error handler on the ser
     &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
 &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
+&lt;/div&gt;
 </description>
     </item>
     
