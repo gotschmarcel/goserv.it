@@ -18,6 +18,11 @@ theme = "light"
 
 # Menu Structure
 [[menu.main]]
+    name = "Getting Started"
+    weight = -100
+    identifier = "getting_started"
+
+[[menu.main]]
     name = "Documentation"
     weight = -90
     identifier = "documentation"
