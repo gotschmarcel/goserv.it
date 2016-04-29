@@ -233,8 +233,9 @@ JSON error response. The last step is to set the custom error handler on the ser
 server.ErrorHandler = controller.ErrorHandler
 {{< /highlight >}}
 
-### The complete code
-
+<div class="collapsable-codeblock">
+<input type="checkbox" id="codeblock" />
+<label for="codeblock">Full Example</label>
 {{< highlight go >}}
 package main
 
@@ -379,3 +380,4 @@ func main() {
     log.Fatalln(server.Listen(":12345"))
 }
 {{< /highlight >}}
+</div>
