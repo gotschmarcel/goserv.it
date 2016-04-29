@@ -102,9 +102,7 @@
 <article id="gs-article" class="centered-content-small">
     <h1 class="title">REST Server with MongoDB</h1>
     <div class="content">
-    
-
-<p>This example shows how a simple REST API server is build using <em>goserv</em> and <a href="https://labix.org/mgo"><em>mgo v2</em></a> (MongoDB).
+    <p>This example shows how a simple REST API server is build using <em>goserv</em> and <a href="https://labix.org/mgo"><em>mgo v2</em></a> (MongoDB).
 The goal is to create a server to retrieve, create or delete todos by providing a REST API and using
 MongoDB as storage backend.</p>
 
@@ -333,9 +331,10 @@ JSON error response. The last step is to set the custom error handler on the ser
 </pre></div>
 </p>
 
-<h3 id="the-complete-code:5ae4892d79e0ec649dc93960f2eacb5c">The complete code</h3>
-
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
+<div class="collapsable-codeblock">
+<input type="checkbox" id="codeblock" />
+<label for="codeblock">Full Example</label>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
 
 <span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
     <span style="color: #4e9a06">&quot;fmt&quot;</span>
@@ -478,7 +477,8 @@ JSON error response. The last step is to set the custom error handler on the ser
     <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
 <span style="color: #000000; font-weight: bold">}</span>
 </pre></div>
-</p>
+
+</div>
 
     </div>
 </article>
