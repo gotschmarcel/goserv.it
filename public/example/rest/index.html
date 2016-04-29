@@ -148,62 +148,28 @@ MongoDB as storage backend.</p>
 <p>For more information about the json annotations take a look <a href="https://golang.org/pkg/encoding/json/">here</a></p>
 </blockquote>
 
-<p>The next thing we need is a controller providing handler functions for the API as well as a
-connection to MongoDB.</p>
+<p>The next thing we need is a controller providing handler functions for the API. Additionally the
+controller needs a <code>mgo.Collection</code> which let&rsquo;s us interact with MongoDB.</p>
 
 <p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Controller</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Session</span>    <span style="color: #8f5902; font-style: italic">// Connection to MongoDB</span>
-    <span style="color: #000000">todos</span>     <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span> <span style="color: #8f5902; font-style: italic">// ToDos collection</span>
+    <span style="color: #000000">todos</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span>
 <span style="color: #000000; font-weight: bold">}</span>
 </pre></div>
 </p>
 
-<p>The <code>Controller</code> stores the <a href="https://godoc.org/gopkg.in/mgo.v2#Session"><code>mgo.Session</code></a> and the
-MongoDB collection containing our ToDos. Since <code>mgo.Session</code> needs to be closed at the end we
-provide a <code>Cleanup</code> method on our controller which will be used in <code>main</code> to cleanup our
-session.</p>
+<p>To get the collection we need to open a new <code>mgo.Session</code>. Using the session we can access the database
+and its collection by name. Finally we create a controller and pass the collection to it:</p>
 
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #204a87; font-weight: bold">return</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
-<span style="color: #000000; font-weight: bold">}</span>
-</pre></div>
-</p>
-
-<p>Before we start the server we want to connect to MongoDB. For that we provide a function called
-<code>ConnectDB</code>:</p>
-
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">db</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #204a87; font-weight: bold">error</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">)</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #000000">err</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span>
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">db</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)</span>
-
-    <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #204a87; font-weight: bold">nil</span>
-<span style="color: #000000; font-weight: bold">}</span>
-</pre></div>
-</p>
-
-<p>Now let&rsquo;s add the controller to the <code>main</code>:</p>
-
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{}</span>
-
-<span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
     <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000; font-weight: bold">}</span>
 
-<span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the mgo.Session</span>
-<span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span>
+<span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the session</span>
+<span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+
+<span style="color: #8f5902; font-style: italic">// Create a new Controller with the &quot;todos&quot; collection</span>
+<span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{</span><span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)}</span>
 </pre></div>
 </p>
 
@@ -352,33 +318,9 @@ JSON error response. The last step is to set the custom error handler on the ser
 <span style="color: #000000; font-weight: bold">}</span>
 
 <span style="color: #204a87; font-weight: bold">type</span> <span style="color: #000000">Controller</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Session</span>    <span style="color: #8f5902; font-style: italic">// Connection to MongoDB</span>
-    <span style="color: #000000">todos</span>     <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span> <span style="color: #8f5902; font-style: italic">// ToDos collection</span>
+    <span style="color: #000000">todos</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Collection</span>
 <span style="color: #000000; font-weight: bold">}</span>
 
-<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">==</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #204a87; font-weight: bold">return</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
-<span style="color: #000000; font-weight: bold">}</span>
-
-<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">db</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #204a87; font-weight: bold">error</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">url</span><span style="color: #000000; font-weight: bold">)</span>
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
-        <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #000000">err</span>
-    <span style="color: #000000; font-weight: bold">}</span>
-
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">dbSession</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span>
-    <span style="color: #000000">c</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">todos</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #000000">session</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">db</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)</span>
-
-    <span style="color: #204a87; font-weight: bold">return</span> <span style="color: #204a87; font-weight: bold">nil</span>
-<span style="color: #000000; font-weight: bold">}</span>
 
 <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">c</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
     <span style="color: #000000">todos</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #204a87">make</span><span style="color: #000000; font-weight: bold">([]</span><span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">Todo</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">0</span><span style="color: #000000; font-weight: bold">)</span>
@@ -457,14 +399,17 @@ JSON error response. The last step is to set the custom error handler on the ser
 
 <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
     <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
-    <span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{}</span>
 
-    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ConnectDB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">mgo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dial</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;mongodb://localhost:27017&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
         <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
     <span style="color: #000000; font-weight: bold">}</span>
 
-    <span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the mgo.Session</span>
-    <span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Cleanup</span><span style="color: #000000; font-weight: bold">()</span>
+    <span style="color: #8f5902; font-style: italic">// Don&#39;t forget to cleanup the session</span>
+    <span style="color: #204a87; font-weight: bold">defer</span> <span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Close</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #8f5902; font-style: italic">// Create a new Controller with the &quot;todos&quot; collection</span>
+    <span style="color: #000000">controller</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">Controller</span><span style="color: #000000; font-weight: bold">{</span><span style="color: #000000">mongo</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">DB</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;goserv_rest&quot;</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">C</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;todos&quot;</span><span style="color: #000000; font-weight: bold">)}</span>
 
     <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">GetTodos</span><span style="color: #000000; font-weight: bold">)</span>
     <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/todos&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">controller</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">CreateTodo</span><span style="color: #000000; font-weight: bold">)</span>
