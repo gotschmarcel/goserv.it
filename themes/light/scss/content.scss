@@ -70,10 +70,16 @@
     }
 
     blockquote {
+        $fg-color: lighten($dark, 30%);
+
         margin-left: 1.4rem;
-        border-left: 4px solid lighten($dark, 30%);
+        border-left: 4px solid $fg-color;
         padding-left: 1rem;
-        color: lighten($dark, 30%);
+        color: $fg-color;
+        background-color: $medium-light;
+        border-radius: 0.2rem;
+
+        a { color: $fg-color; }
     }
 
     img { @extend .flex; margin: 0 auto; max-width: 50%; }
