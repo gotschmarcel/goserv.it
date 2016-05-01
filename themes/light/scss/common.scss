@@ -112,6 +112,14 @@ pre, code { font-family: $monospace-font; }
     }
 }
 
+.font-awesome {
+    font-family: "FontAwesome";
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+}
+
 .code {
     border-radius: 0.2rem;
     background-color: $medium-light !important; // Overwrite pygments background color
@@ -125,12 +133,8 @@ pre, code { font-family: $monospace-font; }
         padding-bottom: 0.2rem;
         &:hover { color: $light-blue; }
         &:before {
+            @extend .font-awesome;
             content: "\f0da";
-            font-family: "FontAwesome";
-            font-weight: normal;
-            font-style: normal;
-            display: inline-block;
-            text-decoration: inherit;
             margin-right: 0.5rem;
         }
     }

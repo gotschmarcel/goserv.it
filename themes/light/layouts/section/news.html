@@ -1,7 +1,9 @@
 {{ partial "header.html" . }}
-<section id="gs-news">
-    {{ range where .Data.Pages.ByDate.Reverse "Section" "news" }}
+<section id="gs-news" class="centered-content-small">
+    {{ $paginator := .Paginate (where .Data.Pages.ByDate.Reverse "Section" "news") 5 }}
+    {{ range $paginator.Pages }}
         {{ .Render "summary" }}
     {{ end }}
+    {{ template "_internal/pagination.html" . }}
 </section>
 {{ partial "footer.html" . }}
