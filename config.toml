@@ -19,6 +19,12 @@ theme = "light"
 
 # Menu Structure
 [[menu.main]]
+    name = "News"
+    weight = -200
+    identifier = "news"
+    url = "/news"
+
+[[menu.main]]
     name = "Getting Started"
     weight = -100
     identifier = "getting_started"
