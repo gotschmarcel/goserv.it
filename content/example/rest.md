@@ -79,44 +79,52 @@ Since we're now ready to interact with MongoDB it's time to write some route han
 API. Let's start with the simplest one - requesting all todos from our database:
 
 {{< highlight go >}}
-func (c *Controller) GetTodos(w goserv.ResponseWriter, r *goserv.Request) {
+func (c *Controller) GetTodos(w http.ResponseWriter, r *http.Request) {
     todos := make([]*Todo, 0)
 
     if err := c.todos.Find(nil).All(&todos); err != nil {
-        w.SetError(err)
+        goserv.Context(r).Error(err, http.StatusInternalServerError)
         return
     }
 
-    w.WriteJSON(&todos)
+    if err := goserv.WriteJSON(w, &todos); err != nil {
+        goserv.Context(r).Error(err, http.StatusInternalServerError)
+    }
+
 }
 {{< /highlight >}}
 
 Here makes it *goserv* easy for us by providing `WriteJSON` which automatically encodes the passed
 values into JSON and sets the *Content-Type* to `application/json`. To retrieve only a single todo
 by its ID we make use of URL parameters `/todos/:todo_id`. The parameter is extracted by goserv
-and can be retrieved from the request `r.Params.Get("todo_id")`:
+and can be retrieved from the request context `Context(r).Param("todo_id")`:
 
 {{< highlight go >}}
-func (c *Controller) GetTodo(w goserv.ResponseWriter, r *goserv.Request) {
-    hexID := r.Params.Get("todo_id")
-    oid := bson.ObjectIdHex(hexID)
+func (c *Controller) GetTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
+    hexID := ctx.Param("todo_id")
+    objectID := bson.ObjectIdHex(hexID)
     todo := &Todo{}
 
     // Query the todo from MongoDB
-    if err := c.todos.FindId(oid).One(todo); err != nil {
+    if err := c.todos.FindId(objectID).One(todo); err != nil {
+        code := http.StatusInternalServerError
 
         // Todo not found
         if err == mgo.ErrNotFound {
-            w.SetError(fmt.Errorf("no such todo: %s", hexID))
-            return
+            err = fmt.Errorf("no such todo: %s", hexID)
+            code = http.StatusNotFound
         }
 
-        w.SetError(err)
+        ctx.Error(err, code)
         return
     }
 
     // Pass todo to next handler
-    w.WriteJSON(todo)
+    if err := goserv.WriteJSON(w, todo); err != nil {
+        ctx.Error(err, http.StatusInternalServerError)
+        return
+    }
 }
 {{< /highlight >}}
 
@@ -124,13 +132,13 @@ To make sure that we always get a valid ObjectID in our handlers we make use of 
 The parameter handler gets invoked once before the handlers are processed.
 
 {{< highlight go >}}
-func (c *Controller) TodoID(w goserv.ResponseWriter, r *goserv.Request, id string) {
+func (c *Controller) TodoID(w http.ResponseWriter, r *http.Request, id string) {
     // Validate that the URL parameter is a valid Object ID representation
     if bson.IsObjectIdHex(id) {
         return
     }
 
-    w.SetError(fmt.Errorf("invalid id: %s", id))
+    goserv.Context(r).Error(fmt.Errorf("invalid id: %s", id), http.StatusBadRequest)
 }
 {{< /highlight >}}
 
@@ -138,16 +146,17 @@ Now we're able to query all of our todos or only a single todo. To create todos 
 a `POST` handler. The todo to create is stored in the request body.
 
 {{< highlight go >}}
-func (c *Controller) CreateTodo(w goserv.ResponseWriter, r *goserv.Request) {
+func (c *Controller) CreateTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
     todo := &Todo{}
 
-    if err := r.ReadJSON(todo); err != nil {
-        w.SetError(fmt.Errorf("todo not well-formed"))
+    if err := goserv.ReadJSONBody(r, todo); err != nil {
+        ctx.Error(fmt.Errorf("todo not well-formed"), http.StatusBadRequest)
         return
     }
 
     if err := c.todos.Insert(todo); err != nil {
-        w.SetError(err)
+        ctx.Error(err, http.StatusInternalServerError)
         return
     }
 
@@ -158,12 +167,13 @@ func (c *Controller) CreateTodo(w goserv.ResponseWriter, r *goserv.Request) {
 The last handler allows us to delete existing todos:
 
 {{< highlight go >}}
-func (c *Controller) DeleteTodo(w goserv.ResponseWriter, r *goserv.Request) {
-    hexID := r.Params.Get("todo_id")
-    oid := bson.ObjectIdHex(hexID)
+func (c *Controller) DeleteTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
+    hexID := ctx.Param("todo_id")
+    objectID := bson.ObjectIdHex(hexID)
 
-    if err := c.todos.RemoveId(oid); err != nil {
-        w.SetError(err)
+    if err := c.todos.RemoveId(objectID); err != nil {
+        ctx.Error(err, http.StatusInternalServerError)
         return
     }
 
@@ -187,7 +197,8 @@ a look at some custom error handling to send every occurring error as JSON respo
 an error handler:
 
 {{< highlight go >}}
-func (c *Controller) ErrorHandler(w goserv.ResponseWriter, r *goserv.Request, err error) {
+func (c *Controller) ErrorHandler(w http.ResponseWriter, r *http.Request, err *goserv.ContextError) {
+    w.WriteHeader(err.Code)
     w.WriteJSON(&struct{ Error string `json:"error"` }{err.Error()})
 }
 {{< /highlight >}}
