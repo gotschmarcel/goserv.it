@@ -115,8 +115,9 @@
         position: absolute;
         border-radius: 0.2rem;
         text-align: left;
-        left: -2rem;
-        right: -2rem;
+        left: -3rem;
+        right: -3rem;
+        padding: 0rem 1rem 1rem 1rem;
 
         // Moved down by a bit less than the triangle's height to assure that no
         // rounding errors are visible.

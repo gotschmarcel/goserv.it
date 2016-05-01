@@ -7,9 +7,12 @@
         <meta name="author" content="{{ .Site.Params.Author }}" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta content="{{ delimit .Site.Params.Keywords ", " }}{{ if .Keywords }}, {{ delimit .Keywords ", "}}{{ end }}" name="keywords">
+        <meta name="keywords" content="{{ delimit .Site.Params.Keywords ", " }}{{ if .Keywords }}, {{ delimit .Keywords ", "}}{{ end }}" />
 
-        <title>{{ if .Title }}goserv - {{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+        <meta name="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}goserv - {{ .Title }}{{ end }}" />
+
+        <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}goserv - {{ .Title }}{{ end }}</title>
+
 
         <link rel="canonical" href="{{ .Permalink }}" />
         <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
