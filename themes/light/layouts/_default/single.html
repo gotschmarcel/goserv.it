@@ -1,3 +1,6 @@
+{{ if eq .Title "Get Right Into It" }}
+{{ partial "redirect.html" . }}
+{{ else }}
 {{ partial "header.html" . }}
 
 <article id="gs-article" class="centered-content-small">
@@ -8,3 +11,4 @@
 </article>
 
 {{ partial "footer.html" . }}
+{{ end }}
