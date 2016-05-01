@@ -3,19 +3,19 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta name="description" content="goserv - A fast, easy and minimalistic framework for web applications in Go" />
+        <meta name="description" content="goserv - A lightweight toolkit for web applications in Go" />
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <meta name="keywords" content="goserv, go, golang, framework" />
 
-        <meta name="og:title" content="goserv - A fast, easy and minimalistic framework for web applications in Go" />
+        <meta name="og:title" content="goserv - A lightweight toolkit for web applications in Go" />
 
-        <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
+        <title>goserv - A lightweight toolkit for web applications in Go</title>
 
 
         <link rel="canonical" href="http://goserv.it/" />
-        <link href="http://goserv.it/index.xml" rel="alternate" type="application/rss+xml" title="goserv - A fast, easy and minimalistic framework for web applications in Go" />
+        <link href="http://goserv.it/index.xml" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
         <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
 
         <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
@@ -28,7 +28,7 @@
     <div class="flex centered-content">
         <div class="flex flex-col flex-vcenter flex-hstart">
             <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
-            <div id="gs-header-desc" class="s-hide">A fast, easy and minimalistic framework for web applications in Go</div>
+            <div id="gs-header-desc" class="s-hide">A lightweight toolkit for web applications in Go</div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
             <div id="gs-header-logo-big"></div>
@@ -36,6 +36,10 @@
         <div class="flex flex-row flex-vcenter flex-hend">
             <nav id="gs-header-nav" class="l-hide">
                 
+                
+                    
+                    <a href="http://goserv.it/news/"  class="gs-nav-entry" >News</a>
+                    
                 
                     
                     <span  class="gs-nav-entry gs-sub-nav" >
@@ -67,9 +71,13 @@
             <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
         </div>
     </div>
-    <div class="s-show" id="gs-header-mobile-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+    <div class="s-show" id="gs-header-mobile-desc">A lightweight toolkit for web applications in Go</div>
     <div id="gs-mobile-nav" class="l-show">
         
+        
+            
+            <a href="http://goserv.it/news/" class="gs-mobile-nav-entry">News</a>
+            
         
             
             <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
@@ -101,19 +109,24 @@
 </header>
 
 
-<section class="centered-content-small">
-    
+
+<article class="centered-content-small gs-news-article">
+    <div class="content">
     
 
-<h2 id="get-right-into-it:d680e8a854a7cbad6d490c445cba2eba">Get Right Into It</h2>
+<p>Building web applications in <strong>Go</strong> is fast and easy using <strong>goserv</strong>. It is fully compatible with
+the <code>net/http</code> package and is more like a toolkit providing tools to create more powerful
+and complex web applications even easier.</p>
 
-<h3 id="installation:d680e8a854a7cbad6d490c445cba2eba">Installation</h3>
+<h2 id="get-right-into-it:34c4da6d4768d05e50db99357a299b5c">Get Right Into It</h2>
+
+<h3 id="installation:34c4da6d4768d05e50db99357a299b5c">Installation</h3>
 
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ go get github.com/gotschmarcel/goserv
 </pre></div>
 
 
-<h3 id="simple-server:d680e8a854a7cbad6d490c445cba2eba">Simple Server</h3>
+<h3 id="simple-server:34c4da6d4768d05e50db99357a299b5c">Simple Server</h3>
 
 <p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
 
@@ -136,17 +149,24 @@
 </pre></div>
 </p>
 
-    
+    </div>
     <hr />
-</section>
+</article>
+
 <section id="gs-news" class="centered-content-small">
     <h2>News</h2>
     
     <article class="gs-news-summary">
-        <div class="content">
-            <span class="title">No News Available</a>
-        </div>
-    </article>
+    <header class="header flex">
+        <a href="http://goserv.it/news/release-v1.0.0rc1/" class="title">Release v1.0.0rc1</a>
+        <span class="meta">Sun, May 1, 2016</span>
+    </header>
+    <div class="content">
+        The first release candidate is now available :). That means that the API documentation is also now available on GoDoc. Check it out and feel free to contact me (hello@goserv.it) if you have ideas for improvement. Enjoy the rest of your weekend :)
+    </div>
+    
+</article>
+
     
 </section>
         <footer id="gs-footer">
@@ -154,7 +174,7 @@
                 <div id="gs-footer-logo" class="m-hide"></div>
                 <div id="gs-footer-info-left">
                     <div id="gs-footer-name">goserv</div>
-                    <div id="gs-footer-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+                    <div id="gs-footer-desc">A lightweight toolkit for web applications in Go</div>
                 </div>
                 <div class="flex-grow"></div>
                 <div id="gs-footer-info-right">

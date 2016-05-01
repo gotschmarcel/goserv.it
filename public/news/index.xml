@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>News on goserv - A lightweight toolkit for web applications in Go</title>
+    <link>http://goserv.it/news/</link>
+    <description>Recent content in News on goserv - A lightweight toolkit for web applications in Go</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 01 May 2016 15:30:28 +0200</lastBuildDate>
+    <atom:link href="http://goserv.it/news/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Release v1.0.0rc1</title>
+      <link>http://goserv.it/news/release-v1.0.0rc1/</link>
+      <pubDate>Sun, 01 May 2016 15:30:28 +0200</pubDate>
+      
+      <guid>http://goserv.it/news/release-v1.0.0rc1/</guid>
+      <description>&lt;p&gt;The first &lt;em&gt;release candidate&lt;/em&gt; is now available :). That means that the API documentation is also now
+available on &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv&#34;&gt;GoDoc&lt;/a&gt;. Check it out and feel free
+to contact me (hello@goserv.it) if you have ideas for improvement.&lt;/p&gt;
+
+&lt;p&gt;Enjoy the rest of your weekend :)&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
