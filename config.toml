@@ -1,5 +1,5 @@
 baseurl = "http://goserv.it"
-title = "goserv - A fast, easy and minimalistic framework for web applications in Go"
+title = "goserv - A lightweight toolkit for web applications in Go"
 canonifyurls = true
 contentdir = "content"
 layoutdir = "layouts"
@@ -11,7 +11,7 @@ theme = "light"
 [params]
     Author = "Marcel Gotsch"
     Name = "goserv"
-    Description = "A fast, easy and minimalistic framework for web applications in Go"
+    Description = "A lightweight toolkit for web applications in Go"
     GithubUser = "gotschmarcel"
     GithubLink = "//github.com/gotschmarcel/goserv"
     Mail = "hello@goserv.it"
