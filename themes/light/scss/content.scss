@@ -91,7 +91,9 @@
             font-weight: bold;
         }
 
-        .meta {}
+        .meta {
+            color: $medium;
+        }
     }
 
     .navigate {
@@ -103,8 +105,9 @@
 #gs-article .content,
 .gs-news-article .content,
 .gs-news-summary .content {
-    font-family: $content-font;
     line-height: map-get($font-size, "nl4");
+
+    p { font-family: $content-font; }
 
     a {
         color: $dark;
