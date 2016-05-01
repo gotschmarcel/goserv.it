@@ -3,13 +3,13 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta name="description" content="{{ if .Title }}goserv - {{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}" />
+        <meta name="description" content="{{ .Site.Title }}" />
         <meta name="author" content="{{ .Site.Params.Author }}" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <meta content="{{ delimit .Site.Params.Keywords ", " }}{{ if .Keywords }}, {{ delimit .Keywords ", "}}{{ end }}" name="keywords">
 
-        <title>{{ .Site.Title }}</title>
+        <title>{{ if .Title }}goserv - {{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
 
         <link rel="canonical" href="{{ .Permalink }}" />
         <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
