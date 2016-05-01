@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
+    <title>goserv - A lightweight toolkit for web applications in Go</title>
     <link>http://goserv.it/</link>
-    <description>Recent content on goserv - A fast, easy and minimalistic framework for web applications in Go</description>
+    <description>Recent content on goserv - A lightweight toolkit for web applications in Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Apr 2016 18:51:39 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 01 May 2016 15:30:28 +0200</lastBuildDate>
     <atom:link href="http://goserv.it/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Release v1.0.0rc1</title>
+      <link>http://goserv.it/news/release-v1.0.0rc1/</link>
+      <pubDate>Sun, 01 May 2016 15:30:28 +0200</pubDate>
+      
+      <guid>http://goserv.it/news/release-v1.0.0rc1/</guid>
+      <description>&lt;p&gt;The first &lt;em&gt;release candidate&lt;/em&gt; is now available :). That means that the API documentation is also now
+available on &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv&#34;&gt;GoDoc&lt;/a&gt;. Check it out and feel free
+to contact me (hello@goserv.it) if you have ideas for improvement.&lt;/p&gt;
+
+&lt;p&gt;Enjoy the rest of your weekend :)&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>REST Server with MongoDB</title>
@@ -362,22 +376,26 @@ JSON error response. The last step is to set the custom error handler on the ser
     </item>
     
     <item>
-      <title>index</title>
-      <link>http://goserv.it/index/</link>
+      <title>Get Right Into It</title>
+      <link>http://goserv.it/intro/</link>
       <pubDate>Wed, 27 Apr 2016 17:03:02 +0200</pubDate>
       
-      <guid>http://goserv.it/index/</guid>
+      <guid>http://goserv.it/intro/</guid>
       <description>
 
-&lt;h2 id=&#34;get-right-into-it:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Get Right Into It&lt;/h2&gt;
+&lt;p&gt;Building web applications in &lt;strong&gt;Go&lt;/strong&gt; is fast and easy using &lt;strong&gt;goserv&lt;/strong&gt;. It is fully compatible with
+the &lt;code&gt;net/http&lt;/code&gt; package and is more like a toolkit providing tools to create more powerful
+and complex web applications even easier.&lt;/p&gt;
 
-&lt;h3 id=&#34;installation:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Installation&lt;/h3&gt;
+&lt;h2 id=&#34;get-right-into-it:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Get Right Into It&lt;/h2&gt;
+
+&lt;h3 id=&#34;installation:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Installation&lt;/h3&gt;
 
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ go get github.com/gotschmarcel/goserv
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id=&#34;simple-server:d680e8a854a7cbad6d490c445cba2eba&#34;&gt;Simple Server&lt;/h3&gt;
+&lt;h3 id=&#34;simple-server:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Simple Server&lt;/h3&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
 

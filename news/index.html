@@ -3,14 +3,19 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
-        <meta name="description" content="goserv - A fast, easy and minimalistic framework for web applications in Go" />
+        <meta name="description" content="goserv - A lightweight toolkit for web applications in Go" />
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <title>goserv - A fast, easy and minimalistic framework for web applications in Go</title>
+        <meta name="keywords" content="goserv, go, golang, framework" />
 
-        <link rel="canonical" href="http://goserv.it/getting-started/" />
-        <link href="" rel="alternate" type="application/rss+xml" title="goserv - A fast, easy and minimalistic framework for web applications in Go" />
+        <meta name="og:title" content="goserv - News" />
+
+        <title>goserv - News</title>
+
+
+        <link rel="canonical" href="http://goserv.it/news/" />
+        <link href="http://goserv.it/news/index.xml" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
         <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
 
         <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
@@ -23,7 +28,7 @@
     <div class="flex centered-content">
         <div class="flex flex-col flex-vcenter flex-hstart">
             <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
-            <div id="gs-header-desc" class="s-hide">A fast, easy and minimalistic framework for web applications in Go</div>
+            <div id="gs-header-desc" class="s-hide">A lightweight toolkit for web applications in Go</div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
             <div id="gs-header-logo"></div>
@@ -33,11 +38,16 @@
                 
                 
                     
+                    <a href="http://goserv.it/news/"  class="gs-nav-entry active" >News</a>
+                    
+                
+                    
                     <span  class="gs-nav-entry gs-sub-nav" >
                         <div class="gs-sub-nav-name">Getting Started</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
                         <div class="gs-sub-nav-content">
                             
-                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST API Server</a>
+                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST &amp; MongoDB</a>
                             
                         </div>
                     </span>
@@ -46,6 +56,7 @@
                     
                     <span  class="gs-nav-entry gs-sub-nav" >
                         <div class="gs-sub-nav-name">Documentation</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
                         <div class="gs-sub-nav-content">
                             
                             <a href="https://godoc.org/github.com/gotschmarcel/goserv"  class="gs-sub-nav-entry" >API Reference</a>
@@ -60,9 +71,13 @@
             <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
         </div>
     </div>
-    <div class="s-show" id="gs-header-mobile-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+    <div class="s-show" id="gs-header-mobile-desc">A lightweight toolkit for web applications in Go</div>
     <div id="gs-mobile-nav" class="l-show">
         
+        
+            
+            <a href="http://goserv.it/news/" class="gs-mobile-nav-entry">News</a>
+            
         
             
             <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
@@ -70,7 +85,7 @@
                 <input type="checkbox" id="gs-mobile-sub-nav-cb-getting_started" />
                 <div class="gs-mobile-sub-nav-content">
                     
-                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST API Server</a>
+                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST &amp; MongoDB</a>
                     
                 </div>
             </div>
@@ -94,21 +109,30 @@
 </header>
 
 
-
-<article class="centered-content-small gs-article">
-    <h1 class="title">Getting Started</h1>
+<section id="gs-news" class="centered-content-small">
+    
+    
+        <article class="gs-news-summary">
+    <header class="header flex">
+        <a href="http://goserv.it/news/release-v1.0.0rc1/" class="title">Release v1.0.0rc1</a>
+        <span class="meta">Sun, May 1, 2016</span>
+    </header>
     <div class="content">
-    <p>Coming Soon&hellip;</p>
-
+        The first release candidate is now available :). That means that the API documentation is also now available on GoDoc. Check it out and feel free to contact me (hello@goserv.it) if you have ideas for improvement. Enjoy the rest of your weekend :)
     </div>
+    
 </article>
 
+    
+    
+    
+</section>
         <footer id="gs-footer">
             <div id="gs-footer-content" class="centered-content">
                 <div id="gs-footer-logo" class="m-hide"></div>
                 <div id="gs-footer-info-left">
                     <div id="gs-footer-name">goserv</div>
-                    <div id="gs-footer-desc">A fast, easy and minimalistic framework for web applications in Go</div>
+                    <div id="gs-footer-desc">A lightweight toolkit for web applications in Go</div>
                 </div>
                 <div class="flex-grow"></div>
                 <div id="gs-footer-info-right">
@@ -123,6 +147,22 @@
             </div>
             <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
         </footer>
+        
+        
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//piwik.gts.octans.uberspace.de/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <noscript><p><img src="//piwik.gts.octans.uberspace.de/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+        
     </body>
 </html>
 
