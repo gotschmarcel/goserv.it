@@ -199,7 +199,9 @@ an error handler:
 {{< highlight go >}}
 func (c *Controller) ErrorHandler(w http.ResponseWriter, r *http.Request, err *goserv.ContextError) {
     w.WriteHeader(err.Code)
-    w.WriteJSON(&struct{ Error string `json:"error"` }{err.Error()})
+    if err := goserv.WriteJSON(w, &struct{ Error string `json:"error"` }{err.Error()}); err != nil {
+        log.Printf("Error sending JSON: %s", err)
+    }
 }
 {{< /highlight >}}
 
@@ -235,81 +237,92 @@ type Controller struct {
     todos *mgo.Collection
 }
 
-
-func (c *Controller) GetTodos(w goserv.ResponseWriter, r *goserv.Request) {
+func (c *Controller) GetTodos(w http.ResponseWriter, r *http.Request) {
     todos := make([]*Todo, 0)
 
     if err := c.todos.Find(nil).All(&todos); err != nil {
-        w.SetError(err)
+        goserv.Context(r).Error(err, http.StatusInternalServerError)
         return
     }
 
-    w.WriteJSON(&todos)
+    if err := goserv.WriteJSON(w, &todos); err != nil {
+        goserv.Context(r).Error(err, http.StatusInternalServerError)
+    }
+
 }
 
-func (c *Controller) GetTodo(w goserv.ResponseWriter, r *goserv.Request) {
-    hexID := r.Params.Get("todo_id")
-    oid := bson.ObjectIdHex(hexID)
+func (c *Controller) GetTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
+    hexID := ctx.Param("todo_id")
+    objectID := bson.ObjectIdHex(hexID)
     todo := &Todo{}
 
     // Query the todo from MongoDB
-    if err := c.todos.FindId(oid).One(todo); err != nil {
+    if err := c.todos.FindId(objectID).One(todo); err != nil {
+        code := http.StatusInternalServerError
 
         // Todo not found
         if err == mgo.ErrNotFound {
-            w.SetError(fmt.Errorf("no such todo: %s", hexID))
-            return
+            err = fmt.Errorf("no such todo: %s", hexID)
+            code = http.StatusNotFound
         }
 
-        w.SetError(err)
+        ctx.Error(err, code)
         return
     }
 
     // Pass todo to next handler
-    w.WriteJSON(todo)
+    if err := goserv.WriteJSON(w, todo); err != nil {
+        ctx.Error(err, http.StatusInternalServerError)
+        return
+    }
 }
 
-func (c *Controller) TodoID(w goserv.ResponseWriter, r *goserv.Request, id string) {
+func (c *Controller) TodoID(w http.ResponseWriter, r *http.Request, id string) {
     // Validate that the URL parameter is a valid Object ID representation
     if bson.IsObjectIdHex(id) {
         return
     }
 
-    w.SetError(fmt.Errorf("invalid id: %s", id))
+    goserv.Context(r).Error(fmt.Errorf("invalid id: %s", id), http.StatusBadRequest)
 }
 
-func (c *Controller) CreateTodo(w goserv.ResponseWriter, r *goserv.Request) {
+func (c *Controller) CreateTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
     todo := &Todo{}
 
-    if err := r.ReadJSON(todo); err != nil {
-        w.SetError(fmt.Errorf("todo not well-formed"))
+    if err := goserv.ReadJSONBody(r, todo); err != nil {
+        ctx.Error(fmt.Errorf("todo not well-formed"), http.StatusBadRequest)
         return
     }
 
     if err := c.todos.Insert(todo); err != nil {
-        w.SetError(err)
+        ctx.Error(err, http.StatusInternalServerError)
         return
     }
 
     w.WriteHeader(http.StatusCreated)
 }
 
-func (c *Controller) DeleteTodo(w goserv.ResponseWriter, r *goserv.Request) {
-    hexID := r.Params.Get("todo_id")
-    oid := bson.ObjectIdHex(hexID)
+func (c *Controller) DeleteTodo(w http.ResponseWriter, r *http.Request) {
+    ctx := goserv.Context(r)
+    hexID := ctx.Param("todo_id")
+    objectID := bson.ObjectIdHex(hexID)
 
-    if err := c.todos.RemoveId(oid); err != nil {
-        w.SetError(err)
+    if err := c.todos.RemoveId(objectID); err != nil {
+        ctx.Error(err, http.StatusInternalServerError)
         return
     }
 
     w.WriteHeader(http.StatusNoContent)
 }
 
-func (c *Controller) ErrorHandler(w goserv.ResponseWriter, r *goserv.Request, err error) {
-    w.WriteJSON(&struct{ Error string `json:"error"` }{err.Error()})
+func (c *Controller) ErrorHandler(w http.ResponseWriter, r *http.Request, err *goserv.ContextError) {
+    w.WriteHeader(err.Code)
+    if err := goserv.WriteJSON(w, &struct{ Error string `json:"error"` }{err.Error()}); err != nil {
+        log.Printf("Error sending JSON: %s", err)
+    }
 }
-
 
 func main() {
     server := goserv.NewServer()
