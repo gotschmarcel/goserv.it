@@ -1,7 +1,11 @@
 +++
 date = "2016-04-27T17:03:02+02:00"
-title = "index"
+title = "Get Right Into It"
 +++
+
+Building web applications in **Go** is fast and easy using **goserv**. It is fully compatible with
+the `net/http` package and is more like a toolkit providing tools to create more powerful
+and complex web applications even easier.
 
 ## Get Right Into It
 
