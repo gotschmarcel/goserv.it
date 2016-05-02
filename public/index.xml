@@ -396,10 +396,6 @@ JSON error response. The last step is to set the custom error handler on the ser
       <guid>http://goserv.it/intro/</guid>
       <description>
 
-&lt;p&gt;Building web applications in &lt;strong&gt;Go&lt;/strong&gt; is fast and easy using &lt;strong&gt;goserv&lt;/strong&gt;. It is fully compatible with
-the &lt;code&gt;net/http&lt;/code&gt; package and is more like a toolkit providing tools to create more powerful
-and complex web applications even easier.&lt;/p&gt;
-
 &lt;h2 id=&#34;get-right-into-it:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Get Right Into It&lt;/h2&gt;
 
 &lt;h3 id=&#34;installation:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Installation&lt;/h3&gt;
@@ -410,7 +406,7 @@ and complex web applications even easier.&lt;/p&gt;
 
 &lt;h3 id=&#34;simple-server:34c4da6d4768d05e50db99357a299b5c&#34;&gt;Simple Server&lt;/h3&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;
 
 &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
     &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
@@ -429,7 +425,10 @@ and complex web applications even easier.&lt;/p&gt;
     &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
 &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
+
+&lt;p&gt;This is of course just a very simple example, showing only what&amp;rsquo;s necessary to start a server. To
+dig deeper into &lt;em&gt;goserv&lt;/em&gt; take a look at the &lt;em&gt;Getting Started&lt;/em&gt; section.&lt;/p&gt;
 </description>
     </item>
     

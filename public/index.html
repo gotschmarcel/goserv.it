@@ -109,14 +109,46 @@
 </header>
 
 
-
-<article class="centered-content-small gs-news-article">
-    <div class="content">
+<div class="centered-content-small">
     
-
-<p>Building web applications in <strong>Go</strong> is fast and easy using <strong>goserv</strong>. It is fully compatible with
-the <code>net/http</code> package and is more like a toolkit providing tools to create more powerful
-and complex web applications even easier.</p>
+    <section id="gs-intro">
+        <strong>goserv</strong> is a fully compatible toolkit for <i>Go's</i> <strong>net/http</strong> package, making the creation of powerful and complex web applications even easier.
+    </section>
+    
+    <section id="gs-features">
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-flash left-of"></i>Fast &amp; Lightweight</h3>
+            <p class="detail">
+                <em>goserv</em> provides a thin layer extending the basic functionality of net/http
+                by doing only what's necessary.
+            </p>
+        </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-road left-of"></i>Flexible Routing</h3>
+            <p class="detail">
+                A single router or nested routers? A single http method, some or even all of them?
+                Middleware? Captured URL values? <em>goserv</em> does it all!
+            </p>
+        </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-cogs left-of"></i>net/http Compatibility</h3>
+            <p class="detail">
+                No reason to throw existing features away. Use what you already know.
+                Switching to goserv can't get any easier.
+            </p>
+        </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-exclamation-triangle left-of"></i>Centralized Error Handling</h3>
+            <p class="detail">
+                Handle errors in a single error handler or in more differentiated
+                error handlers in sub routers.
+            </p>
+        </div>
+    </section>
+    
+    <article class="gs-news-article">
+        <div class="content">
+        
 
 <h2 id="get-right-into-it:34c4da6d4768d05e50db99357a299b5c">Get Right Into It</h2>
 
@@ -128,7 +160,7 @@ and complex web applications even easier.</p>
 
 <h3 id="simple-server:34c4da6d4768d05e50db99357a299b5c">Simple Server</h3>
 
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
 
 <span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
     <span style="color: #4e9a06">&quot;log&quot;</span>
@@ -147,16 +179,19 @@ and complex web applications even easier.</p>
     <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
 <span style="color: #000000; font-weight: bold">}</span>
 </pre></div>
-</p>
 
-    </div>
-    <hr />
-</article>
 
-<section id="gs-news" class="centered-content-small">
-    <h2>News</h2>
+<p>This is of course just a very simple example, showing only what&rsquo;s necessary to start a server. To
+dig deeper into <em>goserv</em> take a look at the <em>Getting Started</em> section.</p>
+
+        </div>
+        <hr />
+    </article>
     
-    <article class="gs-news-summary">
+    <section id="gs-news">
+        <h2>News</h2>
+        
+        <article class="gs-news-summary">
     <header class="header flex flex-col">
         <a href="http://goserv.it/news/release-v1.0.0rc1/" class="title">Release v1.0.0rc1</a>
         <span class="meta">Sun, May 1, 2016</span>
@@ -167,8 +202,9 @@ and complex web applications even easier.</p>
     
 </article>
 
-    
-</section>
+        
+    </section>
+</div>
         <footer id="gs-footer">
             <div id="gs-footer-content" class="centered-content">
                 <div id="gs-footer-logo" class="m-hide"></div>
