@@ -1,0 +1,54 @@
+/* -----------------------
+    Index
+----------------------- */
+#gs-intro {
+    @extend .text-center;
+    font-size: map-get($font-size, "nl2");
+    line-height: map-get($font-size, "nl4");
+
+    @include breakpoint("tiny") {
+        line-height: map-get($font-size, "nl2");
+    }
+
+    @include breakpoint("small") {
+        font-size: map-get($font-size, "n");
+    }
+}
+
+#gs-features {
+    @extend .flex;
+    @include flex-wrap(wrap);
+
+    margin: 2rem 0rem 2rem 0rem;
+
+    .gs-feature {
+        @extend .colored-box;
+
+        width: calc(50% - 1rem);
+        margin: 0.5rem;
+
+        @include breakpoint("tiny") {
+            width: 100%;
+
+            .title, .detail { text-align: center; }
+        }
+
+        .title {
+            font-size: map-get($font-size, "nl1");
+            margin-top: 0;
+        }
+
+        .detail {
+            margin-bottom: 0;
+            line-height: map-get($font-size, "nl4");
+
+            @include breakpoint("tiny") {
+                line-height: map-get($font-size, "nl2");
+            }
+
+            @include breakpoint-height("tiny") {
+                line-height: map-get($font-size, "nl2");
+            }
+        }
+    }
+}

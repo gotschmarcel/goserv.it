@@ -128,12 +128,20 @@
 
         margin-left: 1.4rem;
         border-left: 4px solid $fg-color;
-        padding-left: 1rem;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
         color: $fg-color;
         background-color: $medium-light;
         border-radius: 0.2rem;
+        box-sizing: border-box;
+
+        @include breakpoint("small") {
+            margin-left: 0.5rem;
+            width: calc(100% - 1rem);
+        }
 
         a { color: $fg-color; }
+        p:first-child { margin-top: 0rem; }
+        p:last-child { margin-bottom: 0rem; }
     }
 
     img { @extend .flex; margin: 0 auto; max-width: 50%; }
@@ -178,21 +186,19 @@
 
         tbody {
             tr:last-child { border-bottom: 0; }
-
         }
     }
 
     // Inline code examples
     & > p > code {
-        @extend .code;
-        padding: 0.2rem 0.5rem;
+        @extend .colored-box;
+        padding: 0.2rem 0.5rem; // Overwrite colored-box padding
     }
 
     // Apply only to direct descendants otherwise it would cause problems
     // with code highlighted by pygments using Hugo's highlight macro.
     & > pre {
-        @extend .code;
-        padding: 0.5rem 1rem;
+        @extend .colored-box;
     }
 
     .footnotes {

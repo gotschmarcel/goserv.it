@@ -22,7 +22,9 @@
 
 @mixin display-flex() {
     display: -webkit-flex;
+    display: -moz-flex;
     display: -webkit-box;
+    display: -moz-box;
     display: -ms-flexbox;
     display: flex;
 }
@@ -46,6 +48,19 @@
     -webkit-flex-direction: $dir;
     -ms-flex-direction: $dir;
     flex-direction: $dir;
+}
+
+@mixin flex-wrap($val) {
+    $altVal: single;
+
+    @if $val == wrap {
+        $altVal: multiple;
+    }
+
+    -webkit-flex-wrap: $val;
+    -webkit-box-lines: $altVal;
+    -ms-flex-wrap: $val;
+    flex-wrap: $val;
 }
 
 @mixin flex-justify-content($value) {
@@ -112,6 +127,13 @@ $breakpoints: (
   "large":  (max-width: map-get($mediaSizes, "large")),
 );
 
+$breakpoints-height: (
+  "tiny":   (max-height: map-get($mediaSizes, "tiny")),
+  "small":  (max-height: map-get($mediaSizes, "small")),
+  "medium": (max-height: map-get($mediaSizes, "medium")),
+  "large":  (max-height: map-get($mediaSizes, "large")),
+);
+
 // .element {
 //      color: red;
 //
@@ -122,6 +144,17 @@ $breakpoints: (
 @mixin breakpoint($name) {
     @if map-has-key($breakpoints, $name) {
         @media #{inspect(map-get($breakpoints, $name))} {
+            @content;
+        }
+    }
+    @else {
+        @warn "Couldn't find a breakpoint named `#{$name}`.";
+    }
+}
+
+@mixin breakpoint-height($name) {
+    @if map-has-key($breakpoints-height, $name) {
+        @media #{inspect(map-get($breakpoints-height, $name))} {
             @content;
         }
     }

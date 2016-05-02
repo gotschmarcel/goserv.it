@@ -11,6 +11,7 @@ theme = "light"
 [params]
     Author = "Marcel Gotsch"
     Name = "goserv"
+    Intro = "<strong>goserv</strong> is a fully compatible toolkit for <i>Go's</i> <strong>net/http</strong> package, making the creation of powerful and complex web applications even easier."
     Description = "A lightweight toolkit for web applications in Go"
     GithubUser = "gotschmarcel"
     GithubLink = "//github.com/gotschmarcel/goserv"

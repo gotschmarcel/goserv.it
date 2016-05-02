@@ -1,22 +1,59 @@
 {{ partial "header.html" . }}
-{{ range first 1 (where .Data.Pages "Title" "Get Right Into It") }}
-<article class="centered-content-small gs-news-article">
-    <div class="content">
-    {{ .Content }}
-    </div>
-    <hr />
-</article>
-{{ end }}
-<section id="gs-news" class="centered-content-small">
-    <h2>News</h2>
-    {{ range first 5 (where .Data.Pages.ByDate.Reverse "Section" "news") }}
-    {{ .Render "summary" }}
-    {{ else }}
-    <article class="gs-news-summary">
-        <div class="content">
-            <span class="title">No News Available</a>
+<div class="centered-content-small">
+    {{ if isset .Site.Params "Intro" }}
+    <section id="gs-intro">
+        {{ .Site.Params.Intro | safeHTML }}
+    </section>
+    {{ end }}
+    <section id="gs-features">
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-flash left-of"></i>Fast &amp; Lightweight</h3>
+            <p class="detail">
+                <em>goserv</em> provides a thin layer extending the basic functionality of net/http
+                by doing only what's necessary.
+            </p>
         </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-road left-of"></i>Flexible Routing</h3>
+            <p class="detail">
+                A single router or nested routers? A single http method, some or even all of them?
+                Middleware? Captured URL values? <em>goserv</em> does it all!
+            </p>
+        </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-cogs left-of"></i>net/http Compatibility</h3>
+            <p class="detail">
+                No reason to throw existing features away. Use what you already know.
+                Switching to goserv can't get any easier.
+            </p>
+        </div>
+        <div class="gs-feature">
+            <h3 class="title"><i class="fa fa-exclamation-triangle left-of"></i>Centralized Error Handling</h3>
+            <p class="detail">
+                Handle errors in a single error handler or in more differentiated
+                error handlers in sub routers.
+            </p>
+        </div>
+    </section>
+    {{ range first 1 (where .Data.Pages "Title" "Get Right Into It") }}
+    <article class="gs-news-article">
+        <div class="content">
+        {{ .Content }}
+        </div>
+        <hr />
     </article>
     {{ end }}
-</section>
+    <section id="gs-news">
+        <h2>News</h2>
+        {{ range first 5 (where .Data.Pages.ByDate.Reverse "Section" "news") }}
+        {{ .Render "summary" }}
+        {{ else }}
+        <article class="gs-news-summary">
+            <div class="content">
+                <span class="title">No News Available</a>
+            </div>
+        </article>
+        {{ end }}
+    </section>
+</div>
 {{ partial "footer.html" . }}

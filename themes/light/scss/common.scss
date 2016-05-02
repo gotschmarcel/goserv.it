@@ -120,10 +120,21 @@ pre, code { font-family: $monospace-font; }
     text-decoration: inherit;
 }
 
-.code {
+.colored-box {
+    background-color: $medium-light;
     border-radius: 0.2rem;
-    background-color: $medium-light !important; // Overwrite pygments background color
+    padding: 1rem;
     border: 1px solid darken($medium-light, 5%);
+    box-sizing: border-box;
+
+    @include breakpoint("small") {
+        padding: 0.5rem;
+    }
+}
+
+.code {
+    @extend .colored-box;
+    background-color: $medium-light !important; // Overwrite pygments background color
 }
 
 .collapsable-codeblock {
@@ -151,10 +162,11 @@ pre, code { font-family: $monospace-font; }
 
 // Pygments code highlighting container
 .highlight {
-    @extend .code;
+    @extend .colored-box;
+    background-color: $medium-light !important; // Overwrite pygments inline background color
 
     // Remove pygments default margin.
-    pre { margin: 0; padding: 1rem; }
+    pre { margin: 0; padding: 0rem; }
 }
 
 .fa.left-of { margin-right: 0.5rem; }

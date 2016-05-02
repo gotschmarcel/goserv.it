@@ -4,7 +4,7 @@
 #gs-header {
     padding: 2rem;
     box-sizing: border-box;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 
     // All header parts must occupy the same space to correctly center
     // the header logo.
@@ -12,7 +12,13 @@
         width: 33.333%;
     }
 
-    @include breakpoint("small") { margin-bottom: 2rem; };
+    @include breakpoint("small") {
+        margin-bottom: 0rem;
+    };
+
+    @include breakpoint-height("tiny") {
+        margin-bottom: 0rem;
+    }
 }
 
 #gs-header-name {
