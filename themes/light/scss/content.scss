@@ -77,18 +77,22 @@
     margin-bottom: 4rem;
 
     .header {
-        @extend .flex;
-        @extend .flex-row;
-        @extend .flex-vend;
-        justify-content: space-between;
-
         border-bottom: 2px solid $light-blue;
         padding-bottom: 1rem;
         margin-bottom: 2rem;
 
         .title {
+            margin-bottom: 0.5rem;
             font-size: map-get($font-size, "nl6");
             font-weight: bold;
+
+            @include breakpoint("small") {
+                font-size: map-get($font-size, "nl4");
+            }
+
+            @include breakpoint("tiny") {
+                font-size: map-get($font-size, "nl2");
+            }
         }
 
         .meta {
@@ -98,7 +102,11 @@
 
     .navigate {
         @extend .flex;
-        justify-content: space-between;
+        @include flex-justify-content(space-between);
+
+        @include breakpoint("tiny") {
+            display: none;
+        };
     }
 }
 
@@ -198,13 +206,12 @@
     border-bottom: 1px solid $medium-light;
 
     .header {
-        justify-content: space-between;
-        align-items: flex-end;
         margin-bottom: 1rem;
 
         .title {
             font-size: map-get($font-size, "nl2");
             font-weight: bold;
+            margin-bottom: 0.5rem;
         }
 
         .meta {
