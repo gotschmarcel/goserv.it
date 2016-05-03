@@ -23,7 +23,7 @@ import (
 func main(w http.ResponseWriter, r *http.Request) {
     server := goserv.NewServer()
 
-    server.Use(http.FileServer(http.Dir("/usr/share/doc")))
+    server.UseHandler(http.FileServer(http.Dir("/usr/share/doc")))
 
     log.Fatalln(server.Listen(":12345"))
 }
@@ -42,7 +42,7 @@ func main(w http.ResponseWriter, r *http.Request) {
     server := goserv.NewServer()
 
     fileServer := http.FileServer(http.Dir("/usr/share/doc"))
-    server.All("/public/*", http.StripPrefix("/public/", fileServer))
+    server.SubRouter("/public").UseHandler(http.StripPrefix("/public/", fileServer))
 
     log.Fatalln(server.Listen(":12345"))
 }
