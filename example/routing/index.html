@@ -183,11 +183,11 @@ exactly &ldquo;/&rdquo; will be forwarded to our <code>IndexHandler</code>.</p>
 <p>If you want a handler to be called for multiple or even all methods you can use <code>.Methods(methods, path, handler)</code> and
 <code>.All(path, handler)</code>. Sometimes a single route has different handlers for each method. You could do it like this:</p>
 
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">GetLongPath</span><span style="color: #000000; font-weight: bold">)</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">GetLongPath</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Put</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PutLongPath</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PostLongPath</span><span style="color: #000000; font-weight: bold">)</span>
 </pre></div>
-</p>
+
 
 <p>but there&rsquo;s a more elegant version using <code>.Route(path)</code>:</p>
 
@@ -239,15 +239,23 @@ route, but only if the route didn&rsquo;t write a response:</p>
 </pre></div>
 </p>
 
+<h2 id="strict-slash-vs-non-strict-slash:ce107015c43d323e34bbf68cbc83e623">Strict Slash vs Non-Strict Slash</h2>
+
+<p>All routers can be configured to be either strict or non-strict with trailing slashes. By default
+all routers are non-strict. Sub routers inherit the parents behavior.</p>
+
+<p>A route <code>/mypath</code> created on a non-strict router will match both <code>/mypath</code> and <code>/mypath/</code>. While the
+same route created on a strict router will consider both paths to be different.</p>
+
 <h2 id="path-syntax:ce107015c43d323e34bbf68cbc83e623">Path Syntax</h2>
 
 <p>All routes are registered under a certain path. A path in <em>goserv</em> is not just a simple string instead
-is it a small language oriented on regular expressions. Lets dive into it!</p>
+it is a small language inspired by regular expressions. Lets dive into it!</p>
 
 <h3 id="wildcards:ce107015c43d323e34bbf68cbc83e623">Wildcards</h3>
 
-<p>Wildcards allow you to create routes matching more than a single exact path, e.g. routes matching
-a certain prefix. The number of wildcards and the position is not restricted.</p>
+<p>Wildcards allow you to create routes matching more than a single exact path, e.g. matching
+only a certain prefix. The number of wildcards and the position is not restricted.</p>
 
 <p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/public*&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PublicHandler</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/a/*/c&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">MyHandler</span><span style="color: #000000; font-weight: bold">)</span>
@@ -265,9 +273,13 @@ a certain prefix. The number of wildcards and the position is not restricted.</p
 
 <h3 id="parameters:ce107015c43d323e34bbf68cbc83e623">Parameters</h3>
 
-<p>Parameters allow you to capture parts of the URL which are then accessible through <code>RequestContext</code>.
+<p>Parameters allow you to capture parts of the URL which are then accessible through <code>RequestContext.Param</code>.
 Additionally you can register parameter handlers on a <code>Router</code> using <code>.Param(name, handler)</code> to preprocess
 the captured values.</p>
+
+<blockquote>
+<p>The parameter names should be unique otherwise they may overwrite each other!</p>
+</blockquote>
 
 <p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/articles/:article_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">GetArticle</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Param</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;article_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>

@@ -68,11 +68,11 @@ exactly &amp;ldquo;/&amp;rdquo; will be forwarded to our &lt;code&gt;IndexHandle
 &lt;p&gt;If you want a handler to be called for multiple or even all methods you can use &lt;code&gt;.Methods(methods, path, handler)&lt;/code&gt; and
 &lt;code&gt;.All(path, handler)&lt;/code&gt;. Sometimes a single route has different handlers for each method. You could do it like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;GetLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;GetLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
 &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Put&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PutLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
 &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Post&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PostLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;but there&amp;rsquo;s a more elegant version using &lt;code&gt;.Route(path)&lt;/code&gt;:&lt;/p&gt;
 
@@ -124,15 +124,23 @@ route, but only if the route didn&amp;rsquo;t write a response:&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/p&gt;
 
+&lt;h2 id=&#34;strict-slash-vs-non-strict-slash:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Strict Slash vs Non-Strict Slash&lt;/h2&gt;
+
+&lt;p&gt;All routers can be configured to be either strict or non-strict with trailing slashes. By default
+all routers are non-strict. Sub routers inherit the parents behavior.&lt;/p&gt;
+
+&lt;p&gt;A route &lt;code&gt;/mypath&lt;/code&gt; created on a non-strict router will match both &lt;code&gt;/mypath&lt;/code&gt; and &lt;code&gt;/mypath/&lt;/code&gt;. While the
+same route created on a strict router will consider both paths to be different.&lt;/p&gt;
+
 &lt;h2 id=&#34;path-syntax:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Path Syntax&lt;/h2&gt;
 
 &lt;p&gt;All routes are registered under a certain path. A path in &lt;em&gt;goserv&lt;/em&gt; is not just a simple string instead
-is it a small language oriented on regular expressions. Lets dive into it!&lt;/p&gt;
+it is a small language inspired by regular expressions. Lets dive into it!&lt;/p&gt;
 
 &lt;h3 id=&#34;wildcards:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Wildcards&lt;/h3&gt;
 
-&lt;p&gt;Wildcards allow you to create routes matching more than a single exact path, e.g. routes matching
-a certain prefix. The number of wildcards and the position is not restricted.&lt;/p&gt;
+&lt;p&gt;Wildcards allow you to create routes matching more than a single exact path, e.g. matching
+only a certain prefix. The number of wildcards and the position is not restricted.&lt;/p&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/public*&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PublicHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
 &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/a/*/c&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
@@ -150,9 +158,13 @@ a certain prefix. The number of wildcards and the position is not restricted.&lt
 
 &lt;h3 id=&#34;parameters:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Parameters&lt;/h3&gt;
 
-&lt;p&gt;Parameters allow you to capture parts of the URL which are then accessible through &lt;code&gt;RequestContext&lt;/code&gt;.
+&lt;p&gt;Parameters allow you to capture parts of the URL which are then accessible through &lt;code&gt;RequestContext.Param&lt;/code&gt;.
 Additionally you can register parameter handlers on a &lt;code&gt;Router&lt;/code&gt; using &lt;code&gt;.Param(name, handler)&lt;/code&gt; to preprocess
 the captured values.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The parameter names should be unique otherwise they may overwrite each other!&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/articles/:article_id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;GetArticle&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
 &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Param&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;article_id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;id&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
