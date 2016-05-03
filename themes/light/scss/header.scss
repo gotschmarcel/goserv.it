@@ -8,13 +8,16 @@
 
     // All header parts must occupy the same space to correctly center
     // the header logo.
-    & > .centered-content > .flex{
-        width: 33.333%;
+    & > .centered-content > .flex {
+        &:nth-child(odd) { width: 34%; }
+        &:nth-child(even) { width: 32%; }
     }
 
     @include breakpoint("small") {
         margin-bottom: 0rem;
     };
+
+
 
     @include breakpoint-height("tiny") {
         margin-bottom: 0rem;
@@ -53,9 +56,9 @@
 }
 
 #gs-header-logo-big {
-    @include size(300px);
+    @include size(280px);
 
-    @include breakpoint("medium") {
+    @include breakpoint("large") {
         @include size(200px);
     }
 
