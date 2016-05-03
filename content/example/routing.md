@@ -108,15 +108,23 @@ server.Get("/", DoingNothing)
 server.Use(CalledAfterHandler)
 {{< /highlight >}}
 
+## Strict Slash vs Non-Strict Slash
+
+All routers can be configured to be either strict or non-strict with trailing slashes. By default
+all routers are non-strict. Sub routers inherit the parents behavior.
+
+A route `/mypath` created on a non-strict router will match both `/mypath` and `/mypath/`. While the
+same route created on a strict router will consider both paths to be different.
+
 ## Path Syntax
 
 All routes are registered under a certain path. A path in *goserv* is not just a simple string instead
-is it a small language oriented on regular expressions. Lets dive into it!
+it is a small language inspired by regular expressions. Lets dive into it!
 
 ### Wildcards
 
-Wildcards allow you to create routes matching more than a single exact path, e.g. routes matching
-a certain prefix. The number of wildcards and the position is not restricted.
+Wildcards allow you to create routes matching more than a single exact path, e.g. matching
+only a certain prefix. The number of wildcards and the position is not restricted.
 
 {{< highlight go >}}
 server.Get("/public*", PublicHandler)
@@ -134,9 +142,11 @@ server.Get("/api/(public)?/articles", ArticleHandler)   // Matches /api/articles
 
 ### Parameters
 
-Parameters allow you to capture parts of the URL which are then accessible through `RequestContext`.
+Parameters allow you to capture parts of the URL which are then accessible through `RequestContext.Param`.
 Additionally you can register parameter handlers on a `Router` using `.Param(name, handler)` to preprocess
 the captured values.
+
+> The parameter names should be unique otherwise they may overwrite each other!
 
 {{< highlight go >}}
 server.Get("/articles/:article_id", GetArticle)
