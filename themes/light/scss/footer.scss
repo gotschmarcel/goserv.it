@@ -15,7 +15,11 @@
     .gs-footer-info-entry {
         margin-bottom: 0.5rem;
 
-        .fa { font-size: map-get($font-size, "nl2"); }
+        .fa {
+            @extend .text-center;
+            min-width: 2rem;
+            font-size: map-get($font-size, "nl2");
+        }
     }
 }
 
