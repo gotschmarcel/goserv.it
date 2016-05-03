@@ -839,7 +839,7 @@ JSON error response. The last step is to set the custom error handler on the ser
 
 &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
     &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
-    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/hettp&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
 
     &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
 &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
