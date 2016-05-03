@@ -124,13 +124,14 @@
     }
 
     blockquote {
-        $fg-color: lighten($dark, 30%);
+        $fg-color: darken($light-blue, 15%);
+        $bg-color: lighten($light-blue, 40%);
 
         margin-left: 1.4rem;
         border-left: 4px solid $fg-color;
         padding: 0.5rem 0.5rem 0.5rem 1rem;
         color: $fg-color;
-        background-color: $medium-light;
+        background-color: $bg-color;
         border-radius: 0.2rem;
         box-sizing: border-box;
 
