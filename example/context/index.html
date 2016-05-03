@@ -130,7 +130,9 @@
 <article id="gs-article" class="centered-content-small">
     <h1 class="title">RequestContext: Share Data, Access URL Parameters and Handle Errors</h1>
     <div class="content">
-    <p>In <em>goserv</em> every request has its own context. This context called <code>RequestContext</code> allows you
+    
+
+<p>In <em>goserv</em> every request has its own context. This context is called <code>RequestContext</code> and allows you
 to share data between handlers, access captured URL parameters (depending on the current route) and
 lets you pass errors to the next error handler.</p>
 
@@ -145,7 +147,7 @@ lets you pass errors to the next error handler.</p>
 <p>To share data between multiple handlers you can use the context&rsquo;s <code>.Set</code> and <code>.Get</code> methods. There
 are even more convenience methods, check them out at the reference  <a href="https://godoc.org/github.com/gotschmarcel/goserv#RequestContext">documentation</a>:</p>
 
-<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">MyMiddleware</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">MyMiddleware</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
     <span style="color: #000000">context</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Context</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">)</span>
     <span style="color: #000000">context</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Set</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;shared&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;data&quot;</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000; font-weight: bold">}</span>
@@ -160,10 +162,12 @@ are even more convenience methods, check them out at the reference  <a href="htt
     <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteStringf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;Received %q&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">value</span><span style="color: #000000; font-weight: bold">)</span>
 <span style="color: #000000; font-weight: bold">}</span>
 </pre></div>
-</p>
+
 
 <p>RequestContext lets you store arbitrary types thus it is necessary to cast the type back to its
 original type using <em>type assertions</em>.</p>
+
+<h3 id="param:116c1bc525986a94fe08e34c386a89fb">Param</h3>
 
 <p>Sometimes routes are set up to capture certain parts of the URL path, these parts are called parameters.
 Each parameter has a name with which you can access the captured part by passing it to <code>.Param(name)</code>:</p>
@@ -174,10 +178,35 @@ Each parameter has a name with which you can access the captured part by passing
 </pre></div>
 </p>
 
+<h3 id="skiprouter:116c1bc525986a94fe08e34c386a89fb">SkipRouter</h3>
+
+<p>Another feature is <code>.SkipRouter()</code> which skips the router after the current handler. After a router
+was skipped the parent router continues processing.</p>
+
+<blockquote>
+<p>Skipping the main router causes a &ldquo;not found&rdquo; error.</p>
+</blockquote>
+
+<h3 id="error:116c1bc525986a94fe08e34c386a89fb">Error</h3>
+
 <p>The last important feature is error handling. Calling <code>.Error(err, code)</code> on the context
 tells goserv to stop processing as soon as the current handler returns. The error along with the
 code will be passed to the next error handler as <a href="https://godoc.org/github.com/gotschmarcel/goserv#ContextError"><code>ContextError</code></a>.
 The code is usually in the range of 4xx or 5xx and is used by the <a href="https://godoc.org/github.com/gotschmarcel/goserv#pkg-variables"><code>StdErrorHandler</code></a> as response status.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">MyHandler</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+
+    <span style="color: #8f5902; font-style: italic">// ...</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">someAction</span><span style="color: #000000; font-weight: bold">();</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Context</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Error</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">500</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #8f5902; font-style: italic">// ...</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
 
     </div>
 </article>
