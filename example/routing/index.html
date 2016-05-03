@@ -155,7 +155,7 @@ started, lets jump right into it :).</p>
 
 
 <p>This is the minimal code you&rsquo;ll need to get a server up and running. Now lets add a simple
-route for our index page:</p>
+route for the index page:</p>
 
 <div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">IndexHandler</span><span style="color: #000000; font-weight: bold">)</span>
 </pre></div>
@@ -167,7 +167,7 @@ route for our index page:</p>
 
 <p>Each <code>Router</code> as well as the <code>Server</code> (which is a special router) provides methods to register
 handlers for routes. One important thing to notice here is the use of one of the methods named after
-a HTTP verb. This means the only requests having the HTTP method &ldquo;GET&rdquo; and a URL path that matches
+a HTTP verb. This means that only requests with the HTTP method &ldquo;GET&rdquo; and a URL path that matches
 exactly &ldquo;/&rdquo; will be forwarded to our <code>IndexHandler</code>.</p>
 
 <blockquote>
