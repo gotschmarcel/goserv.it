@@ -6,8 +6,397 @@
     <description>Recent content on goserv - A lightweight toolkit for web applications in Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 May 2016 15:30:28 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 03 May 2016 16:03:55 +0200</lastBuildDate>
     <atom:link href="http://goserv.it/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Routing</title>
+      <link>http://goserv.it/example/routing/</link>
+      <pubDate>Tue, 03 May 2016 16:03:55 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/routing/</guid>
+      <description>
+
+&lt;p&gt;The most important feature of &lt;em&gt;goserv&lt;/em&gt; is routing. Since learning by doing is the easiest way to get
+started, lets jump right into it :).&lt;/p&gt;
+
+&lt;p&gt;First of all every &lt;em&gt;goserv&lt;/em&gt; server starts with a single instance of
+&lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#Server&#34;&gt;&lt;code&gt;Server&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;...&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is the minimal code you&amp;rsquo;ll need to get a server up and running. Now lets add a simple
+route for our index page:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;IndexHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;All handler implementations are omitted to keeps things focussed on routing&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Each &lt;code&gt;Router&lt;/code&gt; as well as the &lt;code&gt;Server&lt;/code&gt; (which is a special router) provides methods to register
+handlers for routes. One important thing to notice here is the use of one of the methods named after
+a HTTP verb. This means the only requests having the HTTP method &amp;ldquo;GET&amp;rdquo; and a URL path that matches
+exactly &amp;ldquo;/&amp;rdquo; will be forwarded to our &lt;code&gt;IndexHandler&lt;/code&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;goserv&lt;/em&gt; provides a convenience method for the most common HTTP verbs: GET, PUT, POST, DELETE and PATCH&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can get the same result by using the &lt;code&gt;.Method(method, path, handler)&lt;/code&gt; method:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Method&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;GET&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;IndexHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you want a handler to be called for multiple or even all methods you can use &lt;code&gt;.Methods(methods, path, handler)&lt;/code&gt; and
+&lt;code&gt;.All(path, handler)&lt;/code&gt;. Sometimes a single route has different handlers for each method. You could do it like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;GetLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Put&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PutLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Post&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PostLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;but there&amp;rsquo;s a more elegant version using &lt;code&gt;.Route(path)&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;route&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Route&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/longpath&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;route&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;GetLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Put&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;PutLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Post&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;PostLongPath&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Noticed the method chaining? All &lt;code&gt;Router&lt;/code&gt; and &lt;code&gt;Route&lt;/code&gt; instances allow this.
+The are two exceptions though:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Router.SubRouter&lt;/code&gt; returns a new &lt;code&gt;Router&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Router.Router&lt;/code&gt; returns a new &lt;code&gt;Route&lt;/code&gt; not the router itself&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you want to use a handler for all methods that currently have none, use the &lt;code&gt;.Rest&lt;/code&gt; method:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Route&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/articles&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;GetArticles&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Rest&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NotImplemented&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Often there are handlers that handle all requests, so called middleware. To register a handler
+as middleware use &lt;code&gt;.Use(handler)&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Use&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;authentication&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;If you want a middleware to handle all request beginning with e.g. &lt;em&gt;&amp;rdquo;/api&amp;rdquo;&lt;/em&gt; you can use &lt;code&gt;.SubRouter(prefix)&lt;/code&gt;
+to create a new sub router and then set the middleware there:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;api&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;SubRouter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/api&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;api&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Use&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;authentication&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;order-matters:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Order Matters&lt;/h2&gt;
+
+&lt;p&gt;One important thing to notice is that the order in which the routes, middleware and sub routers
+are registered does matter. The server passes the requests to the matching handlers in the same
+order. This means that it is possible to process a request in a middleware which follows a normal
+route, but only if the route didn&amp;rsquo;t write a response:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;DoingNothing&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Use&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;CalledAfterHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;path-syntax:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Path Syntax&lt;/h2&gt;
+
+&lt;p&gt;All routes are registered under a certain path. A path in &lt;em&gt;goserv&lt;/em&gt; is not just a simple string instead
+is it a small language oriented on regular expressions. Lets dive into it!&lt;/p&gt;
+
+&lt;h3 id=&#34;wildcards:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Wildcards&lt;/h3&gt;
+
+&lt;p&gt;Wildcards allow you to create routes matching more than a single exact path, e.g. routes matching
+a certain prefix. The number of wildcards and the position is not restricted.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/public*&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;PublicHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/a/*/c&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;optionals:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Optionals&lt;/h3&gt;
+
+&lt;p&gt;Optionals allow you to specify optional characters or character groups.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/articles?&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;ArticleHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;                &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// Matches /article and /articles&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/api/(public)?/articles&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;ArticleHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;   &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// Matches /api/articles and /api/public/articles&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&#34;parameters:ce107015c43d323e34bbf68cbc83e623&#34;&gt;Parameters&lt;/h3&gt;
+
+&lt;p&gt;Parameters allow you to capture parts of the URL which are then accessible through &lt;code&gt;RequestContext&lt;/code&gt;.
+Additionally you can register parameter handlers on a &lt;code&gt;Router&lt;/code&gt; using &lt;code&gt;.Param(name, handler)&lt;/code&gt; to preprocess
+the captured values.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/articles/:article_id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;GetArticle&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Param&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;article_id&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;id&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// Validate ID&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>JSON API</title>
+      <link>http://goserv.it/example/json/</link>
+      <pubDate>Tue, 03 May 2016 15:18:26 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/json/</guid>
+      <description>&lt;p&gt;&lt;em&gt;goserv&lt;/em&gt; also provides some convenience functions which make the handling of JSON even easier:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;JSONEchoHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;data&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;Title&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;string&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ReadJSONBody&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;);&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;nil&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Error&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #0000cf; font-weight: bold&#34;&gt;400&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteJSON&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Calling &lt;code&gt;.WriteJSON&lt;/code&gt; marshals the data into the response body and sets the response header
+&lt;code&gt;Content-Type: application/json&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Error Handling</title>
+      <link>http://goserv.it/example/errors/</link>
+      <pubDate>Tue, 03 May 2016 12:19:41 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/errors/</guid>
+      <description>&lt;p&gt;One of the cool features of &lt;em&gt;goserv&lt;/em&gt; is centralized error handling. You can easily pass errors
+occurred in a handler to the next error handler along with a response status code:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;someAction&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;();&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;nil&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Error&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #0000cf; font-weight: bold&#34;&gt;500&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;return&lt;/span&gt;
+    &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;goserv stops processing as soon as the handler setting the error returns and passes the
+&lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#ContextError&#34;&gt;&lt;code&gt;ContextError&lt;/code&gt;&lt;/a&gt; to the next error handler.
+By default this is always the &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#pkg-variables&#34;&gt;standard error handler&lt;/a&gt;
+of the &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#Server&#34;&gt;&lt;code&gt;Server&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you want your own custom error handler you can easily overwrite the default error handler:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ErrorHandler&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ContextError&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Printf&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;Error: &amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+        &lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteHeader&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Code&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteString&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;())&lt;/span&gt;
+    &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Sometimes it is necessary to have error handlers which have a smaller scope and act only on certain routes.
+Just create a sub router by calling &lt;code&gt;.SubRouter(prefix)&lt;/code&gt; on the &lt;code&gt;Server&lt;/code&gt; and assign a custom error handler to the &lt;code&gt;.ErrorHandler&lt;/code&gt; field:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;api&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;SubRouter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/api&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;api&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ErrorHandler&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ContextError&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Printf&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;API Error: &amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+        &lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteHeader&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Code&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteString&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;String&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;())&lt;/span&gt;
+    &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;You can also let the error handler be passed to the next parent error handler by not writing a
+response:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;api&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ErrorHandler&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ContextError&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Printf&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;API Error: &amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;err&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+    &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// Do not write a response to pass the error to the next error handler.&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;A special kind of error in &lt;em&gt;Go&lt;/em&gt; is an error caused by a call to &lt;code&gt;panic&lt;/code&gt; which usually terminates the
+program. For servers it is sometimes necessary to overcome these errors and not to terminate.
+You can configure a &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#Router&#34;&gt;&lt;code&gt;Router&lt;/code&gt;&lt;/a&gt; to recover
+from panics by setting the &lt;code&gt;.PanicRecovery&lt;/code&gt; field to &lt;code&gt;true&lt;/code&gt;. Values captured from a panic are passed
+to the router&amp;rsquo;s error handler. In case that a router has no error handler the error is simply ignored.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;PanicRecovery&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;true&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>File Server</title>
+      <link>http://goserv.it/example/static/</link>
+      <pubDate>Tue, 03 May 2016 12:14:12 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/static/</guid>
+      <description>&lt;p&gt;Often it is necessary to serve static content along with dynamic content. Fortunately, the standard library already
+provides a simple function to create a &lt;a href=&#34;https://golang.org/pkg/net/http/#FileServer&#34;&gt;file server&lt;/a&gt;.
+Due to the compatibility of &lt;em&gt;goserv&lt;/em&gt; to the standard library you can use it as is:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Use&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;FileServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Dir&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/usr/share/doc&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)))&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To serve files under a certain prefix we need to strip the prefix from the request path before
+passing it to the file server. Luckily the standard library provides a helper for that also:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;log&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;net/http&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;github.com/gotschmarcel/goserv&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;NewServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;()&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;fileServer&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;FileServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Dir&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/usr/share/doc&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;All&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/public/*&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;StripPrefix&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;/public/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;fileServer&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;log&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Fatalln&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;server&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Listen&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;:12345&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;))&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>RequestContext: Share Data, Access URL Parameters and Handle Errors</title>
+      <link>http://goserv.it/example/context/</link>
+      <pubDate>Tue, 03 May 2016 12:11:16 +0200</pubDate>
+      
+      <guid>http://goserv.it/example/context/</guid>
+      <description>&lt;p&gt;In &lt;em&gt;goserv&lt;/em&gt; every request has its own context. This context called &lt;code&gt;RequestContext&lt;/code&gt; allows you
+to share data between handlers, access captured URL parameters (depending on the current route) and
+lets you pass errors to the next error handler.&lt;/p&gt;
+
+&lt;p&gt;To access a request&amp;rsquo;s context simply pass the request to &lt;code&gt;goserv.Context(r)&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;context&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To share data between multiple handlers you can use the context&amp;rsquo;s &lt;code&gt;.Set&lt;/code&gt; and &lt;code&gt;.Get&lt;/code&gt; methods. There
+are even more convenience methods, check them out at the reference  &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#RequestContext&#34;&gt;documentation&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyMiddleware&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;context&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Set&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;shared&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+
+&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;context&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+    &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// .Get returns the interface{} type.&lt;/span&gt;
+    &lt;span style=&#34;color: #8f5902; font-style: italic&#34;&gt;// Use type assertions to get the original type.&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;value&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Get&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;shared&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).(&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+
+    &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;WriteStringf&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;Received %q&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;RequestContext lets you store arbitrary types thus it is necessary to cast the type back to its
+original type using &lt;em&gt;type assertions&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Sometimes routes are set up to capture certain parts of the URL path, these parts are called parameters.
+Each parameter has a name with which you can access the captured part by passing it to &lt;code&gt;.Param(name)&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #204a87; font-weight: bold&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;MyHandler&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;w&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;ResponseWriter&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;http&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Request&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #000000&#34;&gt;param&lt;/span&gt; &lt;span style=&#34;color: #ce5c00; font-weight: bold&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color: #000000&#34;&gt;goserv&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Context&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color: #000000&#34;&gt;Param&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color: #4e9a06&#34;&gt;&amp;quot;my_param&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color: #000000; font-weight: bold&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The last important feature is error handling. Calling &lt;code&gt;.Error(err, code)&lt;/code&gt; on the context
+tells goserv to stop processing as soon as the current handler returns. The error along with the
+code will be passed to the next error handler as &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#ContextError&#34;&gt;&lt;code&gt;ContextError&lt;/code&gt;&lt;/a&gt;.
+The code is usually in the range of 4xx or 5xx and is used by the &lt;a href=&#34;https://godoc.org/github.com/gotschmarcel/goserv#pkg-variables&#34;&gt;&lt;code&gt;StdErrorHandler&lt;/code&gt;&lt;/a&gt; as response status.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Release v1.0.0rc1</title>

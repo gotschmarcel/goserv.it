@@ -8,14 +8,14 @@
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta name="keywords" content="goserv, go, golang, framework" />
+        <meta name="keywords" content="goserv, go, golang, framework, json" />
 
-        <meta name="og:title" content="goserv - Terms &amp; Conditions" />
+        <meta name="og:title" content="goserv - JSON API" />
 
-        <title>goserv - Terms &amp; Conditions</title>
+        <title>goserv - JSON API</title>
 
 
-        <link rel="canonical" href="http://goserv.it/terms/" />
+        <link rel="canonical" href="http://goserv.it/example/json/" />
         <link href="" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
         <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
 
@@ -43,7 +43,7 @@
                     
                 
                     
-                    <span  class="gs-nav-entry gs-sub-nav" >
+                    <span  class="gs-nav-entry gs-sub-nav active" >
                         <div class="gs-sub-nav-name">Getting Started</div>
                         <div class="triangle-fill"><div class="triangle-up"></div></div>
                         <div class="gs-sub-nav-content">
@@ -54,7 +54,7 @@
                             
                             <a href="http://goserv.it/example/errors/"  class="gs-sub-nav-entry" >Error Handling</a>
                             
-                            <a href="http://goserv.it/example/json/"  class="gs-sub-nav-entry" >JSON Support</a>
+                            <a href="http://goserv.it/example/json/"  class="gs-sub-nav-entry active" >JSON Support</a>
                             
                             <a href="http://goserv.it/example/static/"  class="gs-sub-nav-entry" >File Server</a>
                             
@@ -128,9 +128,24 @@
 
 
 <article id="gs-article" class="centered-content-small">
-    <h1 class="title">Terms &amp; Conditions</h1>
+    <h1 class="title">JSON API</h1>
     <div class="content">
-    <p>Coming soon&hellip;</p>
+    <p><em>goserv</em> also provides some convenience functions which make the handling of JSON even easier:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">JSONEchoHandler</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">var</span> <span style="color: #000000">data</span> <span style="color: #204a87; font-weight: bold">struct</span> <span style="color: #000000; font-weight: bold">{</span> <span style="color: #000000">Title</span> <span style="color: #204a87; font-weight: bold">string</span> <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ReadJSONBody</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">data</span><span style="color: #000000; font-weight: bold">);</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Context</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Error</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">400</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteJSON</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #ce5c00; font-weight: bold">&amp;</span><span style="color: #000000">data</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<p>Calling <code>.WriteJSON</code> marshals the data into the response body and sets the response header
+<code>Content-Type: application/json</code>.</p>
 
     </div>
 </article>

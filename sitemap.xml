@@ -3,8 +3,33 @@
   
   <url>
     <loc>http://goserv.it/</loc>
-    <lastmod>2016-05-01T15:30:28+02:00</lastmod>
+    <lastmod>2016-05-03T16:03:55+02:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/example/routing/</loc>
+    <lastmod>2016-05-03T16:03:55+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/example/json/</loc>
+    <lastmod>2016-05-03T15:18:26+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/example/errors/</loc>
+    <lastmod>2016-05-03T12:19:41+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/example/static/</loc>
+    <lastmod>2016-05-03T12:14:12+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://goserv.it/example/context/</loc>
+    <lastmod>2016-05-03T12:11:16+02:00</lastmod>
   </url>
   
   <url>
