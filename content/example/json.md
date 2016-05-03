@@ -1,7 +1,6 @@
 +++
 date = "2016-05-03T15:18:26+02:00"
-draft = true
-keywords = []
+keywords = ["json"]
 title = "JSON API"
 
 [menu.main]

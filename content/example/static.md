@@ -1,8 +1,7 @@
 +++
 date = "2016-05-03T12:14:12+02:00"
 title = "File Server"
-draft = true
-keywords = []
+keywords = ["static", "file server"]
 
 [menu.main]
     parent = "getting_started"

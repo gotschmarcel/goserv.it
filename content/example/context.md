@@ -1,7 +1,7 @@
 +++
 date = "2016-05-03T12:11:16+02:00"
-draft = true
 title = "RequestContext: Share Data, Access URL Parameters and Handle Errors"
+keywords = ["context"]
 
 [menu.main]
     parent = "getting_started"

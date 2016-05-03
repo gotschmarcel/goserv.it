@@ -1,7 +1,6 @@
 +++
 date = "2016-05-03T12:19:41+02:00"
-draft = true
-keywords = []
+keywords = ["error handling"]
 title = "Error Handling"
 
 [menu.main]

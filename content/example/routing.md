@@ -1,7 +1,6 @@
 +++
 date = "2016-05-03T16:03:55+02:00"
-draft = true
-keywords = []
+keywords = ["routing", "router", "route"]
 title = "Routing"
 
 [menu.main]
