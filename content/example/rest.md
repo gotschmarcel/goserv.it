@@ -6,6 +6,7 @@ keywords = ["rest", "api"]
 [menu.main]
     parent = "getting_started"
     name = "REST & MongoDB"
+    weight = 25
 +++
 
 This example shows how a simple REST API server is build using *goserv* and [*mgo v2*](https://labix.org/mgo) (MongoDB).
