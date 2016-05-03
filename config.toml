@@ -15,6 +15,7 @@ theme = "light"
     Description = "A lightweight toolkit for web applications in Go"
     GithubUser = "gotschmarcel"
     GithubLink = "//github.com/gotschmarcel/goserv"
+    Twitter = "gotschmarcel"
     Mail = "hello@goserv.it"
     Keywords = ["goserv", "go", "golang", "framework"]
 
