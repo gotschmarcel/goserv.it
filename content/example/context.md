@@ -9,7 +9,7 @@ keywords = ["context"]
     weight = 5
 +++
 
-In *goserv* every request has its own context. This context called `RequestContext` allows you
+In *goserv* every request has its own context. This context is called `RequestContext` and allows you
 to share data between handlers, access captured URL parameters (depending on the current route) and
 lets you pass errors to the next error handler.
 
@@ -44,6 +44,8 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 RequestContext lets you store arbitrary types thus it is necessary to cast the type back to its
 original type using *type assertions*.
 
+### Param
+
 Sometimes routes are set up to capture certain parts of the URL path, these parts are called parameters.
 Each parameter has a name with which you can access the captured part by passing it to `.Param(name)`:
 
@@ -53,7 +55,31 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 }
 {{< /highlight >}}
 
+
+### SkipRouter
+
+Another feature is `.SkipRouter()` which skips the router after the current handler. After a router
+was skipped the parent router continues processing.
+
+> Skipping the main router causes a "not found" error.
+
+### Error
+
 The last important feature is error handling. Calling `.Error(err, code)` on the context
 tells goserv to stop processing as soon as the current handler returns. The error along with the
 code will be passed to the next error handler as [`ContextError`](https://godoc.org/github.com/gotschmarcel/goserv#ContextError).
 The code is usually in the range of 4xx or 5xx and is used by the [`StdErrorHandler`](https://godoc.org/github.com/gotschmarcel/goserv#pkg-variables) as response status.
+
+{{< highlight go >}}
+func MyHandler(w http.ResponseWriter, r *http.Request) {
+
+    // ...
+
+    if err := someAction(); err != nil {
+        goserv.Context(r).Error(err, 500)
+        return
+    }
+
+    // ...
+}
+{{< /highlight >}}
