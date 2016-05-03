@@ -32,7 +32,7 @@ func main(w http.ResponseWriter, r *http.Request) {
 {{< /highlight >}}
 
 This is the minimal code you'll need to get a server up and running. Now lets add a simple
-route for our index page:
+route for the index page:
 
 {{< highlight go >}}
 server.Get("/", IndexHandler)
@@ -42,7 +42,7 @@ server.Get("/", IndexHandler)
 
 Each `Router` as well as the `Server` (which is a special router) provides methods to register
 handlers for routes. One important thing to notice here is the use of one of the methods named after
-a HTTP verb. This means the only requests having the HTTP method "GET" and a URL path that matches
+a HTTP verb. This means that only requests with the HTTP method "GET" and a URL path that matches
 exactly "/" will be forwarded to our `IndexHandler`.
 
 > *goserv* provides a convenience method for the most common HTTP verbs: GET, PUT, POST, DELETE and PATCH
