@@ -13,12 +13,12 @@
                     {{ if isset .Site.Params "Mail" }}
                     <div class="gs-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>{{ .Site.Params.Mail }}</span></div>
                     {{ end }}
-                    <div class="gs-footer-info-entry"><a href="{{ .Site.BaseURL }}/terms"><i class="fa fa-file-text-o left-of"></i>Terms &amp; Conditions</a></div>
+                    <div class="gs-footer-info-entry"><a href="{{ .Site.BaseURL }}/terms"><i class="fa fa-file-text left-of"></i>Terms &amp; Conditions</a></div>
                 </div>
             </div>
             <div id="gs-footer-copy">&copy; {{ .Site.LastChange.Year }} {{ if isset .Site.Params "Author" }}{{ .Site.Params.Author }}{{ else }}{{ .Site.Title }}{{ end }}</div>
         </footer>
-        
+
         <!-- Piwik -->
         <script type="text/javascript">
           var _paq = _paq || [];
