@@ -18,7 +18,7 @@ package main
 
 import (
     "log"
-    "net/hettp"
+    "net/http"
 
     "github.com/gotschmarcel/goserv"
 )
