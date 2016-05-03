@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="description" content="goserv - A lightweight toolkit for web applications in Go" />
+        <meta name="author" content="Marcel Gotsch" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta name="keywords" content="goserv, go, golang, framework, routing, router, route" />
+
+        <meta name="og:title" content="goserv - Routing" />
+
+        <title>goserv - Routing</title>
+
+
+        <link rel="canonical" href="http://goserv.it/example/routing/" />
+        <link href="" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
+        <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
+
+        <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goserv.it/css/theme.css" />
+    </head>
+    <body>
+    <header id="gs-header">
+    <input type="checkbox" id="gs-mobile-nav-cb" />
+    <div class="flex centered-content">
+        <div class="flex flex-col flex-vcenter flex-hstart">
+            <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
+            <div id="gs-header-desc" class="s-hide">A lightweight toolkit for web applications in Go</div>
+        </div>
+        <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
+            <div id="gs-header-logo"></div>
+        </div>
+        <div class="flex flex-row flex-vcenter flex-hend">
+            <nav id="gs-header-nav" class="l-hide">
+                
+                
+                    
+                    <a href="http://goserv.it/news/"  class="gs-nav-entry" >News</a>
+                    
+                
+                    
+                    <span  class="gs-nav-entry gs-sub-nav active" >
+                        <div class="gs-sub-nav-name">Getting Started</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
+                        <div class="gs-sub-nav-content">
+                            
+                            <a href="http://goserv.it/example/routing/"  class="gs-sub-nav-entry active" >Routing</a>
+                            
+                            <a href="http://goserv.it/example/context/"  class="gs-sub-nav-entry" >Request Context</a>
+                            
+                            <a href="http://goserv.it/example/errors/"  class="gs-sub-nav-entry" >Error Handling</a>
+                            
+                            <a href="http://goserv.it/example/json/"  class="gs-sub-nav-entry" >JSON Support</a>
+                            
+                            <a href="http://goserv.it/example/static/"  class="gs-sub-nav-entry" >File Server</a>
+                            
+                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST &amp; MongoDB</a>
+                            
+                        </div>
+                    </span>
+                    
+                
+                    
+                    <span  class="gs-nav-entry gs-sub-nav" >
+                        <div class="gs-sub-nav-name">Documentation</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
+                        <div class="gs-sub-nav-content">
+                            
+                            <a href="https://godoc.org/github.com/gotschmarcel/goserv"  class="gs-sub-nav-entry" >API Reference</a>
+                            
+                        </div>
+                    </span>
+                    
+                
+            </nav>
+            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
+        </div>
+    </div>
+    <div class="s-show" id="gs-header-mobile-desc">A lightweight toolkit for web applications in Go</div>
+    <div id="gs-mobile-nav" class="l-show">
+        
+        
+            
+            <a href="http://goserv.it/news/" class="gs-mobile-nav-entry">News</a>
+            
+        
+            
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                <label for="gs-mobile-sub-nav-cb-getting_started">Getting Started</label>
+                <input type="checkbox" id="gs-mobile-sub-nav-cb-getting_started" />
+                <div class="gs-mobile-sub-nav-content">
+                    
+                    <a href="http://goserv.it/example/routing/" class="gs-mobile-sub-nav-entry">Routing</a>
+                    
+                    <a href="http://goserv.it/example/context/" class="gs-mobile-sub-nav-entry">Request Context</a>
+                    
+                    <a href="http://goserv.it/example/errors/" class="gs-mobile-sub-nav-entry">Error Handling</a>
+                    
+                    <a href="http://goserv.it/example/json/" class="gs-mobile-sub-nav-entry">JSON Support</a>
+                    
+                    <a href="http://goserv.it/example/static/" class="gs-mobile-sub-nav-entry">File Server</a>
+                    
+                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST &amp; MongoDB</a>
+                    
+                </div>
+            </div>
+            
+        
+            
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                <label for="gs-mobile-sub-nav-cb-documentation">Documentation</label>
+                <input type="checkbox" id="gs-mobile-sub-nav-cb-documentation" />
+                <div class="gs-mobile-sub-nav-content">
+                    
+                    <a href="https://godoc.org/github.com/gotschmarcel/goserv" class="gs-mobile-sub-nav-entry">API Reference</a>
+                    
+                </div>
+            </div>
+            
+        
+    </div>
+</header>
+
+
+
+<article id="gs-article" class="centered-content-small">
+    <h1 class="title">Routing</h1>
+    <div class="content">
+    
+
+<p>The most important feature of <em>goserv</em> is routing. Since learning by doing is the easiest way to get
+started, lets jump right into it :).</p>
+
+<p>First of all every <em>goserv</em> server starts with a single instance of
+<a href="https://godoc.org/github.com/gotschmarcel/goserv#Server"><code>Server</code></a>:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #ce5c00; font-weight: bold">...</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<p>This is the minimal code you&rsquo;ll need to get a server up and running. Now lets add a simple
+route for our index page:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">IndexHandler</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+
+
+<blockquote>
+<p>All handler implementations are omitted to keeps things focussed on routing</p>
+</blockquote>
+
+<p>Each <code>Router</code> as well as the <code>Server</code> (which is a special router) provides methods to register
+handlers for routes. One important thing to notice here is the use of one of the methods named after
+a HTTP verb. This means the only requests having the HTTP method &ldquo;GET&rdquo; and a URL path that matches
+exactly &ldquo;/&rdquo; will be forwarded to our <code>IndexHandler</code>.</p>
+
+<blockquote>
+<p><em>goserv</em> provides a convenience method for the most common HTTP verbs: GET, PUT, POST, DELETE and PATCH</p>
+</blockquote>
+
+<p>You can get the same result by using the <code>.Method(method, path, handler)</code> method:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Method</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;GET&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">IndexHandler</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+
+
+<p>If you want a handler to be called for multiple or even all methods you can use <code>.Methods(methods, path, handler)</code> and
+<code>.All(path, handler)</code>. Sometimes a single route has different handlers for each method. You could do it like this:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">GetLongPath</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Put</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PutLongPath</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PostLongPath</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<p>but there&rsquo;s a more elegant version using <code>.Route(path)</code>:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">route</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Route</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/longpath&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">route</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">GetLongPath</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Put</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">PutLongPath</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Post</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">PostLongPath</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<blockquote>
+<p>Noticed the method chaining? All <code>Router</code> and <code>Route</code> instances allow this.
+The are two exceptions though:</p>
+
+<ul>
+<li><code>Router.SubRouter</code> returns a new <code>Router</code></li>
+<li><code>Router.Router</code> returns a new <code>Route</code> not the router itself</li>
+</ul>
+</blockquote>
+
+<p>If you want to use a handler for all methods that currently have none, use the <code>.Rest</code> method:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Route</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/articles&quot;</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">GetArticles</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Rest</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">NotImplemented</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<p>Often there are handlers that handle all requests, so called middleware. To register a handler
+as middleware use <code>.Use(handler)</code>:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Use</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">authentication</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<p>If you want a middleware to handle all request beginning with e.g. <em>&rdquo;/api&rdquo;</em> you can use <code>.SubRouter(prefix)</code>
+to create a new sub router and then set the middleware there:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">api</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SubRouter</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/api&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">api</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Use</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">authentication</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<h2 id="order-matters:ce107015c43d323e34bbf68cbc83e623">Order Matters</h2>
+
+<p>One important thing to notice is that the order in which the routes, middleware and sub routers
+are registered does matter. The server passes the requests to the matching handlers in the same
+order. This means that it is possible to process a request in a middleware which follows a normal
+route, but only if the route didn&rsquo;t write a response:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">DoingNothing</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Use</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">CalledAfterHandler</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<h2 id="path-syntax:ce107015c43d323e34bbf68cbc83e623">Path Syntax</h2>
+
+<p>All routes are registered under a certain path. A path in <em>goserv</em> is not just a simple string instead
+is it a small language oriented on regular expressions. Lets dive into it!</p>
+
+<h3 id="wildcards:ce107015c43d323e34bbf68cbc83e623">Wildcards</h3>
+
+<p>Wildcards allow you to create routes matching more than a single exact path, e.g. routes matching
+a certain prefix. The number of wildcards and the position is not restricted.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/public*&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">PublicHandler</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/a/*/c&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">MyHandler</span><span style="color: #000000; font-weight: bold">)</span>
+</pre></div>
+</p>
+
+<h3 id="optionals:ce107015c43d323e34bbf68cbc83e623">Optionals</h3>
+
+<p>Optionals allow you to specify optional characters or character groups.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/articles?&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">ArticleHandler</span><span style="color: #000000; font-weight: bold">)</span>                <span style="color: #8f5902; font-style: italic">// Matches /article and /articles</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/api/(public)?/articles&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">ArticleHandler</span><span style="color: #000000; font-weight: bold">)</span>   <span style="color: #8f5902; font-style: italic">// Matches /api/articles and /api/public/articles</span>
+</pre></div>
+</p>
+
+<h3 id="parameters:ce107015c43d323e34bbf68cbc83e623">Parameters</h3>
+
+<p>Parameters allow you to capture parts of the URL which are then accessible through <code>RequestContext</code>.
+Additionally you can register parameter handlers on a <code>Router</code> using <code>.Param(name, handler)</code> to preprocess
+the captured values.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/articles/:article_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">GetArticle</span><span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Param</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;article_id&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">id</span> <span style="color: #204a87; font-weight: bold">string</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #8f5902; font-style: italic">// Validate ID</span>
+<span style="color: #000000; font-weight: bold">})</span>
+</pre></div>
+</p>
+
+    </div>
+</article>
+
+        <footer id="gs-footer">
+            <div id="gs-footer-content" class="centered-content">
+                <div id="gs-footer-logo" class="m-hide"></div>
+                <div id="gs-footer-info-left">
+                    <div id="gs-footer-name">goserv</div>
+                    <div id="gs-footer-desc">A lightweight toolkit for web applications in Go</div>
+                </div>
+                <div class="flex-grow"></div>
+                <div id="gs-footer-info-right">
+                    
+                    <div class="gs-footer-info-entry"><a href="//github.com/gotschmarcel/goserv" target="_blank"><i class="fa fa-github left-of"></i>GitHub</a></div>
+                    
+                    
+                    <div class="gs-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>hello@goserv.it</span></div>
+                    
+                    <div class="gs-footer-info-entry"><a href="http://goserv.it/terms"><i class="fa fa-file-text left-of"></i>Terms &amp; Conditions</a></div>
+                </div>
+            </div>
+            <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
+        </footer>
+
+        
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//piwik.gts.octans.uberspace.de/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <noscript><p><img src="//piwik.gts.octans.uberspace.de/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+        
+    </body>
+</html>
+
+

@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="description" content="goserv - A lightweight toolkit for web applications in Go" />
+        <meta name="author" content="Marcel Gotsch" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta name="keywords" content="goserv, go, golang, framework, error handling" />
+
+        <meta name="og:title" content="goserv - Error Handling" />
+
+        <title>goserv - Error Handling</title>
+
+
+        <link rel="canonical" href="http://goserv.it/example/errors/" />
+        <link href="" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
+        <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
+
+        <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://goserv.it/css/theme.css" />
+    </head>
+    <body>
+    <header id="gs-header">
+    <input type="checkbox" id="gs-mobile-nav-cb" />
+    <div class="flex centered-content">
+        <div class="flex flex-col flex-vcenter flex-hstart">
+            <div id="gs-header-name"><a href="http://goserv.it">goserv</a></div>
+            <div id="gs-header-desc" class="s-hide">A lightweight toolkit for web applications in Go</div>
+        </div>
+        <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
+            <div id="gs-header-logo"></div>
+        </div>
+        <div class="flex flex-row flex-vcenter flex-hend">
+            <nav id="gs-header-nav" class="l-hide">
+                
+                
+                    
+                    <a href="http://goserv.it/news/"  class="gs-nav-entry" >News</a>
+                    
+                
+                    
+                    <span  class="gs-nav-entry gs-sub-nav active" >
+                        <div class="gs-sub-nav-name">Getting Started</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
+                        <div class="gs-sub-nav-content">
+                            
+                            <a href="http://goserv.it/example/routing/"  class="gs-sub-nav-entry" >Routing</a>
+                            
+                            <a href="http://goserv.it/example/context/"  class="gs-sub-nav-entry" >Request Context</a>
+                            
+                            <a href="http://goserv.it/example/errors/"  class="gs-sub-nav-entry active" >Error Handling</a>
+                            
+                            <a href="http://goserv.it/example/json/"  class="gs-sub-nav-entry" >JSON Support</a>
+                            
+                            <a href="http://goserv.it/example/static/"  class="gs-sub-nav-entry" >File Server</a>
+                            
+                            <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST &amp; MongoDB</a>
+                            
+                        </div>
+                    </span>
+                    
+                
+                    
+                    <span  class="gs-nav-entry gs-sub-nav" >
+                        <div class="gs-sub-nav-name">Documentation</div>
+                        <div class="triangle-fill"><div class="triangle-up"></div></div>
+                        <div class="gs-sub-nav-content">
+                            
+                            <a href="https://godoc.org/github.com/gotschmarcel/goserv"  class="gs-sub-nav-entry" >API Reference</a>
+                            
+                        </div>
+                    </span>
+                    
+                
+            </nav>
+            <label for="gs-mobile-nav-cb" id="gs-mobile-nav-toggle" class="fa fa-bars l-show"></label>
+        </div>
+    </div>
+    <div class="s-show" id="gs-header-mobile-desc">A lightweight toolkit for web applications in Go</div>
+    <div id="gs-mobile-nav" class="l-show">
+        
+        
+            
+            <a href="http://goserv.it/news/" class="gs-mobile-nav-entry">News</a>
+            
+        
+            
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                <label for="gs-mobile-sub-nav-cb-getting_started">Getting Started</label>
+                <input type="checkbox" id="gs-mobile-sub-nav-cb-getting_started" />
+                <div class="gs-mobile-sub-nav-content">
+                    
+                    <a href="http://goserv.it/example/routing/" class="gs-mobile-sub-nav-entry">Routing</a>
+                    
+                    <a href="http://goserv.it/example/context/" class="gs-mobile-sub-nav-entry">Request Context</a>
+                    
+                    <a href="http://goserv.it/example/errors/" class="gs-mobile-sub-nav-entry">Error Handling</a>
+                    
+                    <a href="http://goserv.it/example/json/" class="gs-mobile-sub-nav-entry">JSON Support</a>
+                    
+                    <a href="http://goserv.it/example/static/" class="gs-mobile-sub-nav-entry">File Server</a>
+                    
+                    <a href="http://goserv.it/example/rest/" class="gs-mobile-sub-nav-entry">REST &amp; MongoDB</a>
+                    
+                </div>
+            </div>
+            
+        
+            
+            <div class="gs-mobile-nav-entry gs-mobile-sub-nav">
+                <label for="gs-mobile-sub-nav-cb-documentation">Documentation</label>
+                <input type="checkbox" id="gs-mobile-sub-nav-cb-documentation" />
+                <div class="gs-mobile-sub-nav-content">
+                    
+                    <a href="https://godoc.org/github.com/gotschmarcel/goserv" class="gs-mobile-sub-nav-entry">API Reference</a>
+                    
+                </div>
+            </div>
+            
+        
+    </div>
+</header>
+
+
+
+<article id="gs-article" class="centered-content-small">
+    <h1 class="title">Error Handling</h1>
+    <div class="content">
+    <p>One of the cool features of <em>goserv</em> is centralized error handling. You can easily pass errors
+occurred in a handler to the next error handler along with a response status code:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">MyHandler</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #204a87; font-weight: bold">if</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">someAction</span><span style="color: #000000; font-weight: bold">();</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">!=</span> <span style="color: #204a87; font-weight: bold">nil</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Context</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">r</span><span style="color: #000000; font-weight: bold">).</span><span style="color: #000000">Error</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #0000cf; font-weight: bold">500</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #204a87; font-weight: bold">return</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<p>goserv stops processing as soon as the handler setting the error returns and passes the
+<a href="https://godoc.org/github.com/gotschmarcel/goserv#ContextError"><code>ContextError</code></a> to the next error handler.
+By default this is always the <a href="https://godoc.org/github.com/gotschmarcel/goserv#pkg-variables">standard error handler</a>
+of the <a href="https://godoc.org/github.com/gotschmarcel/goserv#Server"><code>Server</code></a>.</p>
+
+<p>If you want your own custom error handler you can easily overwrite the default error handler:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ContextError</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Printf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;Error: &quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Code</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteString</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">String</span><span style="color: #000000; font-weight: bold">())</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>Sometimes it is necessary to have error handlers which have a smaller scope and act only on certain routes.
+Just create a sub router by calling <code>.SubRouter(prefix)</code> on the <code>Server</code> and assign a custom error handler to the <code>.ErrorHandler</code> field:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">api</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">SubRouter</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/api&quot;</span><span style="color: #000000; font-weight: bold">)</span>
+    <span style="color: #000000">api</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ContextError</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+        <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Printf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;API Error: &quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+
+        <span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteHeader</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Code</span><span style="color: #000000; font-weight: bold">)</span>
+        <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteString</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">String</span><span style="color: #000000; font-weight: bold">())</span>
+    <span style="color: #000000; font-weight: bold">}</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>You can also let the error handler be passed to the next parent error handler by not writing a
+response:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #000000">api</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ErrorHandler</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ContextError</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Printf</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;API Error: &quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">err</span><span style="color: #000000; font-weight: bold">)</span>
+
+    <span style="color: #8f5902; font-style: italic">// Do not write a response to pass the error to the next error handler.</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+<p>A special kind of error in <em>Go</em> is an error caused by a call to <code>panic</code> which usually terminates the
+program. For servers it is sometimes necessary to overcome these errors and not to terminate.
+You can configure a <a href="https://godoc.org/github.com/gotschmarcel/goserv#Router"><code>Router</code></a> to recover
+from panics by setting the <code>.PanicRecovery</code> field to <code>true</code>. Values captured from a panic are passed
+to the router&rsquo;s error handler. In case that a router has no error handler the error is simply ignored.</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">PanicRecovery</span> <span style="color: #000000; font-weight: bold">=</span> <span style="color: #204a87; font-weight: bold">true</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
+
+    </div>
+</article>
+
+        <footer id="gs-footer">
+            <div id="gs-footer-content" class="centered-content">
+                <div id="gs-footer-logo" class="m-hide"></div>
+                <div id="gs-footer-info-left">
+                    <div id="gs-footer-name">goserv</div>
+                    <div id="gs-footer-desc">A lightweight toolkit for web applications in Go</div>
+                </div>
+                <div class="flex-grow"></div>
+                <div id="gs-footer-info-right">
+                    
+                    <div class="gs-footer-info-entry"><a href="//github.com/gotschmarcel/goserv" target="_blank"><i class="fa fa-github left-of"></i>GitHub</a></div>
+                    
+                    
+                    <div class="gs-footer-info-entry"><i class="fa fa-envelope left-of"></i><span>hello@goserv.it</span></div>
+                    
+                    <div class="gs-footer-info-entry"><a href="http://goserv.it/terms"><i class="fa fa-file-text left-of"></i>Terms &amp; Conditions</a></div>
+                </div>
+            </div>
+            <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
+        </footer>
+
+        
+        <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="//piwik.gts.octans.uberspace.de/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', 1]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+        <noscript><p><img src="//piwik.gts.octans.uberspace.de/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+        
+    </body>
+</html>
+
+

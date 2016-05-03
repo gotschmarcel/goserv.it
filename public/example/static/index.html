@@ -8,14 +8,14 @@
         <meta name="author" content="Marcel Gotsch" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        <meta name="keywords" content="goserv, go, golang, framework" />
+        <meta name="keywords" content="goserv, go, golang, framework, static, file server" />
 
-        <meta name="og:title" content="goserv - Terms &amp; Conditions" />
+        <meta name="og:title" content="goserv - File Server" />
 
-        <title>goserv - Terms &amp; Conditions</title>
+        <title>goserv - File Server</title>
 
 
-        <link rel="canonical" href="http://goserv.it/terms/" />
+        <link rel="canonical" href="http://goserv.it/example/static/" />
         <link href="" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
         <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
 
@@ -43,7 +43,7 @@
                     
                 
                     
-                    <span  class="gs-nav-entry gs-sub-nav" >
+                    <span  class="gs-nav-entry gs-sub-nav active" >
                         <div class="gs-sub-nav-name">Getting Started</div>
                         <div class="triangle-fill"><div class="triangle-up"></div></div>
                         <div class="gs-sub-nav-content">
@@ -56,7 +56,7 @@
                             
                             <a href="http://goserv.it/example/json/"  class="gs-sub-nav-entry" >JSON Support</a>
                             
-                            <a href="http://goserv.it/example/static/"  class="gs-sub-nav-entry" >File Server</a>
+                            <a href="http://goserv.it/example/static/"  class="gs-sub-nav-entry active" >File Server</a>
                             
                             <a href="http://goserv.it/example/rest/"  class="gs-sub-nav-entry" >REST &amp; MongoDB</a>
                             
@@ -128,9 +128,46 @@
 
 
 <article id="gs-article" class="centered-content-small">
-    <h1 class="title">Terms &amp; Conditions</h1>
+    <h1 class="title">File Server</h1>
     <div class="content">
-    <p>Coming soon&hellip;</p>
+    <p>Often it is necessary to serve static content along with dynamic content. Fortunately, the standard library already
+provides a simple function to create a <a href="https://golang.org/pkg/net/http/#FileServer">file server</a>.
+Due to the compatibility of <em>goserv</em> to the standard library you can use it as is:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Use</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">FileServer</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dir</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/usr/share/doc&quot;</span><span style="color: #000000; font-weight: bold">)))</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+
+
+<p>To serve files under a certain prefix we need to strip the prefix from the request path before
+passing it to the file server. Luckily the standard library provides a helper for that also:</p>
+
+<p><div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
+    <span style="color: #4e9a06">&quot;log&quot;</span>
+    <span style="color: #4e9a06">&quot;net/http&quot;</span>
+    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
+<span style="color: #000000; font-weight: bold">)</span>
+<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
+    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
+
+    <span style="color: #000000">fileServer</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">FileServer</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Dir</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/usr/share/doc&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">All</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/public/*&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">StripPrefix</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/public/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">fileServer</span><span style="color: #000000; font-weight: bold">))</span>
+
+    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
+<span style="color: #000000; font-weight: bold">}</span>
+</pre></div>
+</p>
 
     </div>
 </article>
