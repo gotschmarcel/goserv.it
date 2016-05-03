@@ -118,6 +118,9 @@ pre, code { font-family: $monospace-font; }
     font-style: normal;
     display: inline-block;
     text-decoration: inherit;
+
+    // Fixes an issue where a small part is not inside the icon which leads to artifacts.
+    &:before { padding-left: 0.1rem; }
 }
 
 .colored-box {
@@ -154,7 +157,10 @@ pre, code { font-family: $monospace-font; }
         display: none;
         &:checked {
             & ~ .highlight { display: block; }
-            & + label:before { content: "\f0d7"; }
+            & + label:before {
+                content: "\f0d7";
+                margin-right: 0.29rem; // Fixes new offset of label text when opened.
+            }
         }
     }
     // & > input[type="checkbox"]:checked ~ .highlight { display: block; }
@@ -169,8 +175,13 @@ pre, code { font-family: $monospace-font; }
     pre { margin: 0; padding: 0rem; }
 }
 
-.fa.left-of { margin-right: 0.5rem; }
-.fa.right-of { margin-left: 0.5rem; }
+.fa {
+    // Fixes an issue where a small part is not inside the icon which leads to artifacts.
+    &:before { padding-left: 0.1rem; }
+
+    &.left-of { margin-right: 0.5rem; }
+    &.right-of { margin-left: 0.5rem; }
+}
 
 .l-show {
     display: none;
