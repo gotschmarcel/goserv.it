@@ -104,7 +104,7 @@
     cursor: pointer;
 
     &:first-child { margin-left: 0rem; }
-    &.active { border-bottom: 2px solid $light-blue; }
+    &.active { @extend .underlined; }
     &:hover { color: $light-blue; }
 }
 

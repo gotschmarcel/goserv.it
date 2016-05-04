@@ -18,8 +18,7 @@
 
     a {
         color: $dark;
-        border-bottom: 2px solid $light-blue;
-        &:hover { border-bottom-width: 4px; }
+        @extend .underlined;
     }
 }
 
@@ -44,7 +43,7 @@
 
         &.disabled { display: none; }
         &.active {
-            border-bottom: 2px solid $light-blue;
+            @extend .underlined;
             a { color: $light-blue; }
         }
 
@@ -77,7 +76,8 @@
     margin-bottom: 4rem;
 
     .header {
-        border-bottom: 2px solid $light-blue;
+        @extend .underlined;
+
         padding-bottom: 1rem;
         margin-bottom: 2rem;
 
@@ -118,9 +118,9 @@
     p { font-family: $content-font; }
 
     a {
+        @extend .underlined;
+        @extend .underlined-hover;
         color: $dark;
-        border-bottom: 2px solid $light-blue;
-        &:hover { border-bottom-width: 4px; }
     }
 
     blockquote {

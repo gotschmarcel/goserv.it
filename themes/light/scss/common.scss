@@ -82,9 +82,10 @@ pre, code { font-family: $monospace-font; }
 .flex-grow { @include flex-grow(1); }
 
 .text-center { text-align: center; }
+
 .underlined {
-    border-bottom: 1px solid $light-blue;
-    &:hover { border-bottom-width: 2px; }
+    border-bottom: 2px solid $light-blue;
+    &.underlined-hover:hover { border-bottom-width: 4px; }
 }
 
 .centered-content {
@@ -146,8 +147,10 @@ pre, code { font-family: $monospace-font; }
 
 .collapsable-codeblock {
     & > label {
+        @extend .underlined;
+        @extend .underlined-hover;
+
         cursor: pointer;
-        border-bottom: 1px solid $light-blue;
         padding-bottom: 0.2rem;
         &:hover { color: $light-blue; }
         &:before {
@@ -289,5 +292,6 @@ pre, code { font-family: $monospace-font; }
     a {
         color: $light;
         @extend .underlined;
+        @extend .underlined-hover;
     }
 }
