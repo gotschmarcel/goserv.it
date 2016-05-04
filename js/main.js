@@ -1,5 +1,5 @@
 (function () {
-    var messageCookiePrefix = /^gs_cookie_message/;
+    var cookiePrefix = "gs_cookie_message";
     var cookieMessage = document.getElementById("gs-cookie-message");
     var cookieMessageClose = document.getElementById("gs-cookie-message-close");
     var cookies = document.cookie.split(/;\s?/)
@@ -7,7 +7,14 @@
 
     function closeCookieMessage() {
         var expiresAt = new Date(Date.now() + expires);
-        document.cookie = "gs_cookie_message=; expires=" + expiresAt.toUTCString();
+
+        // Set message cookie
+        document.cookie = [
+            cookiePrefix + "=",
+            "expires=" + expiresAt.toUTCString(),
+            "path=/"
+        ].join("; ");
+
         cookieMessage.className = "hidden";
     }
 
@@ -15,13 +22,8 @@
     cookieMessageClose.onclick = closeCookieMessage;
 
     // Check if the cookie exists.
-    for (var index = 0; index < cookies.length; index++) {
-        var cookie = cookies[index];
-
-        if (messageCookiePrefix.test(cookie)) {
-            // Done here.
-            return;
-        }
+    if (document.cookie.indexOf(cookiePrefix) !== -1) {
+        return;
     }
 
     // Display message.
