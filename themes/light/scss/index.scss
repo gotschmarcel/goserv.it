@@ -16,29 +16,19 @@
 }
 
 #gs-features {
-    // Flex-wrap is not supported by older browsers.
-    //
-    // @extend .flex;
-    // @include flex-wrap(wrap);
+    @extend .flex;
+    @include flex-wrap(wrap);
 
     margin: 2rem 0rem 2rem 0rem;
-    font-size: 0;
 
     .gs-feature {
         @extend .colored-box;
 
-        display: inline-block;
-        vertical-align: top;
-
-        max-width: calc(50% - 1rem);
-        width: auto;
+        width: calc(50% - 1rem);
         margin: 0.5rem;
-        font-size: map-get($font-size, "n");
-        height: 200px;
 
         @include breakpoint("tiny") {
-            max-width: 100%;
-            width: auto;
+            width: 100%;
 
             .title, .detail { text-align: center; }
         }
