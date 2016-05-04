@@ -39,3 +39,5 @@ Third party analytics are used to track and measure usage of this site so that w
 Hopefully that has clarified things for you and as was previously mentioned if there is something that you aren't sure whether you need or not it's usually safer to leave cookies enabled in case it does interact with one of the features you use on our site. However if you are still looking for more information then you can contact us through one of our preferred contact methods.
 
 Email: hello@goserv.it
+
+<iframe style="border: 0; height: 200px; width: 600px;" src="https://piwik.gts.octans.uberspace.de/index.php?module=CoreAdminHome&action=optOut&language=en"></iframe>
