@@ -24,7 +24,12 @@
         <link rel="stylesheet" href="http://goserv.it/css/theme.css" />
     </head>
     <body>
-    <header id="gs-header">
+        <div id="gs-cookie-message" class="hidden">
+            We use cookies to track usage and preferences.
+            <a href="http://goserv.it/cookies">Cookie policy</a>
+            <span id="gs-cookie-message-close" class="fa fa-times right-of"></span>
+        </div>
+        <header id="gs-header">
     <input type="checkbox" id="gs-mobile-nav-cb" />
     <div class="flex centered-content">
         <div class="flex flex-col flex-vcenter flex-hstart">
@@ -229,11 +234,14 @@ The code is usually in the range of 4xx or 5xx and is used by the <a href="https
                     
                     <div class="gs-footer-info-entry"><a href="https://twitter.com/gotschmarcel" target="_blank"><i class="fa fa-twitter left-of"></i>@gotschmarcel</a></div>
                     
+                    <div class="gs-footer-info-entry"><a href="http://goserv.it/cookies"><i class="fa fa-file-text left-of"></i>Cookie Policy</a></div>
                     
                 </div>
             </div>
             <div id="gs-footer-copy">&copy; 2016 Marcel Gotsch</div>
         </footer>
+
+        <script src="http://goserv.it/js/main.js"></script>
 
         
         <script type="text/javascript">
