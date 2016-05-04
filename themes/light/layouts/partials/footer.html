@@ -16,11 +16,14 @@
                     {{ if isset .Site.Params "Twitter" }}
                     <div class="gs-footer-info-entry"><a href="https://twitter.com/{{ .Site.Params.Twitter }}" target="_blank"><i class="fa fa-twitter left-of"></i>@{{ .Site.Params.Twitter }}</a></div>
                     {{ end }}
+                    <div class="gs-footer-info-entry"><a href="/cookies"><i class="fa fa-file-text left-of"></i>Cookie Policy</a></div>
                     <!--<div class="gs-footer-info-entry"><a href="{{ .Site.BaseURL }}/terms"><i class="fa fa-file-text left-of"></i>Terms &amp; Conditions</a></div>-->
                 </div>
             </div>
             <div id="gs-footer-copy">&copy; {{ .Site.LastChange.Year }} {{ if isset .Site.Params "Author" }}{{ .Site.Params.Author }}{{ else }}{{ .Site.Title }}{{ end }}</div>
         </footer>
+
+        <script src="/js/main.js"></script>
 
         <!-- Piwik -->
         <script type="text/javascript">

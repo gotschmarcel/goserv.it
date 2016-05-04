@@ -23,4 +23,9 @@
         <link rel="stylesheet" href="/css/theme.css" />
     </head>
     <body>
-    {{ partial "top.html" . }}
+        <div id="gs-cookie-message" class="hidden">
+            We use cookies to track usage and preferences.
+            <a href="/cookies">Cookie policy</a>
+            <span id="gs-cookie-message-close" class="fa fa-times right-of"></span>
+        </div>
+        {{ partial "top.html" . }}
