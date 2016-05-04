@@ -6,8 +6,19 @@
     <description>Recent content on goserv - A lightweight toolkit for web applications in Go</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 May 2016 10:43:08 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 04 May 2016 15:00:01 +0200</lastBuildDate>
     <atom:link href="http://goserv.it/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>release v1.0.1</title>
+      <link>http://goserv.it/news/release-v1.0.1/</link>
+      <pubDate>Wed, 04 May 2016 15:00:01 +0200</pubDate>
+      
+      <guid>http://goserv.it/news/release-v1.0.1/</guid>
+      <description>&lt;p&gt;I know release 1.0.1 comes pretty early, but this release fixes some serious race condition issues
+with &lt;code&gt;RequestContext&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Cookie Policy</title>
