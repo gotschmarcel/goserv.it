@@ -9,13 +9,13 @@
 
         <meta name="keywords" content="goserv, go, golang, framework" />
 
-        <meta name="og:title" content="goserv - A lightweight toolkit for web applications in Go" />
+        <meta name="og:title" content="goserv - release v1.0.1" />
 
-        <title>goserv - A lightweight toolkit for web applications in Go</title>
+        <title>goserv - release v1.0.1</title>
 
 
-        <link rel="canonical" href="http://goserv.it/" />
-        <link href="http://goserv.it/index.xml" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
+        <link rel="canonical" href="http://goserv.it/news/release-v1.0.1/" />
+        <link href="" rel="alternate" type="application/rss+xml" title="goserv - A lightweight toolkit for web applications in Go" />
         <link rel="shortcut icon" href="http://goserv.it/images/favicon.png" type="image/png" />
 
         <link href="//fonts.googleapis.com/css?family=Lily+Script+One|Droid+Sans:400,700|Droid+Serif|Inconsolata:400,700" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
             <div id="gs-header-desc" class="s-hide">A lightweight toolkit for web applications in Go</div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hcenter flex-grow">
-            <div id="gs-header-logo-big"></div>
+            <div id="gs-header-logo"></div>
         </div>
         <div class="flex flex-row flex-vcenter flex-hend">
             <nav id="gs-header-nav" class="l-hide">
@@ -132,132 +132,28 @@
 </header>
 
 
-<div class="centered-content-small">
-    
-    <section id="gs-intro">
-        <strong>goserv</strong> is a fully compatible toolkit for <i>Go's</i> <strong>net/http</strong> package, making the creation of powerful and complex web applications even easier.
-    </section>
-    
-    <section id="gs-features">
-        <div class="gs-feature">
-            <h3 class="title"><i class="fa fa-flash left-of"></i>Fast &amp; Lightweight</h3>
-            <p class="detail">
-                <em>goserv</em> provides a thin layer extending the basic functionality of net/http
-                by doing only what's necessary.
-            </p>
-        </div>
-        <div class="gs-feature">
-            <h3 class="title"><i class="fa fa-road left-of"></i>Flexible Routing</h3>
-            <p class="detail">
-                A single router or nested routers? A single http method, some or even all of them?
-                Middleware? Captured URL values? <em>goserv</em> does it all!
-            </p>
-        </div>
-        <div class="gs-feature">
-            <h3 class="title"><i class="fa fa-cogs left-of"></i>net/http Compatibility</h3>
-            <p class="detail">
-                No reason to throw existing features away. Use what you already know.
-                Switching to goserv can't get any easier.
-            </p>
-        </div>
-        <div class="gs-feature">
-            <h3 class="title"><i class="fa fa-compress left-of"></i>Centralized Error Handling</h3>
-            <p class="detail">
-                Handle errors in a single error handler or in more differentiated
-                error handlers in sub routers.
-            </p>
-        </div>
-    </section>
-    
-    <article class="gs-news-article">
-        <div class="content">
-        
 
-<h2 id="get-right-into-it:34c4da6d4768d05e50db99357a299b5c">Get Right Into It</h2>
-
-<h3 id="installation:34c4da6d4768d05e50db99357a299b5c">Installation</h3>
-
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ go get github.com/gotschmarcel/goserv
-</pre></div>
-
-
-<h3 id="simple-server:34c4da6d4768d05e50db99357a299b5c">Simple Server</h3>
-
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #204a87; font-weight: bold">package</span> <span style="color: #000000">main</span>
-
-<span style="color: #204a87; font-weight: bold">import</span> <span style="color: #000000; font-weight: bold">(</span>
-    <span style="color: #4e9a06">&quot;log&quot;</span>
-    <span style="color: #4e9a06">&quot;net/http&quot;</span>
-
-    <span style="color: #4e9a06">&quot;github.com/gotschmarcel/goserv&quot;</span>
-<span style="color: #000000; font-weight: bold">)</span>
-
-<span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000">main</span><span style="color: #000000; font-weight: bold">()</span> <span style="color: #000000; font-weight: bold">{</span>
-    <span style="color: #000000">server</span> <span style="color: #ce5c00; font-weight: bold">:=</span> <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">NewServer</span><span style="color: #000000; font-weight: bold">()</span>
-
-    <span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Get</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;/&quot;</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #204a87; font-weight: bold">func</span> <span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span> <span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">ResponseWriter</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #000000">r</span> <span style="color: #ce5c00; font-weight: bold">*</span><span style="color: #000000">http</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Request</span><span style="color: #000000; font-weight: bold">)</span> <span style="color: #000000; font-weight: bold">{</span>
-            <span style="color: #000000">goserv</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">WriteString</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">w</span><span style="color: #000000; font-weight: bold">,</span> <span style="color: #4e9a06">&quot;Welcome Home&quot;</span><span style="color: #000000; font-weight: bold">)</span>
-    <span style="color: #000000; font-weight: bold">})</span>
-
-    <span style="color: #000000">log</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Fatalln</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #000000">server</span><span style="color: #000000; font-weight: bold">.</span><span style="color: #000000">Listen</span><span style="color: #000000; font-weight: bold">(</span><span style="color: #4e9a06">&quot;:12345&quot;</span><span style="color: #000000; font-weight: bold">))</span>
-<span style="color: #000000; font-weight: bold">}</span>
-</pre></div>
-
-
-<p>This is of course just a very simple example, showing only what&rsquo;s necessary to start a server. To
-dig deeper into <em>goserv</em> take a look at the <em>Getting Started</em> section.</p>
-
-        </div>
-        <hr />
-    </article>
-    
-    <section id="gs-news">
-        <h2>News</h2>
-        
-        <article class="gs-news-summary">
-    <header class="header flex flex-col">
-        <a href="http://goserv.it/news/release-v1.0.1/" class="title">release v1.0.1</a>
-        <span class="meta">Wed, May 4, 2016</span>
+<article class="centered-content-small gs-news-article">
+    <header class="header">
+            <div class="title">release v1.0.1</div>
+            <div class="meta">Wed, May 4, 2016</div>
     </header>
     <div class="content">
-        I know release 1.0.1 comes pretty early, but this release fixes some serious race condition issues with RequestContext.
-    </div>
-    
-</article>
-
-        
-        <article class="gs-news-summary">
-    <header class="header flex flex-col">
-        <a href="http://goserv.it/news/release-v1.0.0/" class="title">Release v1.0.0</a>
-        <span class="meta">Tue, May 3, 2016</span>
-    </header>
-    <div class="content">
-        <p>goserv 1.0.0 is finally here and it brings more features. Additionally, new examples are available
-in the <strong>Getting Started</strong> section to make the start with goserv easier.</p>
+    <p>I know release 1.0.1 comes pretty early, but this release fixes some serious race condition issues
+with <code>RequestContext</code>.</p>
 
     </div>
-    
-    <footer class="footer">
-        <a href="http://goserv.it/news/release-v1.0.0/">Read more <i class="fa fa-long-arrow-right right-of"></i></a>
-    </footer>
-    
-</article>
-
+    <div class="navigate">
         
-        <article class="gs-news-summary">
-    <header class="header flex flex-col">
-        <a href="http://goserv.it/news/release-v1.0.0rc1/" class="title">Release v1.0.0rc1</a>
-        <span class="meta">Sun, May 1, 2016</span>
-    </header>
-    <div class="content">
-        The first release candidate is now available :). That means that the API documentation is also now available on GoDoc. Check it out and feel free to contact me (hello@goserv.it) if you have ideas for improvement. Enjoy the rest of your weekend :)
+        
+        <span class="flex-grow"></span>
+        
+        
+        <a class="next" href="http://goserv.it/cookies/">Cookie Policy<i class="fa fa-long-arrow-right right-of"></i></a>
+        
     </div>
-    
 </article>
 
-        
-    </section>
-</div>
         <footer id="gs-footer">
             <div id="gs-footer-content" class="centered-content">
                 <div id="gs-footer-logo" class="m-hide"></div>
